@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Owner Dashboard | A to Z Mega Shopping Mall</title>
+<style>
+:root{--navy:#0D1830;--gold:#D9AC4A;--bg:#F4F6FB;--card:#fff;--line:#dfe4ef;--txt:#15203a;--mut:#667089}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt)}
+header{background:var(--navy);color:#fff;padding:14px 18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+header b{font-size:1.05rem}header b span{color:var(--gold)}header .sp{flex:1}
+button{font:inherit;padding:9px 14px;border:0;border-radius:6px;background:var(--gold);color:#1a1405;font-weight:700;cursor:pointer}
+button.g{background:transparent;color:#fff;border:1px solid #fff6}
+main{max-width:1150px;margin:0 auto;padding:18px}
+.msg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:28px;text-align:center}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}.kpi b{display:block;font-size:1.6rem}.kpi small{color:var(--mut)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.tabs button{background:#e6ebf5;color:var(--txt)}.tabs button.on{background:var(--navy);color:#fff}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:auto}
+table{border-collapse:collapse;width:100%;min-width:640px}th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);font-size:.88rem;vertical-align:top}
+th{background:#f0f3fa;position:sticky;top:0;font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--mut)}
+input{padding:9px;border:1px solid var(--line);border-radius:6px;font:inherit;min-width:200px}.bar{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+h3{margin:18px 2px 8px;font-size:1rem}.note{color:var(--mut);font-size:.82rem;margin:8px 2px}
+</style></head><body>
+<div id="nf" style="display:none;font:16px system-ui,sans-serif;padding:12% 8%;color:#222"><h1 style="font-size:2rem;margin:0 0 .5em">404</h1><p><b>File not found.</b></p><p>The site configured at this address does not contain the requested file.</p></div>
+<div id="app"><header><b>A <span>to</span> Z &middot; Owner Dashboard</b><span class="sp"></span><span id="who"></span><button class="g" id="out" hidden>Sign out</button></header>
+<main id="m"><div class="msg" id="login"><p>Sign in with the owner Google account to see customers, logins and item activity.</p><button id="in">Sign in with Google</button><p class="note" id="err"></p></div></main></div>
+<script src="config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+var $=function(i){return document.getElementById(i)};
+function nf(){$("app").style.display="none";$("nf").style.display="block";document.title="404 - File not found"}
+var KEY=location.hash=="#go";try{if(KEY)sessionStorage.setItem("ok","1");else KEY=sessionStorage.getItem("ok")=="1"}catch(e){}
+if(!KEY)nf();
+function esc(x){return String(x==null?"":x).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function ms(t){return t&&t.toMillis?t.toMillis():(t||0)}
+function fmt(t){var m=ms(t);return m?new Date(m).toLocaleString("en-IN",{timeZone:"Asia/Kolkata",day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:true}):"-"}
+function dur(a,b){a=ms(a);b=ms(b);if(!a||!b||b<a)return "-";var s=Math.round((b-a)/1000);return s<60?s+" sec":Math.floor(s/60)+" min "+(s%60)+" sec"}
+if(!window.ATOZ_FIREBASE||!ATOZ_FIREBASE.apiKey){$("err").textContent="Not configured.";$("in").disabled=true}
+else{firebase.initializeApp(ATOZ_FIREBASE);var auth=firebase.auth(),db=firebase.firestore();
+$("in").onclick=function(){auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(function(e){$("err").textContent=e.message})};
+$("out").onclick=function(){auth.signOut().then(function(){location.reload()})};
+auth.onAuthStateChanged(function(u){if(u&&!u.isAnonymous){$("who").textContent=u.email;$("out").hidden=false;load()}})}
+var D={cust:[],sess:[],ev:[]},tab="over";
+function load(){$("m").innerHTML='<div class="msg">Loading data...</div>';
+Promise.all([db.collection("customers").get(),db.collection("sessions").orderBy("startedAt","desc").limit(500).get(),db.collection("events").orderBy("ts","desc").limit(3000).get()]).then(function(r){
+D.cust=r[0].docs.map(function(d){return Object.assign({id:d.id},d.data())});D.sess=r[1].docs.map(function(d){return d.data()});D.ev=r[2].docs.map(function(d){return d.data()});draw()})
+.catch(function(e){auth.signOut().then(nf)})}
+function T(e){return ms(e.ts)||e.clientTs||0}
+function custs(){var m={},ev=D.ev.slice().sort(function(a,b){return T(a)-T(b)});
+function get(p,n){var x=m[p];if(!x)x=m[p]={phone:p,name:n||"",email:"",address:"",logins:0,logouts:0,views:0,wish:0,orders:0,first:0,last:0};if(n)x.name=n;return x}
+ev.forEach(function(e){if(!e.phone)return;var x=get(e.phone,e.name),t=T(e);if(!x.first)x.first=t;x.last=Math.max(x.last,t);
+if(e.type=="login"){x.logins++;if(e.email)x.email=e.email;if(e.address)x.address=e.address}
+else if(e.type=="logout")x.logouts++;else if(e.type=="item_view")x.views++;else if(e.type=="wishlist_add")x.wish++;else if(e.type=="order_click")x.orders++});
+D.cust.forEach(function(c){if(!c.phone)return;var x=get(c.phone,c.name);if(!x.email)x.email=c.email||"";if(!x.address)x.address=c.address||"";var t=ms(c.lastLoginAt);if(!x.first)x.first=t;x.last=Math.max(x.last,t);if(!x.logins)x.logins=c.loginCount||1});
+return Object.keys(m).map(function(k){return m[k]}).sort(function(a,b){return b.last-a.last})}
+function items(){var o={};D.ev.forEach(function(e){if(!e.item)return;var x=o[e.item]||(o[e.item]={n:e.itemName,c:e.category,v:0,w:0,o:0,u:{}});
+if(e.type=="item_view"){x.v++;x.u[e.phone||e.uid]=1}else if(e.type=="wishlist_add")x.w++;else if(e.type=="order_click")x.o++});
+return Object.keys(o).map(function(k){var x=o[k];x.uv=Object.keys(x.u).length;return x}).sort(function(a,b){return b.v-a.v||b.o-a.o})}
+function repeats(){var o={};D.ev.forEach(function(e){if(!e.item||e.type=="wishlist_remove")return;var who=e.phone||e.uid,k=who+"||"+e.item,x=o[k]||(o[k]={who:e.name?e.name+" ("+e.phone+")":"Guest "+String(e.uid).slice(0,6),n:e.itemName,c:0,last:0});x.c++;x.last=Math.max(x.last,T(e))});
+return Object.keys(o).map(function(k){return o[k]}).filter(function(x){return x.c>=2}).sort(function(a,b){return b.c-a.c})}
+function tbl(h,rows){return '<div class="box"><table><thead><tr>'+h.map(function(x){return"<th>"+x+"</th>"}).join("")+"</tr></thead><tbody>"+(rows.length?rows.join(""):'<tr><td colspan="'+h.length+'">No data yet.</td></tr>')+"</tbody></table></div>"}
+function tr(a){return"<tr>"+a.map(function(x){return"<td>"+esc(x)+"</td>"}).join("")+"</tr>"}
+function cnt(t){return D.ev.filter(function(e){return e.type==t}).length}
+function draw(){var C=custs(),I=items();
+var h='<div class="kpis">'+[[C.length,"Customers signed up"],[cnt("login"),"Total logins"],[cnt("logout"),"Total logouts"],[D.sess.length,"Visits (recent 500)"],[cnt("item_view"),"Product views"],[cnt("order_click"),"Order-now clicks"]].map(function(k){return'<div class="kpi"><b>'+k[0]+'</b><small>'+k[1]+"</small></div>"}).join("")+"</div>";
+h+='<div class="tabs">'+[["over","Overview"],["prod","Products"],["cust","Customers"],["sess","Login / logout times"],["rep","Repeated picks"],["ev","Activity log"]].map(function(t){return'<button class="'+(tab==t[0]?"on":"")+'" data-t="'+t[0]+'">'+t[1]+"</button>"}).join("")+'<button id="csv" style="margin-left:auto">Download CSV</button></div>';
+if(tab=="over"){h+="<h3>Most viewed products</h3>"+tbl(["Product","Category","Views","Different viewers","Order clicks"],I.slice(0,10).map(function(x){return tr([x.n,x.c,x.v,x.uv,x.o])}));
+var A=C.slice().sort(function(a,b){return(b.views+b.orders*3+b.wish*2)-(a.views+a.orders*3+a.wish*2)}).slice(0,10);
+h+="<h3>Most active customers</h3>"+tbl(["Customer","Phone","Product views","Wishlisted","Order clicks","Logins","Logouts"],A.map(function(c){return tr([c.name,c.phone,c.views,c.wish,c.orders,c.logins,c.logouts])}))}
+if(tab=="prod")h+=tbl(["Product","Category","Views","Different viewers","Wishlisted","Order clicks"],I.map(function(x){return tr([x.n,x.c,x.v,x.uv,x.w,x.o])}));
+if(tab=="cust")h+='<div class="bar"><input id="q" placeholder="Search name or phone"></div>'+tbl(["Name","Phone","Email","Address","Logins","Logouts","Product views","Orders","First seen","Last active"],C.map(function(c){return tr([c.name,c.phone,c.email,c.address,c.logins,c.logouts,c.views,c.orders,fmt(c.first),fmt(c.last)])}));
+if(tab=="sess")h+=tbl(["Customer","Visit started","Logged in","Logged out","Last seen (left)","Time on site"],D.sess.map(function(s){return tr([s.name?s.name+" ("+s.phone+")":"Guest",fmt(s.startedAt),fmt(s.loggedInAt),fmt(s.loggedOutAt),fmt(s.lastSeen),dur(s.startedAt,s.lastSeen)])}))+'<p class="note">"Logged out" appears only when the customer taps Log out. Otherwise "Last seen" shows when they left the page.</p>';
+if(tab=="rep")h+=tbl(["Customer","Product","Times selected","Last"],repeats().slice(0,200).map(function(x){return tr([x.who,x.n,x.c,fmt(x.last)])}))+'<p class="note">Counts views, wishlist adds and order clicks by the same customer (2 or more).</p>';
+if(tab=="ev")h+=tbl(["Time","Customer","Action","Product / search"],D.ev.slice(0,500).map(function(e){return tr([fmt(e.ts||e.clientTs),e.name?e.name+" ("+e.phone+")":"Guest",e.type,e.itemName||e.q||""])}));
+$("m").innerHTML=h;document.querySelectorAll("[data-t]").forEach(function(b){b.onclick=function(){tab=b.dataset.t;draw()}});
+$("csv").onclick=csv;var q=$("q");if(q)q.oninput=function(){var v=q.value.toLowerCase();document.querySelectorAll("tbody tr").forEach(function(r){r.style.display=r.textContent.toLowerCase().indexOf(v)>-1?"":"none"})}}
+function csv(){var rows=[["time","name","phone","action","item","category","search"]].concat(D.ev.map(function(e){return[fmt(e.ts||e.clientTs),e.name||"",e.phone||"",e.type,e.itemName||"",e.category||"",e.q||""]}));
+var t=rows.map(function(r){return r.map(function(c){return'"'+String(c).replace(/"/g,'""')+'"'}).join(",")}).join("\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"text/csv"}));a.download="atoz-activity.csv";a.click()}
+</script></body></html>
