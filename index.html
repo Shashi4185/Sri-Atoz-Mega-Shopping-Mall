@@ -1,0 +1,2162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script src="config.js"></script>
+<meta name="theme-color" content="#0A1224">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Sri Atoz Mega Shopping Mall</title>
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout concept: a white boutique header under a slim navy utility bar, a navy hero, airy white and pale-grey collection sections with hairline cards, then a navy visit band and footer. Gold is the only accent. */
+:root {
+  --bg: #FFFFFF;
+  --soft: #F5F6FA;
+  --surface: #FFFFFF;
+  --ink: #0D1830;
+  --muted: #566077;
+  --line: #E2E5EC;
+  --line2: #C9D0DF;
+  --navy: #0D1830;
+  --on-navy: #FFFFFF;
+  --on-navy-muted: #B9C3DB;
+  --navy-line: rgba(255, 255, 255, 0.16);
+  --gold: #D9AC4A;
+  --gold-ink: #1A1300;
+  --gold-text: #85600D;
+  --good: #0E7A4B;
+  --warn: #A24A06;
+  --star: #D9A21B;
+  --wa: #128C4F;
+  --shadow: rgba(13, 24, 48, 0.14);
+  --overlay: rgba(255, 255, 255, 0.93);
+  --card-bg: #FFFFFF;
+  --card-ink: #0D1830;
+  --card-sub: #5A6478;
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #080E1C;
+    --soft: #0D1630;
+    --surface: #111B36;
+    --ink: #EDF0F7;
+    --muted: #9CA7C0;
+    --line: #22304F;
+    --line2: #34446B;
+    --navy: #0B1530;
+    --gold: #E3B24D;
+    --gold-text: #E3B24D;
+    --good: #4ADE9A;
+    --warn: #F5B461;
+    --star: #F0B93A;
+    --wa: #25B26A;
+    --shadow: rgba(0, 0, 0, 0.55);
+    --overlay: rgba(8, 14, 28, 0.93);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #080E1C;
+  --soft: #0D1630;
+  --surface: #111B36;
+  --ink: #EDF0F7;
+  --muted: #9CA7C0;
+  --line: #22304F;
+  --line2: #34446B;
+  --navy: #0B1530;
+  --gold: #E3B24D;
+  --gold-text: #E3B24D;
+  --good: #4ADE9A;
+  --warn: #F5B461;
+  --star: #F0B93A;
+  --wa: #25B26A;
+  --shadow: rgba(0, 0, 0, 0.55);
+  --overlay: rgba(8, 14, 28, 0.93);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--font-body); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 500; letter-spacing: -0.005em; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.wrap { width: 100%; max-width: 1200px; margin-inline: auto; padding-inline: 20px; }
+.eyebrow { margin: 0 0 12px; color: var(--gold-text); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+.sechead { display: grid; gap: 4px; margin-bottom: 36px; max-width: 64ch; }
+.sechead h2 { font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1.15; text-wrap: balance; }
+.sechead h2::after { content: ""; display: block; width: 52px; height: 2px; background: var(--gold); margin-top: 16px; }
+.sechead p:not(.eyebrow) { margin: 14px 0 0; color: var(--muted); }
+
+/* Effects */
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 30; pointer-events: none; }
+.progress i { display: block; height: 100%; width: 0; background: var(--gold); }
+.totop { position: fixed; right: 16px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); z-index: 30; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--gold); background: var(--navy); color: var(--gold); font-size: 1.2rem; font-weight: 700; box-shadow: 0 6px 18px var(--shadow); }
+.totop[hidden] { display: none; }
+.ripple { position: absolute; border-radius: 50%; pointer-events: none; background: currentColor; opacity: 0.22; transform: scale(0); animation: ripple 0.6s ease-out forwards; }
+@keyframes ripple { to { transform: scale(1); opacity: 0; } }
+@keyframes rise { from { opacity: 0.35; transform: translateY(24px); } }
+.js .rv:not(.in) { opacity: 0.35; transform: translateY(24px); }
+.rv.in { animation: rise 0.6s ease var(--d, 0ms) backwards; }
+.marquee { overflow: hidden; }
+.track { display: flex; width: max-content; animation: slide var(--dur, 32s) linear infinite; }
+.marquee:hover .track, .marquee:focus-within .track { animation-play-state: paused; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* Search overlay and toast */
+.searching { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 60; display: grid; place-items: center; background: var(--overlay); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); animation: fadein 0.2s ease; }
+.searching[hidden] { display: none; }
+@keyframes fadein { from { opacity: 0; } }
+.sbox { display: grid; place-items: center; gap: 20px; padding: 16px; text-align: center; }
+.sbox p { margin: 0; font-size: 1.05rem; color: var(--muted); overflow-wrap: anywhere; }
+.sbox b { color: var(--ink); }
+.ringwrap { position: relative; width: 210px; height: 210px; display: grid; place-items: center; }
+.ringwrap img { width: 150px; border-radius: 6px; animation: pulse 1.1s ease-in-out infinite; box-shadow: 0 10px 28px var(--shadow); }
+.ring { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border-radius: 50%; border: 3px solid var(--line); border-top-color: var(--gold); animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { transform: scale(0.94); opacity: 0.75; } 50% { transform: scale(1.04); opacity: 1; } }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 70; max-width: calc(100% - 32px); background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 3px; font-weight: 700; box-shadow: 0 8px 24px var(--shadow); }
+.toast[hidden] { display: none; }
+
+/* Utility bar and header */
+.util { background: var(--navy); color: var(--on-navy-muted); font-size: 0.8rem; }
+.util .wrap { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 20px; min-height: 42px; padding-block: 4px; }
+.util .tag { margin: 0; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.72rem; }
+.utilr { margin-left: auto; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 6px; }
+.social { display: flex; align-items: center; flex-wrap: wrap; gap: 2px; }
+.ic { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding-inline: 10px; color: var(--on-navy); text-decoration: none; font-weight: 500; border-radius: 3px; font-variant-numeric: tabular-nums; transition: color 0.2s; }
+.ic.call .lbl { display: none; }
+.ic:hover { color: var(--gold); }
+.ic svg { flex: 0 0 auto; }
+.mode { margin-left: 6px; border: 1px solid var(--navy-line); background: transparent; color: var(--on-navy); padding: 6px 12px; border-radius: 3px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s, border-color 0.2s; }
+.mode:hover { border-color: var(--gold); color: var(--gold); }
+.top { background: var(--bg); border-bottom: 1px solid var(--line); }
+.top .wrap { display: grid; grid-template-columns: auto auto minmax(0, 1fr) minmax(170px, 210px); align-items: center; gap: 12px 16px; padding-block: 16px; }
+.logo { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.mark { flex: 0 0 auto; height: 56px; width: auto; max-width: 42vw; border-radius: 4px; object-fit: contain; }
+.logo h1 { font: 600 1.75rem/1 var(--font-display); white-space: nowrap; }
+.logo h1 small { font-size: 0.55em; font-weight: 500; letter-spacing: 0.04em; margin-right: 0.1em; color: var(--muted); }
+.logo h1 span { color: var(--gold-text); }
+.az { font-weight: 700; }
+.az i { font-style: normal; font-weight: 500; font-size: 0.62em; letter-spacing: 0.02em; }
+.logo h1 .az { font-size: 1.18em; }
+.fbrand b .az { display: inline; font-size: 1.18em; color: var(--gold); text-transform: none; letter-spacing: 0; }
+.fbrand b small.sri { font-size: 0.55em; font-weight: 500; letter-spacing: 0.04em; margin-right: 0.1em; opacity: 0.8; }
+.logo { cursor: pointer; }
+.top .since { margin: 0; max-width: 130px; font-size: 0.6rem; line-height: 1.5; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-text); font-weight: 700; padding-left: 12px; border-left: 2px solid var(--gold); }
+.logo .since-old { margin-top: 4px; font-size: 0.6rem; letter-spacing: 0.16em; color: var(--gold-text); font-weight: 700; }
+.callbox { width: min(92vw, 400px); padding: 28px 24px; border-radius: 6px; background: var(--surface); color: var(--ink); border: 1px solid var(--line2); box-shadow: 0 24px 60px rgba(0,0,0,.35); text-align: center; }
+.callbox h3 { margin: 0 0 10px; font: 600 1.3rem var(--font-display); }
+.callbox p { margin: 0 0 20px; line-height: 1.6; }
+.callbox p b { display: block; margin-top: 6px; font-size: 1.35rem; letter-spacing: .04em; color: var(--gold-text); }
+.callbox .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.callbox .row a, .callbox .row button { padding: 12px 20px; border-radius: 3px; font: 700 .76rem var(--font-body, inherit); letter-spacing: .12em; text-transform: uppercase; text-decoration: none; cursor: pointer; }
+.callbox .yes { background: var(--gold); color: var(--gold-ink); border: 0; }
+.callbox .no { background: transparent; color: var(--ink); border: 1px solid var(--line2); }
+.callwrap { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 70; display: grid; place-items: center; padding: 16px; background: var(--overlay); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.callwrap[hidden] { display: none; }
+.logo p { margin: 7px 0 0; font-size: 0.64rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted); }
+.links { display: flex; justify-content: center; flex-wrap: nowrap; gap: 2px; min-width: 0; }
+.links button { border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: transparent; padding: 10px 5px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; white-space: nowrap; text-transform: uppercase; color: var(--ink); transition: color 0.2s, border-color 0.2s; }
+.links button:hover { color: var(--gold-text); border-bottom-color: var(--gold); }
+.search { position: relative; min-width: 0; margin: 0; }
+.search input { width: 100%; min-width: 0; padding: 11px 78px 11px 14px; border: 1px solid var(--line2); border-radius: 3px; background: var(--surface); color: var(--ink); }
+.search input::placeholder { color: var(--muted); }
+.search input:focus { border-color: var(--gold-text); outline-offset: 0; }
+.search button { position: absolute; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: var(--muted); width: 36px; height: 36px; display: grid; place-items: center; font-size: 1.3rem; line-height: 1; }
+.search .go { right: 3px; color: var(--ink); }
+.search #clear { right: 38px; }
+.search button[hidden] { display: none; }
+
+/* Hero */
+.hero { background: radial-gradient(900px 420px at 88% 16%, rgba(217, 172, 74, 0.13), transparent 62%), var(--navy); color: var(--on-navy); }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: 40px 72px; align-items: center; padding-block: 76px 88px; }
+.htext { min-width: 0; }
+.hero .eyebrow { color: var(--gold); }
+.hero h2 { margin: 0 0 22px; font: 400 clamp(2.4rem, 6vw, 4.5rem)/1.05 var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
+.hero h2 span { display: block; color: var(--gold); font-style: italic; }
+.hsub { margin: 0 0 32px; max-width: 54ch; color: var(--on-navy-muted); font-size: 1.1rem; line-height: 1.7; }
+.cta { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 34px; }
+.hbtn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 24px; border-radius: 3px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid transparent; transition: transform 0.15s ease, background 0.2s, color 0.2s, border-color 0.2s; }
+.hbtn.gold { background: var(--gold); color: var(--gold-ink); }
+.hbtn.gold:hover { background: #EDC465; }
+.hbtn.line { background: transparent; color: var(--on-navy); border-color: rgba(255, 255, 255, 0.5); }
+.hbtn.line:hover { border-color: var(--gold); color: var(--gold); }
+.hbtn:active { transform: scale(0.97); }
+.hbtn:focus-visible { outline-color: var(--on-navy); }
+.trust { list-style: none; margin: 0; padding: 22px 0 0; border-top: 1px solid var(--navy-line); display: flex; flex-wrap: wrap; gap: 10px 30px; color: var(--on-navy-muted); font-size: 0.92rem; }
+.trust li { display: flex; align-items: center; gap: 8px; }
+.hphoto { position: relative; justify-self: center; width: 100%; max-width: 420px; margin-bottom: 28px; min-width: 0; }
+.hphoto::before { content: ""; position: absolute; inset: 14px -14px -14px 14px; border: 1px solid var(--gold); border-radius: 6px; }
+.hphoto > img { position: relative; display: block; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5); }
+.hcard { position: absolute; left: -26px; bottom: -26px; z-index: 1; background: var(--card-bg); color: var(--card-ink); border-radius: 4px; padding: 16px 28px 16px 22px; display: grid; gap: 2px; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32); }
+.hcard b { font: 500 1.5rem/1.2 var(--font-display); letter-spacing: 0.03em; }
+.hcard .g { color: #85600D; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+.hcard .l { color: var(--card-sub); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* Featured collections on Home */
+.picks { padding-block: 88px 80px; }
+.hcats { display: grid; gap: 68px; }
+.hhead { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.hhead h3 { font-size: clamp(1.4rem, 3vw, 1.9rem); line-height: 1.2; }
+.hhead p { margin: 4px 0 0; color: var(--muted); font-size: 0.88rem; }
+.link { border: 0; border-bottom: 1px solid currentColor; border-radius: 0; background: transparent; padding: 4px 0; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-text); transition: color 0.2s; }
+.link:hover { color: var(--ink); }
+.hcats .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.hpick { cursor: pointer; }
+
+/* Festival offers carousel */
+.offers { position: relative; padding-block: 76px 72px; background: var(--navy); color: var(--on-navy); overflow: hidden; border-block: 1px solid var(--line2); }
+.offers::after { content: ""; position: absolute; width: 520px; height: 520px; right: -180px; top: -220px; border-radius: 50%; background: radial-gradient(closest-side, rgba(217, 172, 74, 0.22), transparent); pointer-events: none; }
+.offers .wrap { position: relative; z-index: 1; }
+.ohead { max-width: 70ch; margin-bottom: 34px; }
+.ohead .eyebrow { color: var(--gold); }
+.ohead h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; color: var(--on-navy); text-wrap: balance; }
+.ohead h2::after { content: ""; display: block; width: 52px; height: 2px; background: var(--gold); margin-top: 16px; }
+.ohead p:not(.eyebrow) { margin: 14px 0 0; color: rgba(255, 255, 255, 0.78); }
+.ocar { position: relative; outline: none; }
+.oview { overflow: hidden; margin: 0 -2px; padding: 4px 2px 8px; }
+.otrack { display: flex; gap: 20px; list-style: none; margin: 0; padding: 0; will-change: transform; transition: transform 0.6s cubic-bezier(0.22, 0.7, 0.2, 1); }
+.otrack.noanim { transition: none; }
+.ocard { flex: 0 0 calc((100% - 40px) / 3); min-width: 0; display: flex; flex-direction: column; background: var(--surface); color: var(--ink); border-radius: 6px; overflow: hidden; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32); border: 1px solid var(--line); }
+.oimg { position: relative; aspect-ratio: 4 / 3; background: #FFFFFF; overflow: hidden; }
+.oimg img { width: 100%; height: 100%; object-fit: contain; display: block; padding: 10px; }
+.orib { position: absolute; left: 0; top: 14px; padding: 6px 14px 6px 12px; background: var(--gold); color: var(--gold-ink); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; clip-path: polygon(0 0, 100% 0, calc(100% - 9px) 50%, 100% 100%, 0 100%); }
+.obody { padding: 18px 18px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.obrand { margin: 0; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-text); }
+.oname { margin: 0; font: 500 1.12rem/1.3 var(--font-display); min-height: 2.6em; }
+.oprice { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
+.onow { font: 700 1.9rem/1 var(--font-display); color: var(--ink); }
+.omrp { color: var(--muted); font-size: 0.92rem; text-decoration: line-through; }
+.otags { display: flex; flex-wrap: wrap; gap: 8px; min-height: 26px; }
+.otag { padding: 4px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; background: rgba(217, 172, 74, 0.18); color: var(--gold-text); }
+.otag.save { background: rgba(37, 178, 106, 0.14); color: var(--good, #178a4f); }
+html:not([data-theme="dark"]) .otag.save { color: #178a4f; }
+.ocard .order { margin: auto 0 0; background: var(--gold); border-color: var(--gold); color: var(--gold-ink); font-weight: 800; }
+.ocard .order:hover { filter: brightness(1.06); }
+.ocard .order svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+.o365 { display: flex; align-items: center; gap: 22px; margin-top: 36px; padding: 22px 26px; border: 1px solid var(--gold); border-radius: 8px; background: linear-gradient(100deg, rgba(217, 172, 74, 0.2), rgba(217, 172, 74, 0.06)); }
+.o365b { flex: 0 0 auto; width: 92px; height: 92px; border-radius: 50%; display: grid; place-content: center; text-align: center; background: var(--gold); color: var(--gold-ink); box-shadow: 0 0 0 6px rgba(217, 172, 74, 0.25); }
+.o365b b { font: 700 2rem/1 var(--font-display); }
+.o365b span { font-size: 0.64rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; }
+.o365t { flex: 1; min-width: 0; }
+.o365t h3 { font: 500 clamp(1.15rem, 2.4vw, 1.6rem)/1.25 var(--font-display); color: var(--on-navy); }
+.o365t p { margin: 6px 0 0; color: rgba(255, 255, 255, 0.78); font-size: 0.92rem; }
+.o365l { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 12px 0 0; padding: 0; }
+.o365l li { padding: 5px 12px; border: 1px solid rgba(217, 172, 74, 0.6); border-radius: 999px; color: var(--gold); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.04em; }
+.o365l li:first-child { background: var(--gold); color: var(--gold-ink); }
+.o365c { flex: 0 0 auto; padding: 13px 22px; border-radius: 3px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font-weight: 800; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+.o365c:hover { background: var(--gold); color: var(--gold-ink); }
+@media (max-width: 760px) { .o365l { justify-content: center; } .o365 { flex-direction: column; text-align: center; padding: 22px 18px; gap: 14px; } .o365b { width: 80px; height: 80px; } .o365c { width: 100%; } }
+.onav { position: absolute; top: 38%; z-index: 3; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--gold); background: var(--navy); color: var(--gold); display: grid; place-items: center; cursor: pointer; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4); transition: background 0.2s, color 0.2s; }
+.onav:hover { background: var(--gold); color: var(--gold-ink); }
+.onav.prev { left: -18px; }
+.onav.next { right: -18px; }
+.odots { display: flex; justify-content: center; gap: 8px; margin-top: 22px; }
+.odots button { width: 9px; height: 9px; padding: 0; border-radius: 999px; border: 0; background: rgba(255, 255, 255, 0.35); cursor: pointer; transition: width 0.3s, background 0.3s; }
+.odots button[aria-selected="true"] { width: 28px; background: var(--gold); }
+@media (max-width: 1000px) { .ocard { flex-basis: calc((100% - 20px) / 2); } .onav.prev { left: -8px; } .onav.next { right: -8px; } }
+@media (max-width: 640px) { .offers { padding-block: 60px 56px; } .otrack { gap: 14px; } .ocard { flex-basis: 100%; } .onav { width: 40px; height: 40px; top: 30%; } .onav.prev { left: 4px; } .onav.next { right: 4px; } .onow { font-size: 1.7rem; } }
+@media (prefers-reduced-motion: reduce) { .otrack { transition: none; } }
+
+/* Chat assistant */
+.cbfab { position: fixed; right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 35; height: 56px; min-width: 56px; padding: 0 18px 0 16px; border-radius: 999px; border: 0; background: var(--gold); color: var(--gold-ink); display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; box-shadow: 0 10px 26px var(--shadow); transition: transform 0.2s; }
+.cbfab:hover { transform: translateY(-2px); }
+.cbfab.open { display: none; }
+.cbpanel { position: fixed; right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 75; width: 390px; max-width: calc(100vw - 24px); height: min(600px, calc(100vh - 40px)); display: flex; flex-direction: column; background: var(--surface); color: var(--ink); border: 1px solid var(--line2); border-radius: 12px; overflow: hidden; box-shadow: 0 24px 60px var(--shadow); transform-origin: bottom right; animation: cbin 0.22s ease-out; }
+@keyframes cbin { from { opacity: 0; transform: scale(0.94) translateY(10px); } to { opacity: 1; transform: none; } }
+.cbhead { display: flex; align-items: center; gap: 12px; padding: 14px 14px 14px 16px; background: var(--navy); color: var(--on-navy); border-bottom: 3px solid var(--gold); }
+.cbav { width: 42px; height: 42px; border-radius: 50%; background: var(--gold); color: var(--gold-ink); display: grid; place-items: center; font: 700 0.9rem/1 var(--font-display); flex: 0 0 auto; white-space: nowrap; letter-spacing: -0.02em; }
+.cbav i { font-size: 0.55em; margin: 0 1px; font-style: italic; }
+.cbtt { flex: 1; min-width: 0; display: grid; }
+.cbtt b { font: 600 1.02rem var(--font-display); }
+.cbtt span { font-size: 0.74rem; opacity: 0.78; }
+.cbx { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); background: transparent; color: inherit; font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.cbx:hover { background: rgba(255, 255, 255, 0.12); }
+.cblog { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px 14px; display: flex; flex-direction: column; gap: 10px; background: var(--soft); overscroll-behavior: contain; }
+.cbm { max-width: 88%; padding: 10px 13px; border-radius: 12px; font-size: 0.92rem; line-height: 1.45; word-wrap: break-word; overflow-wrap: anywhere; }
+.cbm.bot { align-self: flex-start; background: var(--surface); border: 1px solid var(--line); border-top-left-radius: 3px; }
+.cbm.me { align-self: flex-end; background: var(--gold); color: var(--gold-ink); border-top-right-radius: 3px; font-weight: 600; }
+.cbm p { margin: 0 0 6px; } .cbm p:last-child { margin-bottom: 0; }
+.cbm a { color: var(--gold-text); font-weight: 700; }
+.cbm .sm { font-size: 0.78rem; color: var(--muted); }
+.cbm.typing { display: flex; gap: 4px; padding: 14px 16px; }
+.cbm.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); animation: cbdot 1s infinite ease-in-out; }
+.cbm.typing i:nth-child(2) { animation-delay: 0.15s; } .cbm.typing i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes cbdot { 0%, 80%, 100% { opacity: 0.25; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+.cbres { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
+.cbitem { display: grid; grid-template-columns: 64px 1fr; gap: 10px; align-items: center; padding: 8px; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; }
+.cbitem img, .cbitem .cbph { width: 64px; height: 64px; object-fit: contain; background: #fff; border-radius: 6px; display: grid; place-items: center; background: var(--surface); color: var(--muted); font: 500 1.1rem var(--font-display); }
+.cbitem b { display: block; font-size: 0.86rem; line-height: 1.3; }
+.cbitem small { display: block; color: var(--muted); font-size: 0.74rem; }
+.cbitem .cbpr { font-weight: 800; color: var(--ink); font-size: 0.95rem; }
+.cbitem .cbpr s { font-weight: 400; color: var(--muted); font-size: 0.76rem; margin-left: 6px; }
+.cbitem .order { grid-column: 1 / -1; margin: 2px 0 0; padding: 9px 8px; background: var(--gold); border-color: var(--gold); color: var(--gold-ink); font-weight: 800; font-size: 0.7rem; }
+.cbact { display: inline-flex; margin: 8px 6px 0 0; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--gold); background: transparent; color: var(--gold-text); font: 700 0.76rem var(--font-body, inherit); cursor: pointer; text-decoration: none; }
+.cbact:hover { background: var(--gold); color: var(--gold-ink); }
+.cbchips { display: flex; gap: 8px; overflow-x: auto; padding: 10px 12px; background: var(--surface); border-top: 1px solid var(--line); -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.cbchips::-webkit-scrollbar { display: none; }
+.cbchips button { flex: 0 0 auto; padding: 8px 13px; border-radius: 999px; border: 1px solid var(--line2); background: var(--surface); color: var(--ink); font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.cbchips button:hover { border-color: var(--gold); color: var(--gold-text); }
+.cbform { display: flex; gap: 8px; padding: 10px 12px; background: var(--surface); border-top: 1px solid var(--line); }
+.cbform input { flex: 1; min-width: 0; padding: 12px 14px; border: 1px solid var(--line2); border-radius: 999px; background: var(--soft); color: var(--ink); font: inherit; font-size: 16px; outline: none; }
+.cbform input:focus { border-color: var(--gold); }
+.cbform button { width: 46px; height: 46px; flex: 0 0 auto; border-radius: 50%; border: 0; background: var(--navy); color: var(--gold); display: grid; place-items: center; cursor: pointer; }
+.cbnote { margin: 0; padding: 0 14px 10px; font-size: 0.68rem; color: var(--muted); background: var(--surface); text-align: center; }
+.cbnote a { color: inherit; }
+@media (max-width: 640px) {
+  .cbfab { padding: 0; width: 56px; } .cbfl { display: none; }
+  .cbpanel { right: 0; left: 0; bottom: 0; width: 100%; max-width: 100%; height: 86vh; height: 86dvh; border-radius: 16px 16px 0 0; border-left: 0; border-right: 0; border-bottom: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .cbpanel { animation: none; } .cbm.typing i { animation: none; } }
+
+/* Shop */
+#shop { background: var(--soft); border-block: 1px solid var(--line); }
+.shophead { padding-block: 84px 32px; }
+.shophead .sechead { margin-bottom: 0; }
+.tabs-bar { background: var(--surface); border-block: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+.tab { flex: 0 0 auto; border: 0; border-bottom: 3px solid transparent; border-radius: 0; background: transparent; color: var(--muted); padding: 28px 30px; margin-right: 4px; font-size: 0.86rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+.tab:hover { color: var(--ink); }
+.tab[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--gold); }
+main.wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px 48px; align-items: start; padding-block: 40px 80px; }
+.side { min-width: 0; }
+.side h2 { font-size: 1.5rem; line-height: 1.25; }
+.floor { margin: 6px 0 20px; color: var(--muted); font-size: 0.9rem; }
+.floor b { color: var(--gold-text); font-weight: 700; }
+.subs { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.sub { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; text-align: left; padding: 14px 6px; color: var(--ink); font-size: 0.95rem; transition: padding 0.2s, color 0.2s, background 0.2s; }
+.sub:hover { color: var(--gold-text); padding-left: 12px; }
+.sub[aria-current="true"] { background: var(--surface); font-weight: 700; padding-left: 16px; box-shadow: inset 3px 0 0 var(--gold); }
+.sub .n { font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.content { min-width: 0; }
+.bar { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--line2); scroll-margin-top: 76px; }
+.crumb { margin: 0 0 4px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-text); }
+.bar h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); line-height: 1.2; text-wrap: balance; }
+.count { margin: 4px 0 0; color: var(--muted); font-size: 0.9rem; }
+.sort { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
+.sort select { padding: 9px 12px; border: 1px solid var(--line2); border-radius: 3px; background: var(--surface); color: var(--ink); }
+
+/* Product cards */
+.grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px; }
+.grouphead { grid-column: 1 / -1; margin-top: 22px; padding-bottom: 8px; border-bottom: 1px solid var(--line2); }
+.grouphead:first-child { margin-top: 0; }
+.grouphead h3 { font-size: 1.3rem; }
+.item { position: relative; min-width: 0; display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; scroll-margin-top: 110px; transition: border-color 0.2s, box-shadow 0.25s; }
+.item:hover { border-color: var(--gold); box-shadow: 0 14px 30px var(--shadow); }
+.ph { position: relative; aspect-ratio: 1 / 1; background: #FFFFFF; overflow: hidden; }
+.ph img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.item:hover .ph img { transform: scale(1.05); }
+.ph.empty { display: grid; place-items: center; background: var(--soft); }
+.ph.empty span { display: grid; place-items: center; width: 46%; aspect-ratio: 1; border: 1px solid var(--line2); border-radius: 50%; font: 500 clamp(1.3rem, 3vw, 2rem)/1 var(--font-display); letter-spacing: 0.04em; color: var(--gold-text); }
+.tagb { position: absolute; left: 10px; top: 10px; padding: 4px 9px; border-radius: 2px; background: var(--navy); color: #FFFFFF; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.tagb.few { background: var(--gold); color: var(--gold-ink); }
+.meta { display: grid; gap: 3px; padding: 14px 14px 0; margin-bottom: 12px; }
+.meta h3 { font: 600 1rem/1.35 var(--font-body); overflow-wrap: anywhere; }
+.spec { margin: 0; color: var(--muted); font-size: 0.86rem; overflow-wrap: anywhere; }
+.where { margin: 4px 0 0; color: var(--gold-text); font-size: 0.74rem; letter-spacing: 0.06em; }
+.order { margin: auto 14px 14px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 10px; border: 1px solid var(--ink); border-radius: 3px; color: var(--ink); text-decoration: none; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.order svg { width: 16px; height: 16px; flex: 0 0 auto; }
+.order:hover { background: var(--gold); border-color: var(--gold); color: var(--gold-ink); }
+.item.flash { animation: flash 1.2s ease 2; }
+@keyframes flash { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 35% { box-shadow: 0 0 0 5px var(--gold); } }
+.loading { grid-column: 1 / -1; display: grid; place-items: center; gap: 14px; padding: 56px 16px; color: var(--muted); }
+.loading img { width: 150px; max-width: 60%; border-radius: 4px; animation: pulse 1.1s ease-in-out infinite; }
+.empty { padding: 36px 16px; border: 1px dashed var(--line2); border-radius: 4px; color: var(--muted); text-align: center; }
+
+/* About */
+.about-sec { padding-block: 92px; }
+.about-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px 80px; align-items: start; }
+.about-grid h2 { font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1.15; }
+.about-grid h2::after { content: ""; display: block; width: 52px; height: 2px; background: var(--gold); margin-top: 16px; }
+.about-lead { margin: 26px 0 0; font: 400 clamp(1.3rem, 2.4vw, 1.75rem)/1.45 var(--font-display); max-width: 30ch; }
+.about-body p { margin: 0 0 16px; max-width: 62ch; color: var(--muted); }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 28px 0; border: 1px solid var(--line); }
+.stat { padding: 22px 18px; border-right: 1px solid var(--line); min-width: 0; }
+.stat:last-child { border-right: 0; }
+.stat b { display: block; font: 500 clamp(2rem, 4vw, 2.8rem)/1 var(--font-display); }
+.stat span { display: block; margin-top: 6px; color: var(--muted); font-size: 0.84rem; }
+.tagline { margin: 0; padding: 18px 20px; border-left: 3px solid var(--gold); background: var(--soft); font: 500 1.15rem/1.5 var(--font-display); }
+
+/* Visit */
+.visit { background: var(--navy); color: var(--on-navy); padding-block: 92px; }
+.visit .eyebrow { color: var(--gold); }
+.visit .sechead h2 { color: var(--on-navy); }
+.vgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 32px; }
+.vcard { min-width: 0; padding: 32px; border: 1px solid var(--navy-line); border-radius: 4px; background: rgba(255, 255, 255, 0.03); scroll-margin-top: 24px; }
+.vcard h3 { margin-bottom: 20px; font-size: 1.5rem; color: var(--on-navy); }
+.rows { margin: 0; display: grid; gap: 18px; }
+.rows dt { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+.rows dd { margin: 4px 0 0; overflow-wrap: anywhere; color: var(--on-navy); }
+.copy { margin-left: 10px; border: 1px solid var(--navy-line); background: transparent; color: var(--on-navy-muted); border-radius: 3px; padding: 2px 8px; font-size: 0.74rem; }
+.copy:hover { color: var(--gold); border-color: var(--gold); }
+.vbtn { display: inline-block; margin-top: 24px; padding: 13px 20px; border-radius: 3px; background: var(--gold); color: var(--gold-ink); text-decoration: none; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; transition: background 0.2s; }
+.vbtn:hover { background: #EDC465; }
+
+/* Why us and brands */
+.why { background: var(--soft); padding-block: 92px; }
+.why-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.why-card { min-width: 0; background: var(--surface); padding: 30px 28px; }
+.why-card::before { content: ""; display: block; width: 28px; height: 2px; background: var(--gold); margin-bottom: 18px; }
+.why-card h3 { margin-bottom: 10px; font-size: 1.25rem; line-height: 1.3; }
+.why-card p { margin: 0; color: var(--muted); }
+.brands-h { margin: 60px 0 22px; display: flex; align-items: center; gap: 18px; color: var(--muted); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; }
+.brands-h::after { content: ""; flex: 1; height: 1px; background: var(--line2); }
+.brands { -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+.brand { flex: 0 0 auto; width: 210px; height: 104px; margin-right: 18px; padding: 8px; display: grid; place-items: center; background: #FFFFFF; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.brand img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.brand span { font: 700 0.95rem var(--font-display); color: #0D1830; text-align: center; }
+.brand.ph { background: var(--surface); border-style: dashed; }
+
+/* Reviews */
+.reviews { padding-block: 92px; }
+.rgrid { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 28px 40px; align-items: start; }
+.rside { display: grid; gap: 20px; min-width: 0; }
+.card { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 24px; }
+.card h3 { margin: 0 0 14px; font-size: 1.3rem; }
+.avg { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; }
+.avg b { font: 500 3rem/1 var(--font-display); }
+.avg small { color: var(--muted); font-size: 0.9rem; }
+.stars { display: inline-flex; gap: 2px; }
+.st { width: 18px; height: 18px; fill: var(--line2); }
+.st.on { fill: var(--star); }
+.mrow { display: grid; grid-template-columns: 14px minmax(0, 1fr) 24px; gap: 8px; align-items: center; margin-top: 6px; font-size: 0.8rem; color: var(--muted); }
+.meter { height: 8px; background: var(--soft); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--star); }
+.field { display: grid; gap: 6px; margin-bottom: 14px; }
+.field > label, .field .lab { font-size: 0.84rem; font-weight: 700; letter-spacing: 0.04em; }
+.field input[type=text], .field input[type=url], .field textarea { width: 100%; min-width: 0; padding: 11px 12px; border: 1px solid var(--line2); border-radius: 3px; background: var(--surface); color: var(--ink); }
+.field input:focus, .field textarea:focus { border-color: var(--gold-text); outline-offset: 0; }
+.field input[type=file] { max-width: 100%; }
+.field textarea { min-height: 96px; resize: vertical; }
+.starpick { display: inline-flex; gap: 4px; }
+.sb { border: 0; background: transparent; padding: 2px; border-radius: 4px; line-height: 0; }
+.sb svg { width: 32px; height: 32px; fill: var(--line2); transition: transform 0.15s ease, fill 0.15s ease; }
+.sb.on svg { fill: var(--star); }
+.sb:hover svg { transform: scale(1.15); }
+.sb.pop svg { animation: popstar 0.35s ease; }
+@keyframes popstar { 50% { transform: scale(1.45) rotate(12deg); } }
+.vprev video { width: 100%; max-height: 220px; border-radius: 4px; background: #000; display: block; }
+.vprev button { margin-top: 6px; border: 0; background: transparent; color: var(--muted); text-decoration: underline; padding: 4px 0; font-size: 0.85rem; }
+.btn { display: inline-block; padding: 13px 22px; border: 0; border-radius: 3px; background: var(--gold); color: var(--gold-ink); font-size: 0.76rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.15s; }
+.btn:hover { background: #EDC465; }
+.btn:active { transform: scale(0.97); }
+.msg { min-height: 1.4em; margin: 12px 0 0; font-size: 0.9rem; }
+.msg.ok { color: var(--good); }
+.msg.err { color: var(--warn); }
+.note { margin: 10px 0 0; font-size: 0.8rem; color: var(--muted); }
+.rlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; min-width: 0; }
+.review { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 20px; display: grid; gap: 8px; }
+.review .rtop { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.review time { margin-left: auto; color: var(--muted); font-size: 0.8rem; }
+.review p { margin: 0; overflow-wrap: anywhere; }
+.rvideo { width: 100%; max-height: 320px; border-radius: 4px; background: #000; display: block; }
+.rlink { font-weight: 700; color: var(--gold-text); }
+.rdel { justify-self: start; border: 0; background: transparent; color: var(--muted); font-size: 0.8rem; padding: 4px 0; text-decoration: underline; }
+.muted { margin: 0; color: var(--muted); }
+
+/* Footer */
+footer { background: var(--navy); color: var(--on-navy-muted); font-size: 0.92rem; }
+.fgrid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; padding-block: 60px 40px; }
+.fbrand { display: flex; align-items: center; gap: 14px; }
+.flogo { height: 48px; width: auto; border-radius: 3px; }
+.fbrand b { display: block; font: 500 1.35rem/1.2 var(--font-display); color: var(--on-navy); }
+.fbrand span { font-size: 0.66rem; letter-spacing: 0.26em; text-transform: uppercase; }
+.fnote { margin: 18px 0 0; max-width: 36ch; font: italic 400 1.05rem/1.5 var(--font-display); color: var(--on-navy); }
+footer h4 { margin: 0 0 16px; font: 700 0.72rem/1 var(--font-body); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+footer a, .flink { border: 0; background: none; padding: 0; color: var(--on-navy-muted); text-decoration: none; text-align: left; font-size: 0.92rem; transition: color 0.2s; }
+footer a:hover, .flink:hover { color: var(--gold); }
+.fbar { border-top: 1px solid var(--navy-line); padding-block: 20px 26px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; font-size: 0.8rem; }
+
+/* Responsive */
+@media (max-width: 1060px) {
+  .top .wrap { grid-template-columns: auto minmax(0, 1fr); }
+  .top .since { grid-column: 1 / -1; max-width: none; border-left: 0; padding-left: 0; }
+  .links { grid-column: 1 / -1; order: 3; justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .links button { white-space: nowrap; }
+  .hcats .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .about-grid, .rgrid { grid-template-columns: minmax(0, 1fr); }
+  .why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); padding-block: 40px 60px; }
+  .hphoto { max-width: 340px; }
+  .hcard { left: 12px; bottom: -24px; }
+  main.wrap { grid-template-columns: minmax(0, 1fr); padding-block: 28px 56px; }
+  .subs { display: flex; flex-wrap: wrap; gap: 8px; border-top: 0; }
+  .sub { width: auto; border: 1px solid var(--line2); background: var(--surface); padding: 9px 14px; }
+  .sub:hover { padding-left: 14px; }
+  .sub[aria-current="true"] { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); box-shadow: none; padding-left: 14px; }
+  .sub[aria-current="true"] .n { color: var(--gold-ink); }
+  .vgrid { grid-template-columns: minmax(0, 1fr); }
+  .fgrid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+}
+@media (max-width: 640px) {
+  .util .tag { display: none; }
+  .util .wrap { justify-content: flex-end; }
+  .ic .lbl { display: none; }
+  .ic { padding-inline: 12px; }
+  .top .wrap { grid-template-columns: minmax(0, 1fr); }
+  .logo h1 { font-size: 1.5rem; }
+  .picks, .about-sec, .visit, .why, .reviews { padding-block: 60px; }
+  .shophead { padding-block: 56px 24px; }
+  .grid, .hcats .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .meta { padding: 12px 12px 0; }
+  .order { margin: auto 10px 10px; padding: 11px 6px; letter-spacing: 0.1em; font-size: 0.66rem; }
+  .why-grid { grid-template-columns: minmax(0, 1fr); }
+  .brand { width: 170px; height: 88px; margin-right: 12px; }
+  .vcard { padding: 24px; }
+  .tab { padding: 22px 18px; font-size: 0.78rem; }
+}
+@media (max-width: 340px) { .grid, .hcats .grid { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+  .marquee { overflow-x: auto; }
+  .dup { display: none; }
+}
+
+/* amazon-style header */
+.amz { position: sticky; top: 0; z-index: 40; }
+.amz .wrap { display: flex; align-items: center; gap: 14px; }
+.amz1 { background: #0A1224; color: #fff; }
+.amz1 .wrap { padding-block: 10px; }
+.amz2 { background: #16233f; color: #fff; }
+.amz2 .wrap { padding-block: 0; gap: 6px; }
+.amz .logo { flex: 0 0 auto; padding: 4px 6px; border: 1px solid transparent; border-radius: 3px; }
+.amz .logo:hover, .amz .loc:hover, .amz .allb:hover, .amz .links button:hover { border-color: #fff; }
+.amz .logo h1 small { color: #cfd6e6; }
+.amz .logo h1 .az { color: var(--gold); }
+.amz .logo p { color: #cfd6e6; margin-top: 4px; }
+.amz .logo .mark { height: 46px; width: auto; }
+.loc { flex: 0 0 auto; display: flex; align-items: center; gap: 6px; padding: 6px 8px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: #fff; text-align: left; cursor: pointer; font: inherit; }
+.loc small { display: block; font-size: 0.7rem; color: #cfd6e6; }
+.loc b { display: block; font-size: 0.86rem; font-weight: 700; white-space: nowrap; }
+.amzsearch { flex: 1 1 auto; display: flex; min-width: 0; border-radius: 4px; overflow: hidden; background: #fff; }
+.amzsearch select { flex: 0 0 auto; max-width: 120px; border: 0; border-right: 1px solid #cdd; background: #f1f3f6; color: #111; padding: 0 8px; font: 0.8rem var(--font-body, system-ui, sans-serif); }
+.amzsearch input { flex: 1 1 auto; border: 0 !important; border-radius: 0; padding: 12px 40px 12px 12px; background: #fff; color: #111; min-width: 0; }
+.amzsearch input::placeholder { color: #666; }
+.amzsearch button { position: absolute; }
+.amzsearch .go { right: 0; top: 0; bottom: 0; transform: none; width: 46px; height: auto; background: var(--gold); color: var(--gold-ink); }
+.amzsearch #clear { right: 50px; color: #333; }
+.amzsearch { position: relative; }
+.amzr { flex: 0 0 auto; display: flex; align-items: center; gap: 2px; }
+.amzr .social { display: flex; align-items: center; gap: 2px; }
+.amzr .ic { height: 40px; padding-inline: 10px; border: 1px solid transparent; }
+.amzr .ic:hover { border-color: #fff; }
+.amzr .ic svg { width: 22px; height: 22px; }
+.amzr .ic .lbl { display: none; }
+.allb { display: inline-flex; align-items: center; gap: 6px; padding: 10px 10px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: #fff; font: 700 0.92rem var(--font-body, system-ui, sans-serif); cursor: pointer; }
+.amz2 .links { justify-content: flex-start; flex: 1 1 auto; overflow-x: auto; scrollbar-width: none; gap: 0; }
+.amz2 .links .acct2 { color: var(--gold); }
+.amz2 .links button { padding: 10px 11px; font-size: 0.86rem; font-weight: 500; letter-spacing: 0; text-transform: none; color: #fff; border: 1px solid transparent; border-radius: 3px; white-space: nowrap; }
+.promo { margin: 0; flex: 0 0 auto; padding-right: 4px; font: 700 1rem var(--font-display); color: var(--gold); white-space: nowrap; }
+@media (max-width: 1000px) { .loc { display: none; } .promo { display: none; } }
+@media (max-width: 720px) {
+  .amz1 .wrap { flex-wrap: wrap; row-gap: 8px; }
+  .amz .logo { order: 1; flex: 1 1 auto; }
+  .amzr { order: 2; }
+  .amzsearch { order: 3; flex: 1 1 100%; }
+  .amzr .mode { display: none; }
+  .amz .logo { flex: 1 1 0; min-width: 0; }
+  .amz .logo p { display: block; font-size: 0.5rem; letter-spacing: 0.1em; margin-top: 3px; }
+  .amz .logo h1 { font-size: 1.25rem; }
+  .amz .logo { gap: 8px; }
+  .acct { display: none; }
+  .acct2 { display: inline-block !important; }
+  .amz .logo .mark { height: 38px; }
+  .amzr .ic { padding-inline: 7px; }
+  .amzsearch select { max-width: 92px; }
+}
+
+.item[data-detail] { cursor: pointer; }
+.dwrap { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 80; display: grid; place-items: center; padding: 16px; background: var(--overlay); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); overflow-y: auto; }
+.dwrap[hidden] { display: none; }
+.dbox { position: relative; width: min(1000px, 100%); max-height: calc(100vh - 32px); overflow-y: auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; padding: 32px; border-radius: 6px; background: var(--surface); color: var(--ink); border: 1px solid var(--line2); box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+.dclose { position: absolute; top: 10px; right: 12px; width: 38px; height: 38px; border: 0; border-radius: 50%; background: var(--soft); color: var(--ink); font-size: 1.4rem; cursor: pointer; }
+.dimg { display: grid; place-items: center; background: #fff; border-radius: 4px; border: 1px solid var(--line); aspect-ratio: 1; overflow: hidden; }
+.dimg img { width: 100%; height: 100%; object-fit: contain; }
+.dimg span { font: 600 5rem var(--font-display); color: var(--gold-text); }
+.dinfo h2 { margin: 0 0 6px; font: 600 1.7rem/1.25 var(--font-display); padding-right: 36px; }
+.dinfo .store { display: inline-block; color: #0b5cab; font-size: 0.92rem; cursor: pointer; background: none; border: 0; padding: 0; text-decoration: none; }
+.dinfo .store:hover { text-decoration: underline; }
+.dinfo hr { border: 0; border-top: 1px solid var(--line); margin: 14px 0; }
+.dinfo .dspec { margin: 0 0 4px; font-size: 1.05rem; }
+.dinfo .dwhere { margin: 0; color: var(--muted); font-size: 0.88rem; }
+.dorder { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px 0 6px; padding: 16px 20px; border-radius: 3px; background: var(--gold); color: var(--gold-ink); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; font-size: 0.9rem; }
+.dorder:hover { background: #EDC465; }
+.dorder svg { width: 20px; height: 20px; }
+.dworld { display: flex; align-items: center; gap: 10px; margin: 14px 0; padding: 12px 14px; border-radius: 6px; background: var(--soft); font-weight: 600; }
+.doffers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.doffers div { padding: 12px; border: 1px solid var(--line2); border-radius: 8px; font-size: 0.82rem; line-height: 1.45; }
+.doffers b { display: block; margin-bottom: 4px; font-size: 0.92rem; }
+@media (max-width: 760px) { .dbox { grid-template-columns: minmax(0, 1fr); padding: 20px; gap: 18px; } .doffers { grid-template-columns: minmax(0, 1fr); } .dimg { max-width: 360px; margin-inline: auto; width: 100%; } }
+
+.acct { flex: 0 0 auto; border: 1px solid transparent; border-radius: 3px; background: transparent; color: #fff; text-align: left; padding: 4px 10px; cursor: pointer; font: inherit; line-height: 1.2; }
+.acct:hover { border-color: #fff; }
+.acct small { display: block; font-size: 0.7rem; color: #cfd6e6; }
+.acct b { display: block; font-size: 0.86rem; white-space: nowrap; max-width: 130px; overflow: hidden; text-overflow: ellipsis; }
+.amz1 .wrap { gap: 10px; }
+.amzsearch { min-width: 320px; }
+.amzr { margin-left: auto; }
+.acct2 { display: none; }
+.loc { display: none; }
+.amz .logo p { display: block; margin-top: 4px; font-size: 0.58rem; letter-spacing: 0.18em; white-space: nowrap; }
+.amzsearch { flex: 1 1 420px; }
+@media (max-width: 720px) { .amzsearch { min-width: 0; } .acct small { display: none; } .acct b { max-width: 70px; font-size: .78rem; } }
+.sgwrap { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 90; display: grid; place-items: center; padding: 16px; background: var(--overlay); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); overflow-y: auto; }
+.sgwrap[hidden] { display: none; }
+.sgbox { position: relative; width: min(460px, 100%); max-height: calc(100vh - 32px); overflow-y: auto; padding: 28px 24px; border-radius: 6px; background: var(--surface); color: var(--ink); border: 1px solid var(--line2); box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+.sgbox h3 { margin: 0 0 6px; font: 600 1.4rem var(--font-display); padding-right: 30px; }
+.sgbox .sub { margin: 0 0 16px; color: var(--muted); font-size: .88rem; line-height: 1.5; }
+.sgbox label { display: block; margin-bottom: 12px; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.sgbox input, .sgbox textarea { display: block; width: 100%; margin-top: 5px; padding: 11px 12px; border: 1px solid var(--line2); border-radius: 3px; background: var(--bg); color: var(--ink); font: 1rem var(--font-body, system-ui, sans-serif); text-transform: none; letter-spacing: 0; font-weight: 400; }
+.sgbox textarea { min-height: 80px; resize: vertical; }
+.sgbox .err { margin: 0 0 10px; color: #c0392b; font-size: .85rem; min-height: 1em; }
+.sgbox .row { display: flex; gap: 10px; flex-wrap: wrap; }
+.sgbox .go { flex: 1 1 auto; padding: 14px 18px; border: 0; border-radius: 3px; background: var(--gold); color: var(--gold-ink); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
+.sgbox .out { padding: 14px 16px; border: 1px solid var(--line2); border-radius: 3px; background: transparent; color: var(--ink); cursor: pointer; }
+@media (max-width: 380px) { .amz .logo .mark { height: 30px; } .amz .logo h1 { font-size: 1.05rem; } .amz .logo p { font-size: .44rem; letter-spacing: .06em; } .amzr .ic { padding-inline: 4px; } .amzr .ic svg { width: 19px; height: 19px; } .amz .wrap { gap: 6px; } }
+#reviews label, #reviews input, #reviews textarea, #reviews select, .vprev { max-width: 100%; min-width: 0; box-sizing: border-box; }
+#reviews .wrap > *, .rgrid > * { min-width: 0; }
+
+.acct { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 8px; position: relative; text-align: center; }
+.acct span { font-size: 0.76rem; font-weight: 700; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wcount { position: absolute; top: 0; right: 0; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--gold); color: var(--gold-ink); font: 700 0.7rem/18px var(--font-body, system-ui, sans-serif); font-style: normal; text-align: center; }
+@media (max-width: 720px) { #wl span { display: none; } #wl { padding: 4px 6px; } }
+.heart { position: absolute; top: 10px; right: 10px; z-index: 2; width: 38px; height: 38px; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgba(255,255,255,.94); color: #444; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.18); transition: transform .15s; }
+.heart svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linejoin: round; }
+.heart:hover { transform: scale(1.1); }
+.heart.on { color: #e0245e; }
+.heart.on svg { fill: #e0245e; }
+.heart.blink { animation: hblink .7s ease; }
+@keyframes hblink { 0%{transform:scale(1);opacity:1} 20%{transform:scale(1.5);opacity:.3} 40%{transform:scale(.9);opacity:1} 60%{transform:scale(1.35);opacity:.4} 80%{transform:scale(1);opacity:1} 100%{transform:scale(1)} }
+.tagb { right: auto; }
+.wlwrap { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 85; display: grid; place-items: center; padding: 16px; background: var(--overlay); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.wlwrap[hidden] { display: none; }
+.wlbox { position: relative; width: min(640px, 100%); max-height: calc(100vh - 32px); overflow-y: auto; padding: 28px 24px; border-radius: 6px; background: var(--surface); color: var(--ink); border: 1px solid var(--line2); box-shadow: 0 30px 80px rgba(0,0,0,.4); }
+.wlbox h3 { margin: 0 0 4px; font: 600 1.5rem var(--font-display); }
+.wlbox .sub { margin: 0 0 16px; color: var(--muted); font-size: .88rem; }
+.wlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.wlist li { display: grid; grid-template-columns: 76px minmax(0,1fr) auto; gap: 14px; align-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 4px; }
+.wlist .th { width: 76px; height: 76px; background: #fff; border-radius: 3px; display: grid; place-items: center; overflow: hidden; }
+.wlist .th img { width: 100%; height: 100%; object-fit: contain; }
+.wlist b { display: block; font-size: 1rem; }
+.wlist small { display: block; color: var(--muted); font-size: .8rem; }
+.wlist .acts { display: grid; gap: 6px; }
+.wlist .acts a, .wlist .acts button { padding: 9px 12px; border-radius: 3px; font: 700 .7rem var(--font-body, system-ui, sans-serif); letter-spacing: .1em; text-transform: uppercase; text-align: center; text-decoration: none; cursor: pointer; }
+.wlist .acts a { background: var(--gold); color: var(--gold-ink); border: 0; }
+.wlist .acts button { background: transparent; color: var(--ink); border: 1px solid var(--line2); }
+.wlempty { padding: 28px 8px; text-align: center; color: var(--muted); }
+@media (max-width: 520px) { .wlist li { grid-template-columns: 60px minmax(0,1fr); } .wlist .th { width: 60px; height: 60px; } .wlist .acts { grid-column: 1 / -1; grid-template-columns: 1fr 1fr; } }
+
+.amz { position: sticky; }
+.acctmenu { position: absolute; right: 16px; top: 100%; z-index: 70; width: 250px; padding: 14px 4px 8px; background: var(--surface); color: var(--ink); border: 1px solid var(--line2); border-radius: 4px; box-shadow: 0 16px 40px rgba(0,0,0,.3); }
+.acctmenu[hidden] { display: none; }
+.acctmenu h4 { margin: 0 14px 8px; font-size: 1rem; }
+.acctmenu button { display: flex; justify-content: space-between; width: 100%; padding: 9px 14px; border: 0; background: transparent; color: var(--ink); font: 0.95rem var(--font-body, system-ui, sans-serif); text-align: left; cursor: pointer; }
+.acctmenu button:hover { background: var(--soft); color: var(--gold-text); }
+.acctmenu .go { margin: 8px 14px 6px; width: calc(100% - 28px); justify-content: center; background: var(--gold); color: var(--gold-ink); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; border-radius: 3px; }
+.acctmenu p { margin: 0 14px 6px; color: var(--muted); font-size: .85rem; line-height: 1.5; }
+.acctmenu .cnt { color: var(--muted); }
+.dpay { margin: 14px 0; padding: 12px 14px; border: 1px solid var(--line2); border-radius: 6px; font-size: .88rem; line-height: 1.55; }
+.dpay b { display: block; margin-bottom: 2px; }
+
+.dark2 { display: none; }
+@media (max-width: 720px) {
+  .amz1 .wrap { flex-wrap: wrap; row-gap: 8px; column-gap: 6px; }
+  .amz .logo { order: 1; flex: 1 1 0; min-width: 0; }
+  .amz .logo > div { min-width: 0; }
+  .amz .logo h1 { font-size: 1.2rem; }
+  .amz .logo p { white-space: normal; font-size: .46rem; letter-spacing: .08em; line-height: 1.3; }
+  .amz .logo .mark { height: 34px; flex: 0 0 auto; }
+  .amzr { order: 2; flex: 0 0 auto; gap: 0; }
+  .acct { display: flex !important; padding: 4px 5px; }
+  .acct span { display: none; }
+  .amzr .ic { padding-inline: 5px; height: 36px; }
+  .amzr .ic svg, .acct svg { width: 22px; height: 22px; }
+  .amzr .mode { display: none; }
+  .amzsearch { order: 3; flex: 1 1 100%; }
+  .acct2 { display: none !important; }
+  .dark2 { display: inline-block; }
+  .acctmenu { right: 8px; width: min(250px, calc(100vw - 16px)); }
+}
+@media (max-width: 380px) { .amz .logo .mark { height: 28px; } .amz .logo h1 { font-size: 1.05rem; } .amzr .ic, .acct { padding-inline: 3px; } .amzr .ic svg, .acct svg { width: 20px; height: 20px; } }
+.searching.boot { animation: fadein 0.2s ease, bootout 0.4s ease 2.4s forwards; }
+@keyframes bootout { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+
+/* ---- polish v41: tablet fix, extra effects, mobile comfort ---- */
+html, body { overflow-x: clip; max-width: 100%; }
+@media (min-width: 721px) and (max-width: 1000px) {
+  .amz1 .wrap { gap: 8px; }
+  .amz .logo p, .amzr .mode, .acct small { display: none !important; }
+  .amzsearch { min-width: 0 !important; flex: 1 1 0 !important; }
+  .amzr .ic { padding-inline: 6px; }
+  .amzr .social { flex-wrap: nowrap; }
+  .amz .logo h1 { font-size: 1.35rem; }
+}
+.amz { animation: hdrin .6s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes hdrin { from { transform: translateY(-100%); } to { transform: none; } }
+.spark { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: radial-gradient(circle, #fff 0, var(--gold) 55%, transparent 70%); opacity: 0; pointer-events: none; animation: spark 6s ease-in-out infinite; }
+@keyframes spark { 0%,100% { opacity: 0; transform: translateY(0) scale(.4); } 40% { opacity: .9; transform: translateY(-26px) scale(1); } 80% { opacity: 0; transform: translateY(-48px) scale(.6); } }
+.hero { position: relative; overflow: hidden; }
+.card, .item { transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease; will-change: transform; }
+@media (hover: hover) and (pointer: fine) {
+  .card:hover, .item:hover { box-shadow: 0 18px 40px -18px rgba(13,24,48,.45); }
+  .card:hover .ph img, .item:hover .ph img { transform: scale(1.06); }
+  .order { position: relative; overflow: hidden; }
+  .order::after { content: ""; position: absolute; top: 0; left: -80%; width: 50%; height: 100%; background: linear-gradient(100deg, transparent, rgba(217,172,74,.45), transparent); transform: skewX(-20deg); transition: left .6s ease; }
+  .order:hover::after { left: 130%; }
+  .marquee:hover .track, .marquee:hover > * { animation-play-state: paused; }
+}
+.ph img { transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+button:active, .order:active, .ic:active, .tab:active { transform: scale(.96); }
+.sec-title::after, .stitle::after { transform-origin: left; animation: uline 1.2s ease both; }
+@keyframes uline { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.totop { bottom: calc(86px + env(safe-area-inset-bottom)); right: calc(14px + env(safe-area-inset-right)); }
+.heart.pop { animation: heartpop .45s ease; }
+@keyframes heartpop { 30% { transform: scale(1.35); } 60% { transform: scale(.92); } }
+@media (max-width: 720px) {
+  .amz2 .links button, .amz2 .allb { min-height: 40px; }
+  .order { min-height: 40px; }
+  .heart, .fav { min-width: 38px; min-height: 38px; }
+  body { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+  input, select, textarea { font-size: 16px !important; } /* stops iPhone zoom-on-focus */
+}
+@media (prefers-reduced-motion: reduce) { .spark { display: none; } .amz { animation: none; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+
+@supports not (aspect-ratio: 1) { .ph, .dimg { height: 0; padding-top: 100%; position: relative; } .ph img, .dimg img { position: absolute; top: 0; left: 0; } }
+</style>
+
+<div class="progress" aria-hidden="true"><i id="bar"></i></div>
+<button class="totop" id="toTop" type="button" aria-label="Back to top" hidden>&uarr;</button>
+<div class="callwrap" id="callwrap" hidden>
+  <div class="callbox" role="dialog" aria-modal="true" aria-labelledby="callTitle">
+    <h3 id="callTitle">Call the shop</h3>
+    <p>You want to call Kotha Shiva garu number:<b>88853 85043</b></p>
+    <div class="row"><a class="yes" id="callYes" href="tel:+918885385043">Call now</a><button type="button" class="no" id="callNo">Cancel</button></div>
+  </div>
+</div>
+<div class="dwrap" id="dwrap" hidden>
+  <div class="dbox" role="dialog" aria-modal="true" aria-labelledby="dName">
+    <button type="button" class="dclose" id="dclose" aria-label="Close">&times;</button>
+    <div class="dimg" id="dimg"></div>
+    <div class="dinfo">
+      <h2 id="dName"></h2>
+      <button type="button" class="store" id="dstore">Visit the A to Z Mega Shopping Mall store</button>
+      <hr>
+      <p class="dspec" id="dspec"></p>
+      <p class="dwhere" id="dwhere"></p>
+      <a class="dorder" id="dorder" href="#" target="_blank" rel="noopener"></a>
+      <div class="dworld"><span aria-hidden="true">&#127757;</span> We can transport all over the world.</div>
+      <div class="dpay"><b>Payments &amp; EMI</b>We accept all cards. EMI options available with Bajaj Finserv.</div>
+      <div class="doffers">
+        <div><b>Worldwide delivery</b>We pack and send orders anywhere in the world.</div>
+        <div><b>Order on WhatsApp</b>Tap Order now and chat with us directly.</div>
+        <div><b>Visit our store</b>Besides More Super Market, MG Road, Suryapet.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sgwrap" id="sgwrap" hidden>
+  <form class="sgbox" id="sgform" role="dialog" aria-modal="true" aria-labelledby="sgT" novalidate>
+    <button type="button" class="dclose" id="sgclose" aria-label="Close">&times;</button>
+    <h3 id="sgT">Sign up to place your order</h3>
+    <p class="sub">Tell us where to reach and deliver to you. Your details stay on this device and are sent to the shop with your order on WhatsApp.</p>
+    <label>Full name<input id="sgName" autocomplete="name" required></label>
+    <label>Mobile number<input id="sgPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10 digit mobile number" maxlength="18" required></label>
+    <label>Postal address<textarea id="sgAddr" autocomplete="street-address" placeholder="House no, street, area, city, state, PIN code" required></textarea></label>
+    <p class="err" id="sgErr" role="alert"></p>
+    <p class="sgnote" style="margin:0 0 10px;font-size:.74rem;color:var(--muted);line-height:1.4">By continuing, you agree that the mall may save your details and your activity on this website (login time, items you view) to serve your orders better. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Privacy Policy</a></p>
+    <div class="row"><button type="submit" class="go" id="sgGo">Save and continue</button><button type="button" class="out" id="sgOut" hidden>Log out</button></div>
+  </form>
+</div>
+<div class="wlwrap" id="wlwrap" hidden>
+  <div class="wlbox" role="dialog" aria-modal="true" aria-labelledby="wlT">
+    <button type="button" class="dclose" id="wlclose" aria-label="Close">&times;</button>
+    <h3 id="wlT">My Wishlist</h3>
+    <p class="sub" id="wlSub"></p>
+    <ul class="wlist" id="wlist"></ul>
+  </div>
+</div>
+<div class="wlwrap" id="ordwrap" hidden>
+  <div class="wlbox" role="dialog" aria-modal="true" aria-labelledby="ordT">
+    <button type="button" class="dclose" id="ordclose" aria-label="Close">&times;</button>
+    <h3 id="ordT">Your Orders</h3>
+    <p class="sub" id="ordSub"></p>
+    <ul class="wlist" id="ordlist"></ul>
+  </div>
+</div>
+<div class="callwrap" id="lgwrap" hidden>
+  <div class="callbox" role="dialog" aria-modal="true" aria-labelledby="lgT">
+    <h3 id="lgT">Please log in</h3>
+    <p>Log in or sign up to save items to your wishlist.</p>
+    <div class="row"><button type="button" class="yes" id="lgYes">Log in / Sign up</button><button type="button" class="no" id="lgNo">Not now</button></div>
+  </div>
+</div>
+<button type="button" class="cbfab" id="cbfab" aria-label="Chat with our shop assistant" aria-expanded="false" aria-controls="cbpanel">
+  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.3 7.6L3 21l1.5-5.4A8.5 8.5 0 1 1 21 12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8.5" cy="12" r="1.1" fill="currentColor"/><circle cx="12" cy="12" r="1.1" fill="currentColor"/><circle cx="15.5" cy="12" r="1.1" fill="currentColor"/></svg>
+  <span class="cbfl">Ask us</span>
+</button>
+<section class="cbpanel" id="cbpanel" role="dialog" aria-label="A to Z shop assistant" hidden>
+  <header class="cbhead">
+    <div class="cbav" aria-hidden="true">A<i>to</i>Z</div>
+    <div class="cbtt"><b>A to Z Assistant</b><span>Ask about items, offers, timings</span></div>
+    <button type="button" class="cbx" id="cbx" aria-label="Close chat">&times;</button>
+  </header>
+  <div class="cblog" id="cblog" role="log" aria-live="polite"></div>
+  <div class="cbchips" id="cbchips"></div>
+  <form class="cbform" id="cbform" autocomplete="off">
+    <input id="cbin" type="text" placeholder="Type an item or question..." aria-label="Type your question" maxlength="140">
+    <button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12l16-8-6 16-2.5-6.5z" fill="currentColor"/></svg></button>
+  </form>
+  <p class="cbnote">Your questions may be saved to improve our service. <a href="privacy.html" target="_blank" rel="noopener">Privacy</a></p>
+</section>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<div class="searching boot" id="searching" role="status" aria-live="polite">
+  <div class="sbox">
+    <div class="ringwrap"><div class="ring"></div><img id="srLogo" alt=""></div>
+    <p><span id="srLead">Loading</span> <b id="srWord"></b></p>
+  </div>
+</div>
+
+<header class="amz">
+  <div class="amz1"><div class="wrap">
+    <div class="logo" id="logoHome" role="link" tabindex="0" aria-label="Sri A to Z Mega Shopping Mall - refresh the page" title="Refresh">
+      <img class="mark" alt="Sri A to Z Mega Shopping Mall logo" src="55e228c02e.jpg">
+      <div>
+        <h1><small class="sri">Sri</small> <span class="az">A<i>to</i>z</span></h1>
+        <p>Mega Shopping Mall</p>
+      </div>
+    </div>
+    <button type="button" class="loc" data-go="address"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/></svg><span><small>Visit us at</small><b>Suryapet, Telangana</b></span></button>
+    <form class="search amzsearch" id="sform" role="search">
+      <select id="catSel" aria-label="Search in category"><option value="">All</option><option value="0">Home Appliances</option><option value="1">Toys &amp; Games</option><option value="2">School Essentials</option><option value="3">Decor Items</option><option value="4">Plastic Items</option></select>
+      <input id="q" type="search" placeholder="Search items…" autocomplete="off" aria-label="Search all items">
+      <button id="clear" type="button" aria-label="Clear search" hidden>&times;</button>
+      <button class="go" type="submit" aria-label="Search"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><line x1="15.5" y1="15.5" x2="21" y2="21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+    </form>
+    <div class="amzr"><button type="button" class="acct" id="acct" aria-label="Profile"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span id="acctB">Profile</span></button><div class="social" aria-label="Contact us">
+        <a class="ic call" id="icCall" href="tel:+918885385043" aria-label="Call us on 88853 85043">
+          <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="lbl">88853 85043</span></a>
+        <a class="ic wa" id="icWa" href="https://wa.me/919578529529?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20A%20TO%20Z%20Mega%20Shopping%20Mall." target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+          <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="lbl">WhatsApp</span></a>
+        <a class="ic ig" id="icIg" data-ig href="#" aria-label="Follow us on Instagram">
+          <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+          <span class="lbl">Instagram</span></a>
+      </div><button type="button" class="mode" id="mode" aria-pressed="false">Dark mode</button></div>
+  </div></div>
+  <div class="amz2"><div class="wrap">
+    <button type="button" class="allb" data-go="shop"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>All</button>
+    <nav class="links" aria-label="Page sections">
+      <button type="button" data-go="home">Home</button>
+      <button type="button" data-go="shop">Shop</button>
+      <button type="button" data-go="about">About us</button>
+      <button type="button" data-go="contact">Contact</button>
+      <button type="button" data-go="why">Why only us</button>
+      <button type="button" data-go="reviews">Reviews</button>
+      <button type="button" class="acct2" id="acct2">Account</button>
+      <button type="button" class="dark2" id="dark2">Dark mode</button>
+    </nav>
+    <p class="promo">Serving Suryapet since 1995</p>
+  </div></div>
+<div class="acctmenu" id="acctmenu" hidden></div>
+</header>
+
+<section class="offers" id="offers" aria-label="Dasara offers">
+  <div class="wrap">
+    <div class="ohead rv">
+      <p class="eyebrow">Dasara offers</p>
+      <h2>Dasara Mega Exchange Offers</h2>
+      <p>Happy Dasara from Sri A to Z Mega Shopping Mall. Special prices on stoves, cookers, mixer grinders and more. For exchange details, call or visit the store.</p>
+    </div>
+    <div class="ocar" id="ocar" role="region" aria-roledescription="carousel" aria-label="Festival offers" tabindex="0">
+      <button type="button" class="onav prev" id="oprev" aria-label="Previous offer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="oview" id="oview"><ul class="otrack" id="otrack"></ul></div>
+      <button type="button" class="onav next" id="onext" aria-label="Next offer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <div class="odots" id="odots" role="tablist" aria-label="Choose an offer"></div>
+    <div class="o365 rv">
+      <div class="o365b" aria-hidden="true"><b>365</b><span>Days</span></div>
+      <div class="o365t">
+        <h3>365 days offers available at A to Z Mega Shopping Mall</h3>
+        <p>Not just on festivals. Visit us any day of the year for great prices on home appliances, kitchenware, toys, school essentials, decor and plastic items.</p>
+        <ul class="o365l"><li>In Home dedicated Services</li><li>All cards accepted</li><li>Bajaj Finserv EMI</li><li>Transport all over the world</li></ul>
+      </div>
+      <button type="button" class="o365c" data-go="shop">Explore the shop</button>
+    </div>
+  </div>
+</section>
+
+<section class="hero" id="home">
+  <div class="wrap">
+    <div class="htext">
+      <p class="eyebrow rv">Welcome to Suryapet's shopping destination</p>
+      <h2 class="rv">Everything You Need.<span>All in One Place.</span></h2>
+      <p class="hsub rv">Discover home appliances, kitchen essentials, toys and games, school essentials, decor and plastic items, all under one roof.</p>
+      <div class="cta rv">
+        <button class="hbtn gold" type="button" data-go="shop">Explore Collections
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="hbtn line" type="button" data-go="address">Find Our Store
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+      </div>
+      <ul class="trust rv">
+        <li><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--gold)"/><path d="M7.5 12.4l3 3 6-6.4" fill="none" stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Serving customers since 1995</li>
+        <li><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z" fill="var(--gold)"/></svg>4.5 customer rating</li>
+      </ul>
+    </div>
+    <div class="hphoto rv">
+      <img src="8fc9f354ac.jpg" alt="A to Z Mega Shopping Mall storefront in Suryapet" width="478" height="564">
+      <div class="hcard">
+        <b>A TO Z</b>
+        <span class="g">Shopping Mall</span>
+        <span class="l">Suryapet &bull; Telangana</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="shop">
+  <div class="shophead">
+    <div class="wrap">
+      <div class="sechead rv">
+        <p class="eyebrow">Shop by category</p>
+        <h2>Browse the mall</h2>
+        <p>Choose a section, then a sub-section, to see everything we stock.</p>
+      </div>
+    </div>
+  </div>
+  <nav class="tabs-bar" aria-label="Mall sections">
+    <div class="marquee"><div class="track" id="tabs"></div></div>
+  </nav>
+  <main class="wrap">
+    <aside class="side" id="side"></aside>
+    <section class="content" aria-live="polite">
+      <div class="bar">
+        <div>
+          <p class="crumb" id="crumb"></p>
+          <h2 id="title"></h2>
+          <p class="count" id="count"></p>
+        </div>
+        <label class="sort" for="sort">Sort by
+          <select id="sort">
+            <option value="default">Featured</option>
+            <option value="name">Name A to Z</option>
+            <option value="name-desc">Name Z to A</option>
+          </select>
+        </label>
+      </div>
+      <ul class="grid" id="grid"></ul>
+    </section>
+  </main>
+</section>
+
+<section class="about-sec" id="about">
+  <div class="wrap about-grid">
+    <div class="rv">
+      <p class="eyebrow">Our story</p>
+      <h2>About us</h2>
+      <p class="about-lead">More than a shopping mall, A TO Z Mega Shopping Mall is a legacy of trust in Suryapet.</p>
+    </div>
+    <div class="rv">
+      <div class="about-body">
+        <p>For over three decades, we have served the families of Suryapet with dedication and care. Generations of customers have been part of our journey, and their trust continues to inspire us every day.</p>
+        <p>Under one roof, we offer a wide range of home essentials, kitchenware, utensils and household products, along with appliances, toys and games, school essentials and decor.</p>
+        <p>Our mission is to make every shopping experience convenient, valuable and memorable. We believe customer satisfaction is the foundation of lasting relationships.</p>
+        <p>We bring you quality products, attractive offers and real value for your money. Proudly rooted in Suryapet, we are grateful to be part of your homes and celebrations.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><b data-n="30" data-suf="+">30+</b><span>years serving families</span></div>
+        <div class="stat"><b data-n="5" data-suf="">5</b><span>shopping sections</span></div>
+        <div class="stat"><b data-n="9" data-suf="">9</b><span>partner brands</span></div>
+      </div>
+      <p class="tagline">Your Trust, Our Legacy, Your Shopping Destination.</p>
+    </div>
+  </div>
+</section>
+
+<section class="visit">
+  <div class="wrap">
+    <div class="sechead rv">
+      <p class="eyebrow">Visit us</p>
+      <h2>Contact and location</h2>
+    </div>
+    <div class="vgrid">
+      <div class="vcard rv" id="contact">
+        <h3>Contact us</h3>
+        <dl class="rows" id="contactRows"></dl>
+        <a class="vbtn" href="https://chat.whatsapp.com/K52S88i1wM0ArRYHyzYzt5" target="_blank" rel="noopener">Join our WhatsApp group</a>
+      </div>
+      <div class="vcard rv" id="address">
+        <h3>Address and timings</h3>
+        <dl class="rows" id="addressRows"></dl>
+        <a class="vbtn" id="mapLink" href="https://share.google/sPgUBqOJQblY3lzNi" target="_blank" rel="noopener">View on Google Maps</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="sechead rv">
+      <p class="eyebrow">The A TO Z difference</p>
+      <h2>Why only us</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card rv"><h3>30+ years of trust</h3><p>Generations of Suryapet families have shopped with us. Our reputation has been built one customer at a time.</p></div>
+      <div class="why-card rv"><h3>Everything under one roof</h3><p>Home essentials, kitchenware, utensils, appliances, toys and games, school essentials, decor and plastic ware, all in a single visit.</p></div>
+      <div class="why-card rv"><h3>Quality and value</h3><p>Quality products, attractive offers and fair value for your money, every day.</p></div>
+      <div class="why-card rv"><h3>Brands you know</h3><p>We work with trusted names including Butterfly, Prestige, Pigeon, Preethi, Ultra, Milton, Nayasa, Chetan and Signoraware.</p></div>
+      <div class="why-card rv"><h3>Service that cares</h3><p>Customer satisfaction comes first. We want every visit to be convenient, valuable and memorable.</p></div>
+      <div class="why-card rv"><h3>Easy to plan your visit</h3><p>Browse every section and sub-section on this website, see what we carry, then come to the shop knowing where to go.</p></div>
+    </div>
+    <p class="brands-h">Brands we work with</p>
+    <div class="marquee brands" aria-label="Brands we work with"><div class="track" id="brandTrack" style="--dur:40s"></div></div>
+  </div>
+</section>
+
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="sechead rv">
+      <p class="eyebrow">Customer voices</p>
+      <h2>Customer reviews</h2>
+      <p>Tell us how your visit went. Share a star rating, a few words, or a short video.</p>
+    </div>
+    <div class="rgrid">
+      <div class="rside">
+        <div class="card rv" id="rvSummary"></div>
+        <form class="card rv" id="rvForm" novalidate>
+          <h3>Write a review</h3>
+          <div class="field">
+            <span class="lab" id="rvRateLab">Your rating</span>
+            <div class="starpick" id="rvStars" role="radiogroup" aria-labelledby="rvRateLab"></div>
+          </div>
+          <div class="field">
+            <label for="rvName">Your name</label>
+            <input id="rvName" type="text" maxlength="40" autocomplete="name" placeholder="For example, Lakshmi">
+          </div>
+          <div class="field">
+            <label for="rvText">Your review</label>
+            <textarea id="rvText" maxlength="500" placeholder="What did you buy? How was the service?"></textarea>
+          </div>
+          <div class="field">
+            <label for="rvFile">Video review (optional)</label>
+            <input id="rvFile" type="file" accept="video/*">
+            <div class="vprev" id="rvPrev"></div>
+          </div>
+          <div class="field">
+            <label for="rvLink">Or paste a video link (optional)</label>
+            <input id="rvLink" type="url" placeholder="https://">
+          </div>
+          <button class="btn" type="submit">Submit review</button>
+          <p class="msg" id="rvMsg" role="status" aria-live="polite"></p>
+          <p class="note">In this preview, reviews are saved in your own browser on this device.</p>
+        </form>
+      </div>
+      <ul class="rlist" id="rvList"></ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fgrid">
+    <div>
+      <div class="fbrand">
+        <img class="flogo" id="fLogo" alt="">
+        <div><b><small class="sri">Sri</small> <span class="az">A<i>to</i>z</span></b><span>Mega Shopping Mall</span></div>
+      </div>
+      <p class="fnote">Your Trust, Our Legacy, Your Shopping Destination.</p>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <ul>
+        <li><button class="flink" type="button" data-go="home">Home</button></li>
+        <li><button class="flink" type="button" data-go="shop">Shop</button></li>
+        <li><button class="flink" type="button" data-go="about">About us</button></li>
+        <li><button class="flink" type="button" data-go="why">Why only us</button></li>
+        <li><button class="flink" type="button" data-go="reviews">Reviews</button></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Get in touch</h4>
+      <ul>
+        <li><a href="tel:+918885385043">88853 85043</a></li>
+        <li><a href="https://wa.me/919578529529" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href="#" data-ig>Instagram</a></li>
+        <li><a href="https://chat.whatsapp.com/K52S88i1wM0ArRYHyzYzt5" target="_blank" rel="noopener">Join our WhatsApp group</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap fbar"><span>&copy; 2026 Sri Atoz Mega Shopping Mall, Suryapet</span><span>All cards accepted &middot; Bajaj Finserv EMI available &middot; <a href="privacy.html" style="color:inherit;text-decoration:underline">Privacy Policy</a></span></div>
+</footer>
+
+<script>
+(function () {
+  const ov = document.getElementById("searching");
+  setTimeout(() => { ov.hidden = true; ov.classList.remove("boot"); }, 900);
+  let skip = false, busy = false;
+  const show = (lead) => { document.getElementById("srLead").textContent = lead; document.getElementById("srWord").textContent = ""; ov.hidden = false; };
+  document.addEventListener("click", e => {
+    if (skip) { skip = false; return; }
+    if (busy) { e.preventDefault(); e.stopPropagation(); return; }
+    const t = e.target;
+    let lead = "";
+    if (t.closest(".heart") || t.closest("[data-nodetail]") && !t.closest("[data-go]")) return;
+    if (t.closest("[data-go]")) lead = "Loading";
+    else if (t.closest("#icCall")) lead = "Connecting";
+    else if (t.closest("#icWa")) lead = "Opening WhatsApp";
+    else if (t.closest("#icIg")) lead = "Opening Instagram";
+    else if (t.closest("li[data-detail]") && !t.closest("a")) lead = "Opening item";
+    if (!lead) return;
+    e.preventDefault(); e.stopPropagation();
+    ov.classList.remove("boot"); busy = true; show(lead);
+    setTimeout(() => { ov.hidden = true; busy = false; skip = true; t.click(); setTimeout(() => { skip = false; }, 50); }, lead === "Refreshing" ? 500 : 800);
+  }, true);
+})();
+
+/* ---------------------------------------------------------------
+   CATALOG: edit this list to change what the mall shows.
+   Each item is  "Name | Size or spec | tag (optional: few or new)"
+   --------------------------------------------------------------- */
+const CATALOG = [
+  { name: "Home Appliances", floor: "First Floor", subs: [
+    { name: "Kitchenware & Appliances", items: [
+      "## Cooking vessels",
+      "Pressure Cooker|3 L and 5 L", "Kadai|iron or non-stick", "Tawa|flat, for chapati and dosa", "Frying Pan|non-stick skillet", "Saucepan with Lid|1 L and 2 L", "Stockpot|large vessel for rice and biryani", "Tadka Pan|small, for tempering", "Idli Steamer", "Appam Pan|also paniyaram pan", "Milk Boiler|small vessel", "Casserole with Lid|keeps food warm", "Dosa Tawa",
+      "## Cooking tools",
+      "Cooking Spoons|steel and wooden", "Ladle|small and large", "Slotted Spoon|skimmer", "Flat Spatula|dosa turner", "Chapati Tongs", "Tongs", "Whisk", "Masher|for dal and potatoes", "Rolling Pin and Board|chakla and belan", "Batter Spoon|for dosa",
+      "## Cutting and prep",
+      "Chef's Knife", "Paring Knife", "Bread Knife", "Kitchen Scissors", "Chopping Boards|separate for veg and non-veg", "Peeler", "Grater|multiple sides", "Mixer Grinder|also blender", "Wet Grinder|for grinding batter", "Mortar and Pestle", "Garlic Press", "Lemon Squeezer", "Coconut Scraper", "Vegetable Chopper|vegetable cutter",
+      "## Measuring and mixing",
+      "Measuring Cups", "Measuring Spoons", "Kitchen Scale", "Mixing Bowls|small, medium, large", "Strainer|small and large", "Colander", "Sieve|flour sifter", "Funnel", "Kitchen Timer",
+      "## Plates and dining",
+      "Dinner Plates", "Quarter Plates|side plates", "Bowls|for dal, curry and curd", "Katoris|small bowls", "Thali Set", "Glasses|water and juice", "Tea Cups and Saucers", "Mugs", "Water Jug", "Serving Bowls", "Serving Platter|tray",
+      "## Cutlery",
+      "Dining Spoons", "Teaspoons", "Forks", "Dining Knives", "Serving Spoons", "Chopsticks",
+      "## Storage",
+      "Airtight Containers|small, medium, large", "Masala Dabba|spice box", "Jars|steel or glass, for rice, dal and sugar", "Oil Dispenser|oil bottle", "Pickle Jars", "Water Bottles", "Insulated Lunch Box|tiffin", "Casserole|hot pack", "Flask|for tea or coffee", "Aluminium Foil", "Cling Wrap", "Zip-Lock Bags", "Butter Paper|baking sheet",
+      "## Appliances",
+      "Gas Stove", "Induction Cooktop", "Gas Lighter", "Rice Cooker", "Electric Kettle", "Microwave Oven|also OTG oven", "Toaster", "Induction-Compatible Cookware|for induction cooktops", "Water Purifier", "Air Fryer",
+      "## Cleaning",
+      "Dish Soap|liquid", "Scrub Pads and Brushes", "Sponge", "Kitchen Towels", "Dishcloth", "Dish Rack|drainer", "Dustbin|with lid", "Garbage Bags", "Sink Strainer", "Floor Mat", "Hand Soap|and sanitizer", "Hand Towel",
+      "## Safety",
+      "Oven Mitts|holders", "Apron", "Fire Extinguisher|or fire blanket", "First-Aid Kit|burn cream and bandages", "Gas Leak Detector" ] },
+    { name: "Table & Ceiling Fans", items: [
+      "Ceiling Fan|1200 mm, 3 blade", "Ceiling Fan|1400 mm, 3 blade", "Table Fan|300 mm, 3 speed", "Table Fan|400 mm, 3 speed" ] },
+    { name: "Water Heaters & Geysers", items: [
+      "Storage Water Heater|15 litre, 5 star", "Instant Water Heater|3 litre", "Immersion Rod|1500 W", "Room Heater|1000 W, 2 rod" ] },
+    { name: "Iron Boxes", items: [
+      "Dry Iron|1000 W, non-stick plate", "Heavy Weight Dry Iron|1200 W", "Steam Iron|1400 W, spray", "Steam Iron|2000 W, vertical steam" ] },
+    { name: "Home Safes & Lockers", items: [
+      "Godrej MYST Small Book Locker|book-shaped safe, combination lock|new" ] }
+  ]},
+  { name: "Toys & Games", floor: "Second Floor", subs: [
+    { name: "Toys", items: [
+      "Building Blocks|100 pieces", "Remote Control Car|rechargeable|new", "Die-cast Toy Cars|pack of 24", "Soft Teddy Bear|2 feet",
+      "Doll House Set|with furniture", "Kitchen Play Set|18 pieces" ] },
+    { name: "Indoor Games", items: [
+      "Carrom Board|32 inch, with coins and striker", "Chess Set|folding board with pieces", "Ludo & Snakes and Ladders|2 in 1 board game",
+      "Playing Cards|plastic coated", "Business Board Game|family edition", "Jigsaw Puzzle|100 pieces" ] },
+    { name: "Cricket", items: [
+      "Cricket Bat|kashmir willow, full size", "Tennis Cricket Bat|size 6", "Cricket Ball|leather, pack of 3",
+      "Cricket Stumps Set|3 stumps with bails", "Batting Gloves|youth size" ] },
+    { name: "Outdoor Sports", items: [
+      "Volleyball|size 4", "Football|size 4", "Basketball|size 6",
+      "Badminton Racquet Pair|with shuttle", "Skipping Rope|adjustable" ] }
+  ]},
+  { name: "School Essentials", floor: "Ground Floor", subs: [
+    { name: "Tiffins & Bottles", items: [
+      "Steel Tiffin|3 tier", "Water Bottle|750 ml, plastic", "Insulated Bottle|500 ml, steel",
+      "Lunch Box|leak proof, 2 containers", "Sipper Bottle|600 ml, with straw" ] },
+    { name: "Pouches & Bags", items: [
+      "Pencil Pouch|zip, 2 compartments", "Geometry Box|metal, 10 pieces", "School Backpack|25 litre|new",
+      "Lunch Bag|insulated", "Trolley School Bag|wheeled, 30 litre", "Tuition Bag|cross body" ] }
+  ]},
+  { name: "Decor Items", floor: "Third Floor", subs: [
+    { name: "Wall Decor", items: [
+      "Wall Clock|designer pendulum, gold finish", "Framed Painting|18 x 24 inch", "Round Wall Mirror|24 inch",
+      "Metal Wall Art|tree of life, 2 feet", "Floating Wall Shelf|set of 3" ] },
+    { name: "Lights & Candles", items: [
+      "LED String Lights|10 metre, warm white", "Scented Candle Jar|200 g", "Clay Diya Set|12 pieces",
+      "Hanging Lantern|metal, 14 inch|new", "Tea Light Candles|pack of 50" ] },
+    { name: "Showpieces & Vases", items: [
+      "Ceramic Flower Vase|14 inch", "Brass Ganesha Idol|6 inch", "Buddha Showpiece|resin, 8 inch",
+      "Artificial Flower Bunch|12 stems", "Ceramic Planter|6 inch" ] },
+    { name: "Home Furnishing", items: [
+      "Cushion Cover Set|set of 5, 16 inch", "Window Curtains|7 feet, pair", "Double Bedsheet|cotton, with 2 covers",
+      "Door Mat|coir, 16 x 24 inch", "Table Runner|cotton, 72 inch", "Carpet|4 x 6 feet|few" ] }
+  ]},
+  { name: "Plastic Items", floor: "Ground Floor", subs: [
+    { name: "Storage Containers", items: [
+      "Airtight Container Set|set of 6", "Pulses Jar Set|1.2 litre, set of 3", "Fridge Bottle Set|1 litre, set of 6",
+      "Storage Box|30 litre, with lid", "Masala Box|7 compartments" ] },
+    { name: "Buckets & Tubs", items: [
+      "Bucket|20 litre, with handle", "Bath Mug|1 litre", "Wash Tub|40 litre", "Bathroom Stool|medium", "Mop Bucket|with wringer" ] },
+    { name: "Kitchen & Dining", items: [
+      "Water Jug|2 litre, with lid", "Casserole|1.5 litre, insulated", "Dinner Plate Set|set of 6",
+      "Pedal Dustbin|10 litre", "Colander & Strainer|set of 2", "Water Bottle Set|1 litre, set of 4" ] },
+    { name: "Chairs & Tables", items: [
+      "Armchair|moulded, stackable", "Plastic Stool|medium", "Plastic Table|4 seater", "Baby Chair|with tray", "Folding Stool|portable" ] },
+    { name: "Household Basics", items: [
+      "Laundry Basket|50 litre", "Clothes Hangers|pack of 12", "Dustpan with Brush|set",
+      "Shoe Rack|4 tier", "Clothes Clips|pack of 24" ] }
+  ]}
+];
+
+/* BRANDS: the names that scroll in the "Why only us" section. Add one line per brand:
+   { name: "Brand name" }  or, with a logo image,  { name: "Brand name", logo: "data:image/png;base64,..." } */
+const BRANDS = [
+  { name: "Butterfly", bg: "#ED3036", logo: "736294cf2b.jpg" },
+  { name: "Prestige", bg: "#FFFFFF", logo: "f44fc8f9ff.jpg" },
+  { name: "Pigeon", bg: "#FFFFFF", logo: "6590690d61.jpg" },
+  { name: "Preethi", bg: "#FFFFFF", logo: "3f74bd4c94.jpg" },
+  { name: "Ultra", bg: "#FFFFFF", logo: "d605dd52f6.jpg" },
+  { name: "Milton", bg: "#ED1C24", logo: "24517ab95c.jpg" },
+  { name: "Nayasa", bg: "#FFFFFF", logo: "e5e0c48000.jpg" },
+  { name: "Chetan", bg: "#000000", logo: "610849794b.jpg" },
+  { name: "Signoraware", bg: "#D32E12", logo: "adb00a1b9e.jpg" }
+];
+
+/* SHOP: fill these in. Anything left empty shows as "Not added yet". */
+const SHOP = {
+  phone: "+91 88853 85043",
+  whatsapp: "9578529529",
+  email: "",
+  address: "Besides More Super Market, MG Road, Vidyanagar / Manasa Nagar, Suryapet, Telangana 508213 (near Gandhi Statue / Telangana Talli Bomma)",
+  hours: "Open every day: 9:00 AM – 10:00 PM"
+};
+
+/* PHOTOS: product photos, keyed by a short name. PHOTO_OF links an item name to its photo. */
+const PHOTOS = {"booklocker":"f9b59e7f35.jpg","bedsheet":"4d20be3b0a.jpg","blender":"db619ae078.jpg","carrom":"4ab60e8e65.jpg","blocks":"e48a8cb96f.jpg","ceilingfan":"b8ac33072c.jpg","chess":"3dbb215c6b.jpg","bat":"e21ab10cdc.jpg","curtains":"dcdb794817.jpg","iron":"b7f3f28702.jpg","vases":"3e90bbb605.jpg","painting":"eced66a7c0.jpg","bajaj":"abbe190f00.jpg","lights":"34e1c4a8ed.jpg","ludo":"6639d5df0f.jpg","tablefan":"34cccfa8a2.jpg","cars":"4f26a07100.jpg","clock":"4d2e0ee4ff.jpg","jaquar":"766162cbfc.jpg","soccer":"4af75b147d.jpg","basket":"b59c726a67.jpg","volley":"95ba14c02a.jpg","plates":"3353ff817a.jpg","plates_side":"f962fef571.jpg","bowls":"2fc524a896.jpg","cups":"5b35f92ef2.jpg","bottles":"1cf286a1d8.jpg","kadai":"a64d98b850.jpg","tiffin":"0b3ea110b4.jpg","cookware":"8b78c9d0ce.jpg","ptable":"c5d27abfe8.jpg","tub":"e7f23adec6.jpg","mixer":"23964ba3d6.jpg","cooker":"f055c49ce7.jpg","containers":"451332b7a3.jpg","chairs":"0301b43c31.jpg","tumbler":"658478eed9.jpg","appam":"dccc98d4c1.jpg","longspoon":"0904708cc4.jpg","potlid":"b68d824a8c.jpg","chapati":"15eab13733.jpg","servspoon":"f2e95d4a40.jpg","crepe":"ebf7bcb5a7.jpg","fry":"cf24c7dd56.jpg","idli":"ed7ced9c14.jpg","ladle":"25facb41d7.jpg","masher":"e6cf8cf112.jpg","milkb":"5f4c7f04d2.jpg","rolling":"240864e78b.jpg","skimmer":"b6da5316c7.jpg","stockpot":"f12bebed24.jpg","tadka":"3aa453e44f.jpg","tawa":"3dfcd004a5.jpg","tongs":"4e44495062.jpg","whisk":"6ee541a81b.jpg","spatula":"da17dba4ab.jpg","saucepan":"8efa6d9264.jpg","spoonset":"69e5d4aee4.jpg","utensilset":"9f59fc6f23.jpg","colander":"db502665f7.jpg","strainer":"bdb5c9f8cf.jpg","mixbowls":"b96b193175.jpg","scale":"45318b95a9.jpg","measspoons":"a0f30756eb.jpg","chef":"793ed9b785.jpg","paring":"bdf1bc61aa.jpg","bread":"1a93c5173c.jpg","scissors":"dbc42dcdb5.jpg","boards":"592d9568b8.jpg","peeler":"be5e596917.jpg","grater":"f8527369a9.jpg","wetgrinder":"a064e5d4b1.jpg","mortar":"4eabc2c5c0.jpg","garlic":"159ef08b7c.jpg","lemon":"fbf262ad99.jpg","coconut":"24cb7b9fff.jpg","vegchop":"9c35597beb.jpg","meascups":"6c53bb876a.jpg","sieve":"17d010999e.jpg","funnel":"4da0efa056.jpg","timer":"9e6b46ce15.jpg","katori":"40c11932d1.jpg","thali":"6c0daf01be.jpg","glasses":"225949b3c7.jpg","mugs":"50ec62c37c.jpg","waterjug":"5cf7648925.jpg","servbowls":"874ca48929.jpg","platter":"861ffdc71a.jpg","spoonsA":"9c3f65e333.jpg","spoonsB":"78b39a3073.jpg","forks":"0c644746be.jpg","dknives":"0f3deb9eef.jpg","servspoons2":"7322526b4f.jpg","chopsticks":"fa3dde9c60.jpg","masaladabba":"d1ee20669c.jpg","glassjars":"8dd0a309e7.jpg","oildisp":"13a7b9202c.jpg","clipjars":"3c0040c87f.jpg","miltoncass":"b458644d46.jpg","flask":"12482e2305.jpg","foil":"5de3405e65.jpg","wrap":"a9f1bd7d2f.jpg","zip":"b168973d13.jpg","butterp":"7899d53c3c.jpg","stove":"7bba1cd301.jpg","induct":"b58dd239d9.jpg","lighter":"164cb9e430.jpg","ricec":"7ad4ba371f.jpg","kettle":"29e8d2ed1d.jpg","micro":"937f742b2b.jpg","toaster":"1e673a829a.jpg","purifier":"b3a2b753cc.jpg","airfry":"10d6253d6a.jpg","dsoap":"3278ec856d.jpg","scrub":"7dc41edcef.jpg","sponge":"a784e9cae3.jpg","ktowel":"91f3a445b2.jpg","dcloth":"c6dfe2e75d.jpg","drack":"c9c6a6a632.jpg","dustbin":"e3f888ff75.jpg","garbag":"69e94f4bba.jpg","sinkst":"8ed9c48d17.jpg","fmat":"4797a121e3.jpg","hsoap":"957c6b0e7e.jpg","htowel":"67ac9b5aab.jpg","mitts":"8ae802e5c1.jpg","apron":"f33e881331.jpg","fireext":"3bcda435d9.jpg","firstaid":"43cef1758d.jpg","gasdet":"74a532c131.jpg","immrod":"32a5826a0f.jpg","roomheat":"6d64ab8919.jpg","steamiron":"74065b946f.jpg","rccar":"2a8a037978.jpg","crickit":"45750d492b.jpg","badm":"216a54e9c6.jpg","teddy":"136e3cf593.jpg","dollhouse":"c687604cbc.jpg","kplay":"3b3ae2412c.jpg","cards":"cabd7272b4.jpg","business":"91a0456074.jpg","jigsaw":"e41909df57.jpg","mrfbat":"e405bcd94e.jpg","balls":"58018a1183.jpg","stumps":"5d3daf3216.jpg","gloves":"b2f9824327.jpg","rope":"c04d3bcf78.jpg","lunchset":"3e648bf71c.jpg","bagset":"994da46ae7.jpg","batterspoon":"a32354a706.jpg","geobox":"916c2f372e.jpg","blackpack":"b018e44b82.jpg","mirror":"c454067962.jpg","wallart":"b0a39bab7a.jpg","shelf":"41bb6e3710.jpg","steelbin":"6a03c831b3.jpg","milton6":"bd2a35932f.jpg","borolunch":"042ec31f45.jpg","borobottle":"78e3f67cef.jpg","tote":"150dcddb54.jpg","meshpouch":"9a52bb7f7e.jpg","airtight12":"20c40f8059.jpg","cello4":"948222b4b9.jpg","greybin":"3c3476663d.jpg","ceil2":"bf20454a2c.jpg","table2":"b9837b8381.jpg","steam2":"aab3822ce1.jpg","diya":"52eb2929e4.jpg","lantern":"1620074d3b.jpg","ganesha":"e060861bca.jpg","buddha":"6927cfc418.jpg","flowers":"ca54aef798.jpg","planter":"acd02e1452.jpg","cushions":"ddb8b5637a.jpg","doormat":"0c3b65736e.jpg","carpet":"cbefc3cd54.jpg","candle":"297b0b39ae.jpg","stool":"9488909a79.jpg","mug":"e8edd260c4.jpg","athlete":"58d2d0c208.jpg","dinnerset":"0058ff8855.jpg","tealcol":"c248a5af79.jpg","miltonhp":"d2b57fbece.jpg","pinkchair":"8c3c202a2d.jpg","foldstool":"c090eba408.jpg","hangers":"c82b8c7b88.jpg","dustpan":"df52ee41e0.jpg","clips":"69edc570ab.jpg","bucket":"ca5a4e8fde.jpg","mopbucket":"09914f86c6.jpg","pulses":"b7bca06b02.jpg","masalabox":"2088a154ce.jpg","jug":"df0ff8d471.jpg","storbox":"ced35da910.jpg","laundry":"1c13e89e1a.jpg","shoerack":"3b1c7835c6.jpg","tuition":"31c9ad3cc3.jpg","runner":"aba9da7fc1.jpg","tealight":"9373e13528.jpg","pstool":"04b2c4cac1.jpg","philips":"7fa299e41a.jpg"};
+const PHOTO_OF = {"Godrej MYST Small Book Locker|book-shaped safe, combination lock":"booklocker","Tea Light Candles":"tealight","Plastic Stool":"pstool","Heavy Weight Dry Iron":"philips","Pulses Jar Set":"pulses","Masala Box":"masalabox","Water Jug@4":"jug","Storage Box":"storbox","Laundry Basket":"laundry","Shoe Rack":"shoerack","Tuition Bag":"tuition","Table Runner":"runner","Water Bottles":"athlete","Dinner Plate Set":"dinnerset","Colander & Strainer":"tealcol","Casserole@4":"miltonhp","Bathroom Stool":"stool","Bath Mug":"mug","Mop Bucket":"mopbucket","Baby Chair":"pinkchair","Folding Stool":"foldstool","Clothes Hangers":"hangers","Dustpan with Brush":"dustpan","Clothes Clips":"clips","Ceiling Fan|1400 mm, 3 blade":"ceil2","Table Fan|400 mm, 3 speed":"table2","Steam Iron|2000 W, vertical steam":"steam2","Clay Diya Set":"diya","Hanging Lantern":"lantern","Brass Ganesha Idol":"ganesha","Buddha Showpiece":"buddha","Artificial Flower Bunch":"flowers","Ceramic Planter":"planter","Cushion Cover Set":"cushions","Door Mat":"doormat","Carpet":"carpet","Scented Candle Jar":"candle","Dustbin@0":"steelbin","Fridge Bottle Set@4":"milton6","Insulated Lunch Box@0":"borolunch","Insulated Bottle@2":"borobottle","Lunch Bag@2":"tote","Pencil Pouch@2":"meshpouch","Airtight Container Set@4":"airtight12","Water Bottle Set@4":"cello4","Pedal Dustbin@4":"greybin","Batter Spoon":"batterspoon","Geometry Box":"geobox","School Backpack":"blackpack","Round Wall Mirror":"mirror","Metal Wall Art":"wallart","Floating Wall Shelf":"shelf","Playing Cards":"cards","Business Board Game":"business","Jigsaw Puzzle":"jigsaw","Tennis Cricket Bat":"mrfbat","Cricket Ball":"balls","Cricket Stumps Set":"stumps","Batting Gloves":"gloves","Skipping Rope":"rope","Lunch Box":"lunchset","Trolley School Bag":"bagset","Pedal Dustbin":"dustbin","Garbage Bags":"garbag","Sink Strainer":"sinkst","Floor Mat":"fmat","Hand Soap":"hsoap","Hand Towel":"htowel","Oven Mitts":"mitts","Apron":"apron","Fire Extinguisher":"fireext","First-Aid Kit":"firstaid","Gas Leak Detector":"gasdet","Immersion Rod":"immrod","Room Heater":"roomheat","Steam Iron":"steamiron","Remote Control Car":"rccar","Badminton Racquet Pair":"badm","Soft Teddy Bear":"teddy","Doll House Set":"dollhouse","Kitchen Play Set":"kplay","Flask":"flask","Aluminium Foil":"foil","Cling Wrap":"wrap","Zip-Lock Bags":"zip","Butter Paper":"butterp","Gas Stove":"stove","Induction Cooktop":"induct","Gas Lighter":"lighter","Rice Cooker":"ricec","Electric Kettle":"kettle","Microwave Oven":"micro","Toaster":"toaster","Water Purifier":"purifier","Air Fryer":"airfry","Dish Soap":"dsoap","Scrub Pads and Brushes":"scrub","Sponge":"sponge","Kitchen Towels":"ktowel","Dishcloth":"dcloth","Dish Rack":"drack","Funnel":"funnel","Kitchen Timer":"timer","Katoris":"katori","Thali Set":"thali","Glasses":"glasses","Mugs":"mugs","Water Jug@0":"waterjug","Serving Bowls":"servbowls","Serving Platter":"platter","Dining Spoons":"spoonsA","Teaspoons":"spoonsB","Forks":"forks","Dining Knives":"dknives","Serving Spoons":"servspoons2","Chopsticks":"chopsticks","Masala Dabba":"masaladabba","Jars":"glassjars","Oil Dispenser":"oildisp","Pickle Jars":"clipjars","Casserole@0":"miltoncass","Colander":"colander","Strainer":"strainer","Mixing Bowls":"mixbowls","Kitchen Scale":"scale","Measuring Spoons":"measspoons","Chef's Knife":"chef","Paring Knife":"paring","Bread Knife":"bread","Kitchen Scissors":"scissors","Chopping Boards":"boards","Peeler":"peeler","Grater":"grater","Wet Grinder":"wetgrinder","Mortar and Pestle":"mortar","Garlic Press":"garlic","Lemon Squeezer":"lemon","Coconut Scraper":"coconut","Vegetable Chopper":"vegchop","Measuring Cups":"meascups","Sieve":"sieve","Appam Pan":"appam","Casserole with Lid":"potlid","Chapati Tongs":"chapati","Cooking Spoons":"utensilset","Dosa Tawa":"crepe","Frying Pan":"fry","Idli Steamer":"idli","Ladle":"ladle","Masher":"masher","Milk Boiler":"milkb","Rolling Pin and Board":"rolling","Slotted Spoon":"skimmer","Stockpot":"stockpot","Tadka Pan":"tadka","Tawa":"tawa","Tongs":"tongs","Whisk":"whisk","Flat Spatula":"spatula","Saucepan with Lid":"saucepan","Water Bottle":"bottles","Kadai":"kadai","Steel Tiffin":"tiffin","Induction-Compatible Cookware":"cookware","Bucket":"bucket","Plastic Table":"ptable","Wash Tub":"tub","Mixer Grinder":"mixer","Pressure Cooker":"cooker","Airtight Containers":"containers","Armchair":"chairs","Sipper Bottle":"tumbler",
+  "Mixer Grinder": "blender",
+  "Dinner Plates": "plates",
+  "Quarter Plates": "plates_side",
+  "Bowls": "bowls",
+  "Tea Cups and Saucers": "cups",
+  "Ceiling Fan": "ceilingfan",
+  "Table Fan": "tablefan",
+  "Storage Water Heater": "bajaj",
+  "Instant Water Heater": "jaquar",
+  "Dry Iron": "iron",
+  
+  "Building Blocks": "blocks",
+  "Die-cast Toy Cars": "cars",
+  "Carrom Board": "carrom",
+  "Chess Set": "chess",
+  "Ludo & Snakes and Ladders": "ludo",
+  "Cricket Bat": "bat",
+  "Volleyball": "volley",
+  "Football": "soccer",
+  "Basketball": "basket",
+  "Wall Clock": "clock",
+  "Framed Painting": "painting",
+  "LED String Lights": "lights",
+  "Ceramic Flower Vase": "vases",
+  "Window Curtains": "curtains",
+  "Double Bedsheet": "bedsheet"
+};
+
+const ORDER_PHONE = "919578529529";
+/* Instagram: put the shop's Instagram username here, for example "atoz_suryapet" (no @). */
+const INSTAGRAM = "atoz_megashoppingmall_suryapet";
+const WA_GROUP = "https://chat.whatsapp.com/K52S88i1wM0ArRYHyzYzt5";
+function getCust() { try { return JSON.parse(localStorage.getItem("atoz_customer") || "null"); } catch (e) { return null; } }
+function orderUrl(it) {
+  const msg = "Hello, I would like to order: " + it.name + (it.spec ? " (" + it.spec + ")" : "") + " from " + CATALOG[it.ci].name + ".";
+  const c = getCust();
+  const full = c ? msg + "\n\nCustomer details\nName: " + c.name + "\nPhone: " + c.phone + "\nAddress: " + c.address : msg;
+  return "https://wa.me/" + ORDER_PHONE + "?text=" + encodeURIComponent(full);
+}
+
+const slug = s => s.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const rupee = new Intl.NumberFormat("en-IN");
+const parse = (s, ci, si, order) => {
+  if (s.startsWith("##")) return { head: s.slice(2).trim() };
+  const p = s.split("|");
+  return { name: p[0].trim(), spec: (p[1] || "").trim(), tag: (p[2] || "").trim(), ci, si, order };
+};
+const items = CATALOG.map((c, ci) => c.subs.map((sub, si) => sub.items.map((s, i) => parse(s, ci, si, i))));
+
+const $ = id => document.getElementById(id);
+const state = { ci: 0, si: 0, q: "", sort: "default" };
+
+function esc(s) { return String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch])); }
+function mono(name) {
+  const w = name.replace(/[^A-Za-z0-9 ]/g, " ").split(/\s+/).filter(Boolean);
+  return ((w[0] || "?")[0] + (w[1] ? w[1][0] : (w[0][1] || ""))).toUpperCase();
+}
+function sortList(list) {
+  const a = list.slice();
+  if (state.sort === "name") a.sort((x, y) => x.name.localeCompare(y.name));
+  else if (state.sort === "name-desc") a.sort((x, y) => y.name.localeCompare(x.name));
+  return a;
+}
+const WA_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const NO_PHOTO = ["Ceiling Fan|1400 mm, 3 blade", "Table Fan|400 mm, 3 speed", "Steam Iron|2000 W, vertical steam"];
+function photoOf(it) { const sk = PHOTO_OF[it.name + "|" + (it.spec || "")]; if (sk) return PHOTOS[sk] || ""; if (NO_PHOTO.includes(it.name + "|" + (it.spec || ""))) return ""; const k = PHOTO_OF[it.name + "@" + it.ci] || PHOTO_OF[it.name]; return k && PHOTOS[k] ? PHOTOS[k] : ""; }
+function favKey(it) { return it.ci + "|" + it.si + "|" + it.name + "|" + (it.spec || ""); }
+function getFavs() { try { return JSON.parse(localStorage.getItem("atoz_wishlist") || "[]"); } catch (e) { return []; } }
+function HEART(it) { const on = getFavs().includes(favKey(it)); return '<button class="heart' + (on ? " on" : "") + '" type="button" aria-pressed="' + on + '" aria-label="Save ' + esc(it.name) + ' to wishlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.7 3.7 4.5 7 4.5c2 0 3.4 1 5 2.9 1.6-1.9 3-2.9 5-2.9 3.3 0 5.4 3.2 4.2 6.6C19.5 15.9 12 20.5 12 20.5z"/></svg></button>'; }
+function card(it, showWhere) {
+  if (it.head) return `<li class="grouphead"><h3>${esc(it.head)}</h3></li>`;
+  const tag = it.tag === "few" ? '<span class="tagb few">Few left</span>' : it.tag === "new" ? '<span class="tagb new">New</span>' : "";
+  const img = photoOf(it);
+  const ph = img
+    ? `<div class="ph"><img src="${img}" alt="${esc(it.name)}" loading="lazy" decoding="async" width="480" height="480">${tag}${HEART(it)}</div>`
+    : `<div class="ph empty"><span aria-hidden="true">${esc(mono(it.name))}</span>${tag}${HEART(it)}</div>`;
+  const where = showWhere ? `<p class="where">${esc(CATALOG[it.ci].name)} &rsaquo; ${esc(CATALOG[it.ci].subs[it.si].name)}</p>` : "";
+  return `<li class="item rv" data-detail="${it.ci}|${it.si}|${esc(it.name)}|${esc(it.spec || "")}">${ph}<div class="meta"><h3>${esc(it.name)}</h3>${it.spec ? `<p class="spec">${esc(it.spec)}</p>` : ""}${where}</div>`
+    + `<a class="order" href="${esc(orderUrl(it))}" target="_blank" rel="noopener" aria-label="Order ${esc(it.name)} on WhatsApp">${WA_SVG}Order now</a></li>`;
+}
+
+function renderTabs() {
+  const t = $("tabs");
+  if (!t.children.length) {
+    /* Built once so the scrolling strip never restarts. Copies after the first are for the endless loop only. */
+    const one = dup => CATALOG.map((c, i) =>
+      `<button class="tab${dup ? " dup" : ""}" type="button" data-ci="${i}"${dup ? ' tabindex="-1" aria-hidden="true"' : ""}>${esc(c.name)}</button>`).join("");
+    t.innerHTML = one(false) + one(true) + one(true) + one(true) + one(true) + one(true);
+  }
+  t.querySelectorAll("[data-ci]").forEach(b =>
+    b.setAttribute("aria-pressed", String(!state.q && Number(b.dataset.ci) === state.ci)));
+}
+function renderSide() {
+  const c = CATALOG[state.ci];
+  $("side").hidden = !!state.q;
+  $("side").innerHTML = `<h2>${esc(c.name)}</h2><p class="floor">Find it on the <b>${esc(c.floor)}</b></p>
+    <ul class="subs">${c.subs.map((s, i) =>
+      `<li><button class="sub" type="button" data-si="${i}" aria-current="${i === state.si}"><span>${esc(s.name)}</span><span class="n">${items[state.ci][i].filter(x => !x.head).length}</span></button></li>`).join("")}</ul>`;
+}
+function renderItems() {
+  if (state.loading) { renderLoader(); return; }
+  let list, title, crumb;
+  if (state.q) {
+    const q = state.q.toLowerCase();
+    list = items.flat(2).filter(it => !it.head && (it.name + " " + it.spec + " " + CATALOG[it.ci].subs[it.si].name).toLowerCase().includes(q));
+    title = `Results for "${state.q}"`; crumb = "Search across the whole mall";
+  } else {
+    list = items[state.ci][state.si];
+    title = CATALOG[state.ci].subs[state.si].name; crumb = CATALOG[state.ci].name;
+  }
+  if (state.q || state.sort !== "default") list = sortList(list.filter(it => !it.head));
+  $("crumb").textContent = crumb;
+  $("title").textContent = title;
+  const n = list.filter(it => !it.head).length;
+  $("count").textContent = n === 1 ? "1 item available" : n + " items available";
+  $("grid").innerHTML = list.length
+    ? list.map(it => card(it, !!state.q)).join("")
+    : '<li class="empty" style="grid-column:1/-1">No items match that search. Try a shorter word such as "fan" or "bag".</li>';
+}
+function render() {
+  $("clear").hidden = !state.q;
+  renderTabs(); renderSide(); renderItems();
+  observeRv();
+}
+function setHash() {
+  try { history.replaceState(null, "", "#" + slug(CATALOG[state.ci].name) + "--" + slug(CATALOG[state.ci].subs[state.si].name)); } catch (e) {}
+}
+function readHash() {
+  const h = (location.hash || "").slice(1);
+  if (!h.includes("--")) return;
+  const [c, s] = h.split("--");
+  const ci = CATALOG.findIndex(x => slug(x.name) === c);
+  if (ci < 0) return;
+  const si = Math.max(0, CATALOG[ci].subs.findIndex(x => slug(x.name) === s));
+  state.ci = ci; state.si = si;
+}
+
+$("tabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-ci]"); if (!b) return;
+  state.ci = Number(b.dataset.ci); state.si = 0; state.q = ""; $("q").value = ""; clearTimeout(state.t); state.loading = false;
+  render(); setHash();
+});
+$("side").addEventListener("click", e => {
+  const b = e.target.closest("[data-si]"); if (!b) return;
+  state.si = Number(b.dataset.si); render(); setHash();
+});
+$("q").addEventListener("input", e => {
+  $("clear").hidden = !e.target.value;
+  if (!e.target.value.trim() && state.q) { clearTimeout(state.t); state.q = ""; render(); }
+});
+function runSearch(v) { try { if (arguments[0]) window.__track && window.__track("search", null, { q: String(arguments[0]).slice(0, 80) }); } catch (e) {}
+  if (!v) return;
+  clearTimeout(state.t);
+  state.pending = v;
+  $("srLead").textContent = "Searching for"; $("srWord").textContent = '"' + v + '"';
+  $("searching").hidden = false;
+  state.t = setTimeout(() => {
+    state.q = v; state.loading = false; render();
+    $("searching").hidden = true;
+    goToResults();
+  }, 1200);
+}
+function goToResults() {
+  const cards = $("grid").querySelectorAll(".item");
+  const target = cards.length === 1 ? cards[0] : document.querySelector("#shop .bar");
+  target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: cards.length === 1 ? "center" : "start" });
+  if (cards.length) { const c = cards[0]; c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash"); }
+}
+$("sform").addEventListener("submit", e => { e.preventDefault(); runSearch($("q").value.trim()); $("q").blur(); });
+$("clear").addEventListener("click", () => { clearTimeout(state.t); state.loading = false; state.q = ""; $("q").value = ""; render(); $("q").focus(); });
+$("sort").addEventListener("change", e => { state.sort = e.target.value; renderItems(); });
+window.addEventListener("hashchange", () => { readHash(); state.q = ""; $("q").value = ""; render(); });
+
+function renderBrands() {
+  const list = BRANDS.length ? BRANDS : Array.from({ length: 6 }, () => ({ name: "Brand logo", ph: true }));
+  const set = Array.from({ length: Math.ceil(10 / list.length) }, () => list).flat();
+  const tile = (b, dup) => `<div class="brand${b.ph ? " ph" : ""}${dup ? " dup" : ""}"${dup ? ' aria-hidden="true"' : ""}${b.bg ? ` style="background:${esc(b.bg)}"` : ""}>${
+    b.logo ? `<img src="${esc(b.logo)}" alt="${dup ? "" : esc(b.name)}">` : `<span>${esc(b.name)}</span>`}</div>`;
+  $("brandTrack").innerHTML = set.map(b => tile(b, false)).join("") + set.map(b => tile(b, true)).join("");
+}
+renderBrands();
+
+function rows(el, list) {
+  el.innerHTML = list.filter(r => r[1]).map(([label, val, copy]) =>
+    `<div><dt>${esc(label)}</dt><dd>${esc(val).replace(/\n/g, "<br>")}${copy ? ` <button class="copy" type="button" data-copy="${esc(val)}">Copy</button>` : ""}</dd></div>`).join("");
+}
+rows($("contactRows"), [["Phone", SHOP.phone, true], ["WhatsApp", SHOP.whatsapp, true], ["Email", SHOP.email, true], ["Payments", "All cards accepted. EMI options with Bajaj Finserv.", false]]);
+rows($("addressRows"), [["Address", SHOP.address, false], ["Opening hours", SHOP.hours, false]]);
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-copy]"); if (!b) return;
+  const done = () => { b.textContent = "Copied"; setTimeout(() => { b.textContent = "Copy"; }, 1500); };
+  try { navigator.clipboard.writeText(b.dataset.copy).then(done, () => {}); } catch (err) {}
+});
+
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-go]"); if (!b) return;
+  if (b.dataset.go === "home") { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+  const t = $(b.dataset.go);
+  if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (b.dataset.go === "reviews") setTimeout(() => { try { $("rvName").focus({ preventScroll: true }); } catch (err) {} }, 700);
+});
+
+function applyMode(dark) {
+  document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+  $("mode").textContent = dark ? "Light mode" : "Dark mode";
+  $("mode").setAttribute("aria-pressed", String(dark));
+}
+$("mode").addEventListener("click", () => {
+  const dark = document.documentElement.getAttribute("data-theme") !== "dark";
+  applyMode(dark);
+  try { localStorage.setItem("atoz-mode", dark ? "dark" : "light"); } catch (e) {}
+});
+let savedMode = "light";
+try { savedMode = localStorage.getItem("atoz-mode") || "light"; } catch (e) {}
+applyMode(savedMode === "dark");
+
+/* ---------------- Effects, Home, Reviews ---------------- */
+const LOGO = document.querySelector("img.mark").src;
+$("srLogo").src = LOGO;
+$("fLogo").src = LOGO;
+function renderLoader() {
+  $("crumb").textContent = "Search across the whole mall";
+  $("title").textContent = 'Searching for "' + state.pending + '"';
+  $("count").textContent = "";
+  $("grid").innerHTML = '<li class="loading"><img src="' + LOGO + '" alt=""><span>Looking through the mall...</span></li>';
+}
+
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+document.documentElement.classList.add("js");
+function countUp(el) {
+  const n = Number(el.dataset.n), suf = el.dataset.suf || "";
+  if (reduce || !n) return;
+  const t0 = performance.now();
+  (function step(t) {
+    const p = Math.min(1, (t - t0) / 900), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(n * e) + suf;
+    if (p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+const io = ("IntersectionObserver" in window && !reduce)
+  ? new IntersectionObserver(entries => entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      en.target.classList.add("in");
+      en.target.querySelectorAll("[data-n]").forEach(countUp);
+      io.unobserve(en.target);
+    }), { threshold: 0.12 })
+  : null;
+function observeRv() {
+  document.querySelectorAll(".rv:not(.in):not([data-o])").forEach((el, i) => {
+    if (!io) { el.classList.add("in"); return; }
+    el.dataset.o = "1";
+    el.style.setProperty("--d", (i % 6) * 60 + "ms");
+    io.observe(el);
+  });
+}
+
+/* click ripple */
+document.addEventListener("pointerdown", e => {
+  const el = e.target.closest("button, .btn, .item");
+  if (!el || reduce || el.disabled) return;
+  if (getComputedStyle(el).position === "static") el.style.position = "relative";
+  el.style.overflow = "hidden";
+  const r = el.getBoundingClientRect(), d = Math.max(r.width, r.height) * 2;
+  const s = document.createElement("span");
+  s.className = "ripple";
+  s.style.cssText = "width:" + d + "px;height:" + d + "px;left:" + (e.clientX - r.left - d / 2) + "px;top:" + (e.clientY - r.top - d / 2) + "px";
+  el.appendChild(s);
+  setTimeout(() => s.remove(), 650);
+});
+
+/* scroll progress and back to top */
+let ticking = false;
+function onScroll() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    ticking = false;
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    $("bar").style.width = (h > 0 ? Math.min(100, window.scrollY / h * 100) : 0) + "%";
+    $("toTop").hidden = window.scrollY < 600;
+  });
+}
+window.addEventListener("scroll", onScroll, { passive: true });
+$("toTop").addEventListener("click", () => window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }));
+onScroll();
+
+/* Home picks */
+function openCategory(ci, si) {
+  clearTimeout(state.t); state.loading = false;
+  state.ci = ci; state.si = si; state.q = ""; $("q").value = "";
+  render(); setHash();
+  $("shop").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+function pickFor(ci) {
+  const subs = items[ci].map(l => l.filter(x => !x.head));
+  const picked = [], seen = new Set();
+  const take = it => { if (it && !seen.has(it) && picked.length < 4) { seen.add(it); picked.push(it); } };
+  subs.forEach(l => take(l.find(it => photoOf(it))));
+  subs.forEach(l => l.filter(it => photoOf(it)).forEach(take));
+  for (let k = 0; picked.length < 4 && k < 8; k++) subs.forEach(l => take(l[k]));
+  return picked;
+}
+/* Festival offers: edit this list to change the offers. price = offer price, mrp = printed price (0 = hide), note = extra tag. */
+const OFFERS = [
+  { img: "0372d7684e.jpg", brand: "Pigeon", name: "Pigeon Maxima Steel Stove", price: 1999, mrp: 3999, note: "" },
+  { img: "a16053a393.jpg", brand: "Pigeon", name: "Pigeon Rice Cooker 1.8 Joy Double Pot", price: 1999, mrp: 3845, note: "Free pot included" },
+  { img: "2df465fc0b.jpg", brand: "Pigeon", name: "Pigeon Favourite 4 Burner Gas Stove", price: 3999, mrp: 7999, note: "" },
+  { img: "e308b729c8.jpg", brand: "Pigeon", name: "Pigeon Senior Combo Pack Stainless Steel Pressure Cooker", price: 2199, mrp: 4395, note: "" },
+  { img: "bd78a3a6ac.jpg", brand: "Butterfly", name: "Butterfly Dosa Tawa", price: 599, mrp: 1099, note: "" },
+  { img: "faae9abc43.jpg", brand: "Butterfly", name: "Butterfly Handy Mixi V2 Grinder", price: 1899, mrp: 4999, note: "" },
+  { img: "392a4a031e.jpg", brand: "Butterfly", name: "Butterfly Ziera Chrome 5 Jar Mixer Grinder, 750 W", price: 5499, mrp: 8849, note: "" },
+  { img: "eec9309a93.jpg", brand: "Butterfly", name: "Butterfly Flora Table Top Wet Grinder", price: 3499, mrp: 8499, note: "" }
+];
+(function () {
+  const track = $("otrack"), view = $("oview"), dots = $("odots"), car = $("ocar");
+  if (!track) return;
+  const N = OFFERS.length, GAP = () => (innerWidth <= 640 ? 14 : 20);
+  const inr = n => "\u20B9" + Number(n).toLocaleString("en-IN");
+  let P = 3, idx = 0, busy = false, timer = null, paused = false;
+  const perView = () => (innerWidth <= 640 ? 1 : innerWidth <= 1000 ? 2 : 3);
+  function cardHtml(o, clone) {
+    const save = o.mrp > o.price ? o.mrp - o.price : 0;
+    const spec = "Festival offer price " + inr(o.price) + (o.mrp ? ", MRP " + inr(o.mrp) : "") + (o.note ? ", " + o.note.toLowerCase() : "");
+    const tags = (save ? '<span class="otag save">You save ' + inr(save) + "</span>" : "") + (o.note ? '<span class="otag">' + esc(o.note) + "</span>" : "");
+    return '<li class="ocard" data-nodetail data-detail="0|0|' + esc(o.name) + "|" + esc(spec) + '"' + (clone ? ' aria-hidden="true"' : "") + ">"
+      + '<div class="oimg"><img src="' + o.img + '" alt="' + (clone ? "" : esc(o.name)) + '" loading="lazy" decoding="async"><span class="orib">Festival offer</span></div>'
+      + '<div class="obody"><p class="obrand">' + esc(o.brand) + '</p><h3 class="oname">' + esc(o.name) + "</h3>"
+      + '<div class="oprice"><span class="onow">' + inr(o.price) + '</span>' + (o.mrp ? '<span class="omrp">MRP ' + inr(o.mrp) + "</span>" : "") + "</div>"
+      + '<div class="otags">' + tags + "</div>"
+      + '<a class="order" href="#"' + (clone ? ' tabindex="-1"' : "") + ">" + WA_SVG + "Order now</a></div></li>";
+  }
+  function build() {
+    P = perView();
+    const head = OFFERS.slice(N - P).map(o => cardHtml(o, true)), tail = OFFERS.slice(0, P).map(o => cardHtml(o, true));
+    track.innerHTML = head.join("") + OFFERS.map(o => cardHtml(o, false)).join("") + tail.join("");
+    dots.innerHTML = OFFERS.map((o, i) => '<button type="button" role="tab" aria-label="Offer ' + (i + 1) + '" data-i="' + i + '"></button>').join("");
+    idx = P; place(false);
+  }
+  function step() { const c = track.children[0]; return c ? c.getBoundingClientRect().width + GAP() : 0; }
+  function place(anim) {
+    track.classList.toggle("noanim", !anim);
+    track.style.transform = "translate3d(" + (-idx * step()) + "px,0,0)";
+    const cur = (((idx - P) % N) + N) % N;
+    [].forEach.call(dots.children, (d, i) => d.setAttribute("aria-selected", i === cur ? "true" : "false"));
+    if (!anim) { void track.offsetWidth; track.classList.remove("noanim"); }
+  }
+  function go(d) {
+    if (busy) return; busy = true; idx += d; place(true);
+    setTimeout(() => {
+      if (idx >= N + P) idx -= N; else if (idx < P) idx += N;
+      place(false); busy = false;
+    }, 640);
+  }
+  function jump(i) { if (busy) return; idx = P + i; place(true); }
+  function play() { stop(); if (matchMedia("(prefers-reduced-motion: reduce)").matches) return; timer = setInterval(() => { if (!paused && !document.hidden) go(1); }, 3800); }
+  function stop() { clearInterval(timer); }
+  $("onext").addEventListener("click", () => { go(1); play(); });
+  $("oprev").addEventListener("click", () => { go(-1); play(); });
+  dots.addEventListener("click", e => { const b = e.target.closest("button[data-i]"); if (b) { jump(+b.dataset.i); play(); } });
+  car.addEventListener("mouseenter", () => { paused = true; });
+  car.addEventListener("mouseleave", () => { paused = false; });
+  car.addEventListener("focusin", () => { paused = true; });
+  car.addEventListener("focusout", () => { paused = false; });
+  car.addEventListener("keydown", e => { if (e.key === "ArrowRight") { go(1); play(); } else if (e.key === "ArrowLeft") { go(-1); play(); } });
+  let sx = 0, sy = 0;
+  view.addEventListener("touchstart", e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; paused = true; }, { passive: true });
+  view.addEventListener("touchend", e => { paused = false; const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { go(dx < 0 ? 1 : -1); play(); } }, { passive: true });
+  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { if (perView() !== P) build(); else place(false); }, 150); });
+  build(); play();
+})();
+
+/* Chat assistant: answers from the catalogue, offers and shop details on this page. No server, no cost. */
+(function () {
+  const fab = $("cbfab"), panel = $("cbpanel"), log = $("cblog"), form = $("cbform"), inp = $("cbin"), chips = $("cbchips");
+  if (!fab) return;
+  const inr = n => "₹" + Number(n).toLocaleString("en-IN");
+  const waLink = t => "https://wa.me/" + ORDER_PHONE + "?text=" + encodeURIComponent(t);
+  const STOP = new Set("is are the a an do you have has any there available availability in stock show me i want need looking for to buy get please pls price cost rate how much what about of and or with can u unda undha undi unnaya unnaaya unnayi kavali kavalani kavalsindi cheppandi cheppu chupinchu chupinchandi entha enta ela emi em ledha leda ah ra sir madam anna bro hi hello hey tell give your our this that it on at my we shop store mall items item products product details detail ki lo ni ga ayite unte aite".split(" "));
+  const SYN = { tava: ["tawa"], tawwa: ["tawa"], dosa: ["tawa"], mixie: ["mixer"], mixi: ["mixer"], grinder: ["mixer", "grinder"], geyser: ["water heater", "geyser"], heater: ["water heater", "heater"], gas: ["stove", "gas"], kukar: ["cooker"], cooker: ["cooker"], tiffin: ["tiffin", "lunch"], flask: ["bottle", "flask"], bucket: ["bucket", "tub"], chair: ["chair", "stool"], lamp: ["light", "lamp"], bulb: ["light"], toy: ["toy"], bat: ["cricket", "bat"], ball: ["ball"], bag: ["bag", "pouch"], vase: ["vase", "showpiece"], iron: ["iron"], fan: ["fan"], locker: ["locker", "safe"], safe: ["safe", "locker"] };
+  let ITEMS = null;
+  function items() {
+    if (ITEMS) return ITEMS; ITEMS = [];
+    CATALOG.forEach((c, ci) => c.subs.forEach((sb, si) => sb.items.forEach(raw => {
+      if (raw.indexOf("##") === 0) return; const a = raw.split("|");
+      const it = { ci, si, name: a[0], spec: a[1] || "", cat: c.name, sub: sb.name };
+      it.n = it.name.toLowerCase(); it.h = (it.n + " " + it.spec + " " + sb.name + " " + c.name).toLowerCase(); ITEMS.push(it);
+    })));
+    return ITEMS;
+  }
+  const norm = t => t.toLowerCase().replace(/[^a-z0-9ఀ-౿\s]/g, " ").replace(/\s+/g, " ").trim();
+  const has = (t, words) => words.some(w => /^[a-z0-9 ]+$/.test(w) ? new RegExp("\\b" + w + "\\b").test(t) : t.indexOf(w) > -1);
+  function contentTokens(t) { return t.split(" ").filter(w => w && !STOP.has(w)).map(w => (w.length > 3 && /s$/.test(w) && !/ss$/.test(w) ? w.slice(0, -1) : w)); }
+  function matches(tok, text) { const alts = SYN[tok] || [tok]; return alts.some(a => text.indexOf(a) > -1) || text.indexOf(tok) > -1; }
+  function offerSpec(o) { return "Festival offer price " + inr(o.price) + (o.mrp ? ", MRP " + inr(o.mrp) : "") + (o.note ? ", " + o.note.toLowerCase() : ""); }
+  function searchItems(toks) {
+    if (!toks.length) return [];
+    const need = Math.max(1, Math.ceil(toks.length / 2)), out = [];
+    items().forEach(it => { let hit = 0, sc = 0; toks.forEach(t => { if (matches(t, it.n)) { hit++; sc += 3; } else if (matches(t, it.h)) { hit++; sc += 1; } }); if (hit >= need && sc >= 3) out.push({ it, sc, hit }); });
+    out.sort((a, b) => b.hit - a.hit || b.sc - a.sc);
+    return out.map(x => x.it);
+  }
+  function searchOffers(toks) { if (!toks.length) return []; return OFFERS.filter(o => { const t = (o.name + " " + o.brand).toLowerCase(); return toks.every(k => matches(k, t)); }); }
+  const offerLi = o => '<li class="cbitem" data-nodetail data-detail="0|0|' + esc(o.name) + "|" + esc(offerSpec(o)) + '"><img src="' + o.img + '" alt="" loading="lazy"><div><b>' + esc(o.name) + '</b><span class="cbpr">' + inr(o.price) + (o.mrp ? "<s>" + inr(o.mrp) + "</s>" : "") + "</span>" + (o.note ? "<small>" + esc(o.note) + "</small>" : "") + '</div><a class="order" href="#">' + WA_SVG + "Order now</a></li>";
+  const itemLi = it => { const im = photoOf(it); return '<li class="cbitem" data-nodetail data-detail="' + it.ci + "|" + it.si + "|" + esc(it.name) + "|" + esc(it.spec) + '">' + (im ? '<img src="' + im + '" alt="" loading="lazy">' : '<span class="cbph">' + esc(mono(it.name)) + "</span>") + "<div><b>" + esc(it.name) + "</b>" + (it.spec ? "<small>" + esc(it.spec) + "</small>" : "") + "<small>" + esc(it.cat) + " › " + esc(it.sub) + '</small></div><a class="order" href="#">' + WA_SVG + "Order now</a></li>"; };
+  const wa = (t, label) => '<a class="cbact" href="' + waLink(t) + '" target="_blank" rel="noopener">' + (label || "Chat on WhatsApp") + "</a>";
+  const act = (a, label, d) => '<button type="button" class="cbact" data-act="' + a + '"' + (d || "") + ">" + label + "</button>";
+
+  function reply(raw) {
+    const t = norm(raw), toks = contentTokens(t), name = (getCust() || {}).name;
+    if (!t) return null;
+    if (has(t, ["thanks", "thank you", "thankyou", "thx", "dhanyavadalu"]) || t.indexOf("ధన్యవాద") > -1) return { a: 1, h: "<p>You're welcome! Anything else I can help with?</p>" };
+    if (has(t, ["bye", "goodbye"])) return { a: 1, h: "<p>Thank you for visiting Sri A to Z Mega Shopping Mall. Have a lovely day!</p>" };
+    if (/^(hi|hello|hey|hai|hii|namaste|namaskaram|good morning|good afternoon|good evening)$/.test(t) || t.indexOf("నమస్") > -1) return { a: 1, h: "<p>Hello" + (name ? " " + esc(name.split(" ")[0]) : "") + "! How can I help you today?</p>" };
+    if (has(t, ["offer", "offers", "discount", "dasara", "dussehra", "festival", "sale", "exchange", "taggimpu"]) || t.indexOf("ఆఫర్") > -1) {
+      const m = searchOffers(contentTokens(t.replace(/\b(offer|offers|discount|dasara|dussehra|festival|sale|exchange|taggimpu|todays|today|latest|current|new)\b/g, " ").replace(/\s+/g, " ").trim()));
+      const list = (m.length ? m : OFFERS).slice(0, 4);
+      return { a: 1, h: "<p>" + (m.length ? "Here are the matching festival offers:" : "Our Dasara Mega Exchange Offers:") + "</p><ul class=\"cbres\">" + list.map(offerLi).join("") + "</ul>" + act("offers", "See all offers") + '<p class="sm" style="margin-top:8px">For exchange details, call or visit the store.</p>' };
+    }
+    if (has(t, ["timing", "timings", "hours", "open", "opening", "close", "closing", "eppudu", "working", "sunday", "holiday"]) || t.indexOf("సమయ") > -1 || t.indexOf("టైమ్") > -1) return { a: 1, h: "<p><b>Opening hours</b></p><p>" + esc(SHOP.hours).replace(/\n/g, "<br>") + "</p>" };
+    if (has(t, ["address", "where", "location", "map", "ekkada", "directions", "route", "landmark", "situated", "reach"]) || t.indexOf("చిరునామా") > -1 || t.indexOf("ఎక్కడ") > -1) return { a: 1, h: "<p><b>Our address</b></p><p>" + esc(SHOP.address) + '</p><a class="cbact" href="https://share.google/sPgUBqOJQblY3lzNi" target="_blank" rel="noopener">View on Google Maps</a>' };
+    if (has(t, ["phone", "call", "number", "contact", "mobile", "whatsapp", "email", "mail"]) || t.indexOf("ఫోన్") > -1) return { a: 1, h: '<p><b>Contact us</b></p><p>Phone: <a href="tel:+918885385043">' + esc(SHOP.phone) + "</a></p>" + (SHOP.email ? '<p>Email: <a href="mailto:' + esc(SHOP.email) + '">' + esc(SHOP.email) + "</a></p>" : "") + wa("Hello, I would like to know more about A TO Z Mega Shopping Mall.", "Chat on WhatsApp") };
+    if (has(t, ["payment", "payments", "pay", "card", "cards", "emi", "bajaj", "finserv", "upi", "gpay", "phonepe", "cash", "debit", "credit", "installment", "installments"])) return { a: 1, h: "<p>We accept <b>all cards</b> and offer <b>Bajaj Finserv EMI</b>.</p><p class=\"sm\">For other payment options such as UPI or cash, please call us on " + esc(SHOP.phone) + ".</p>" };
+    if (has(t, ["delivery", "deliver", "shipping", "ship", "courier", "transport", "parcel", "home delivery"])) return { a: 1, h: "<p>We support <b>home service</b>, and we can <b>transport all over the world</b>. Please WhatsApp us the item and your location for charges and timing.</p>" + wa("Hello, I would like to know about delivery for my order.", "Ask on WhatsApp") };
+    if (has(t, ["category", "categories", "floor", "floors", "section", "sections", "collection", "sell", "products", "catalogue", "catalog", "menu"]) || (/what.*(have|sell|available)/.test(t) && !toks.length)) return { a: 1, h: "<p><b>What we sell</b></p><p>" + CATALOG.map(c => esc(c.name) + " <span class=\"sm\">(" + esc(c.floor) + ")</span>").join("<br>") + "</p>" + act("shop", "Browse the shop") };
+    if (has(t, ["brand", "brands", "company", "companies"])) return { a: 1, h: "<p>We stock brands including <b>" + BRANDS.map(b => esc(b.name)).join(", ") + "</b>.</p>" };
+    if (has(t, ["how to order", "how do i order", "order", "ordering", "buy", "purchase", "book"]) && !searchItems(toks.filter(k => !["order", "ordering", "buy", "purchase", "book"].includes(k))).length) return { a: 1, h: "<p><b>How to order</b></p><p>1. Find your item in the shop.<br>2. Tap <b>Order now</b> (sign up once with your name, mobile number and address).<br>3. Your order opens in WhatsApp; just press send.</p>" + act("shop", "Browse the shop") };
+    if (has(t, ["signup", "sign up", "register", "login", "log in", "logout", "log out", "account", "profile", "password"])) return { a: 1, h: "<p>Tap <b>Profile</b> at the top of the page to sign up, see your orders, or log out. There is no password; we only need your name, mobile number and address.</p>" };
+    if (has(t, ["wishlist", "wish list", "saved", "favourite", "favorite", "heart"])) return { a: 1, h: "<p>Tap the <b>heart</b> on any item to save it. Find your saved items under <b>Profile</b>.</p>" };
+    if (has(t, ["review", "reviews", "rating", "ratings", "feedback"])) return { a: 1, h: "<p>Customers rate us <b>4.5</b>. You can read and write reviews on the page.</p>" + act("reviews", "Go to reviews") };
+    if (has(t, ["since", "about", "owner", "history", "1995", "who are you", "suryapet"]) && !toks.some(k => searchItems([k]).length)) return { a: 1, h: "<p>Sri A to Z Mega Shopping Mall has served Suryapet since <b>1995</b>: home appliances, toys and games, school essentials, decor and plastic items under one roof.</p>" + act("about", "About us") };
+    // item search
+    const price = has(t, ["price", "cost", "rate", "entha", "enta", "how much"]) || t.indexOf("ధర") > -1;
+    const om = searchOffers(toks), im = searchItems(toks);
+    if (om.length || im.length) {
+      let h = "<p>" + (im.length ? "Yes, we have " + (im.length > 1 ? "these" : "this") + " for <b>" + esc(toks.join(" ")) + "</b>:" : "Good news, this is on festival offer:") + "</p><ul class=\"cbres\">" + om.slice(0, 2).map(offerLi).join("") + im.slice(0, om.length ? 2 : 3).map(itemLi).join("") + "</ul>";
+      if (im.length > 3) h += act("open", "See all " + im.length + " in the shop", ' data-ci="' + im[0].ci + '" data-si="' + im[0].si + '"');
+      if (price && im.length && !om.length) h += '<p class="sm" style="margin-top:8px">Prices change, so please WhatsApp us to confirm today\'s price and stock.</p>' + wa("Hello, what is the price of " + im[0].name + "?", "Ask the price");
+      else h += '<p class="sm" style="margin-top:8px">Call or WhatsApp us to confirm stock.</p>';
+      return { a: 1, h };
+    }
+    return { a: 0, h: "<p>Sorry, I could not find that. Try an item name such as <i>pressure cooker</i>, <i>ceiling fan</i> or <i>tiffin</i>, or ask about offers, timings or address.</p><p>You can also ask our team directly:</p>" + wa("Hello, " + raw.trim(), "Ask on WhatsApp") };
+  }
+
+  function add(cls, html) { const d = document.createElement("div"); d.className = "cbm " + cls; d.innerHTML = html; log.appendChild(d); log.scrollTop = log.scrollHeight; return d; }
+  function bot(html) { add("bot", html); }
+  function ask(text) {
+    text = text.trim().slice(0, 140); if (!text) return;
+    add("me", esc(text)); const ty = add("bot typing", "<i></i><i></i><i></i>");
+    const r = reply(text);
+    setTimeout(() => {
+      ty.remove();
+      bot(r ? r.h : "<p>Please type your question.</p>");
+      try { window.__track && window.__track("chat_q", null, { q: text, answered: !!(r && r.a) }); } catch (e) {}
+    }, 420);
+  }
+  const CH = [["Today's offers", "offers"], ["Find an item", "__find"], ["Shop timings", "timings"], ["Address & map", "address"], ["Payments & EMI", "payments"], ["What we sell", "categories"]];
+  chips.innerHTML = CH.map(c => '<button type="button" data-q="' + esc(c[1]) + '">' + esc(c[0]) + "</button>").join("");
+  chips.addEventListener("click", e => {
+    const b = e.target.closest("button[data-q]"); if (!b) return; const q = b.dataset.q;
+    if (q === "__find") { add("me", "Find an item"); bot("<p>Type the item name, for example <i>pressure cooker</i>, <i>ceiling fan</i>, <i>tiffin box</i> or <i>carrom board</i>.</p>"); inp.focus(); return; }
+    ask(b.textContent === "Today's offers" ? "offers" : b.textContent);
+  });
+  log.addEventListener("click", e => {
+    const b = e.target.closest("[data-act]"); if (!b) return; const a = b.dataset.act;
+    const go = id => { close(); const el = $(id); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); };
+    if (a === "offers") go("offers"); else if (a === "shop") go("shop"); else if (a === "reviews") go("reviews"); else if (a === "about") go("about");
+    else if (a === "open") { close(); openCategory(+b.dataset.ci, +b.dataset.si); }
+  });
+  let started = false;
+  function open() {
+    panel.hidden = false; fab.classList.add("open"); fab.setAttribute("aria-expanded", "true");
+    if (!started) { started = true; const n = (getCust() || {}).name; bot("<p>" + (n ? "Hello " + esc(n.split(" ")[0]) + "! " : "Hello! ") + "Welcome to <b>Sri A to Z Mega Shopping Mall</b>. Ask me about items, festival offers, timings or our address.</p>"); }
+    setTimeout(() => { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 60);
+  }
+  function close() { panel.hidden = true; fab.classList.remove("open"); fab.setAttribute("aria-expanded", "false"); }
+  fab.addEventListener("click", open);
+  $("cbx").addEventListener("click", () => { close(); fab.focus(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !panel.hidden) close(); });
+  form.addEventListener("submit", e => { e.preventDefault(); const v = inp.value; inp.value = ""; ask(v); });
+})();
+
+function renderHome() {
+  if (!$("hcats")) return;
+  $("hcats").innerHTML = CATALOG.map((c, ci) => {
+    const cards = pickFor(ci).map(it => card(it, false).replace('<li class="item rv" data-detail', '<li class="item rv hpick" data-nodetail data-open="' + ci + ':' + it.si + '" data-detail')).join("");
+    return '<div class="hcat"><div class="hhead rv"><div><h3>' + esc(c.name) + '</h3><p>' + esc(c.floor) + ' &middot; ' + c.subs.length + ' sub-sections</p></div>'
+      + '<button class="link" type="button" data-open="' + ci + ':0">View all</button></div><ul class="grid">' + cards + '</ul></div>';
+  }).join("");
+  observeRv();
+}
+function openFrom(el) { const a = el.dataset.open.split(":"); openCategory(Number(a[0]), Number(a[1])); }
+if ($("hcats")) $("hcats").addEventListener("click", e => { if (e.target.closest("a, .heart")) return; const el = e.target.closest("[data-open]"); if (el) openFrom(el); });
+if ($("hcats")) $("hcats").addEventListener("keydown", e => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const el = e.target.closest(".hpick"); if (el) { e.preventDefault(); openFrom(el); }
+});
+
+/* Reviews */
+const STAR = "M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z";
+const RV_KEY = "atoz-reviews";
+let reviews = [];
+try { const raw = JSON.parse(localStorage.getItem(RV_KEY) || "[]"); if (Array.isArray(raw)) reviews = raw; } catch (e) {}
+function saveReviews() { try { localStorage.setItem(RV_KEY, JSON.stringify(reviews)); return true; } catch (e) { return false; } }
+
+const videoMem = new Map();
+function idb() {
+  return new Promise((res, rej) => {
+    try {
+      const r = indexedDB.open("atoz-reviews", 1);
+      r.onupgradeneeded = () => r.result.createObjectStore("videos");
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => rej(r.error);
+    } catch (e) { rej(e); }
+  });
+}
+async function putVideo(id, blob) {
+  videoMem.set(id, blob);
+  try {
+    const db = await idb();
+    await new Promise((res, rej) => { const tx = db.transaction("videos", "readwrite"); tx.objectStore("videos").put(blob, id); tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
+    return true;
+  } catch (e) { return false; }
+}
+async function getVideo(id) {
+  if (videoMem.has(id)) return videoMem.get(id);
+  try {
+    const db = await idb();
+    return await new Promise((res, rej) => { const q = db.transaction("videos").objectStore("videos").get(id); q.onsuccess = () => res(q.result || null); q.onerror = () => rej(q.error); });
+  } catch (e) { return null; }
+}
+async function delVideo(id) {
+  videoMem.delete(id);
+  try { const db = await idb(); db.transaction("videos", "readwrite").objectStore("videos").delete(id); } catch (e) {}
+}
+
+function starsHtml(n) {
+  return Array.from({ length: 5 }, (_, i) => '<svg class="st' + (i < n ? " on" : "") + '" viewBox="0 0 24 24" aria-hidden="true"><path d="' + STAR + '"/></svg>').join("");
+}
+let blobUrls = [];
+function renderReviews() {
+  const n = reviews.length;
+  const avg = n ? reviews.reduce((a, r) => a + r.rating, 0) / n : 0;
+  $("rvSummary").innerHTML = n
+    ? '<div class="avg"><b>' + avg.toFixed(1) + '</b><span class="stars" role="img" aria-label="' + avg.toFixed(1) + ' out of 5">' + starsHtml(Math.round(avg)) + '</span><small>' + n + (n === 1 ? " review" : " reviews") + '</small></div>'
+      + [5, 4, 3, 2, 1].map(k => { const c = reviews.filter(r => r.rating === k).length; return '<div class="mrow"><span>' + k + '</span><div class="meter"><i style="width:' + Math.round(c / n * 100) + '%"></i></div><span>' + c + '</span></div>'; }).join("")
+    : '<p class="muted">No reviews yet. Be the first to share your experience.</p>';
+
+  blobUrls.forEach(u => URL.revokeObjectURL(u)); blobUrls = [];
+  $("rvList").innerHTML = reviews.slice().sort((a, b) => b.ts - a.ts).map(r =>
+    '<li class="review rv"><div class="rtop"><b>' + esc(r.name) + '</b><span class="stars" role="img" aria-label="' + r.rating + ' out of 5">' + starsHtml(r.rating) + '</span><time>'
+    + esc(new Date(r.ts).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })) + '</time></div>'
+    + (r.text ? '<p>' + esc(r.text) + '</p>' : "")
+    + (r.vid ? '<video class="rvideo" controls preload="metadata" playsinline data-vid="' + esc(r.id) + '"></video>' : "")
+    + (r.link ? '<a class="rlink" href="' + esc(r.link) + '" target="_blank" rel="noopener">Watch video review</a>' : "")
+    + '<button class="rdel" type="button" data-del="' + esc(r.id) + '">Delete</button></li>').join("");
+  $("rvList").querySelectorAll("video[data-vid]").forEach(async v => {
+    const b = await getVideo(v.dataset.vid);
+    if (b) { const u = URL.createObjectURL(b); blobUrls.push(u); v.src = u; }
+    else { const p = document.createElement("p"); p.className = "muted"; p.textContent = "This video is no longer available on this device."; v.replaceWith(p); }
+  });
+  observeRv();
+}
+
+let rating = 0, vfile = null, prevUrl = "";
+function say(m, ok) { const el = $("rvMsg"); el.textContent = m; el.className = "msg " + (ok ? "ok" : "err"); }
+function paintStars() { $("rvStars").querySelectorAll(".sb").forEach(b => { const on = Number(b.dataset.v) <= rating; b.classList.toggle("on", on); b.setAttribute("aria-checked", String(Number(b.dataset.v) === rating)); }); }
+$("rvStars").innerHTML = [1, 2, 3, 4, 5].map(v => '<button type="button" class="sb" role="radio" aria-checked="false" aria-label="' + v + (v === 1 ? " star" : " stars") + '" data-v="' + v + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + STAR + '"/></svg></button>').join("");
+$("rvStars").addEventListener("click", e => {
+  const b = e.target.closest(".sb"); if (!b) return;
+  rating = Number(b.dataset.v); paintStars();
+  b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop");
+});
+function clearPreview() {
+  if (prevUrl) URL.revokeObjectURL(prevUrl);
+  prevUrl = ""; vfile = null; $("rvFile").value = ""; $("rvPrev").innerHTML = "";
+}
+$("rvFile").addEventListener("change", e => {
+  const f = e.target.files && e.target.files[0];
+  if (!f) { clearPreview(); return; }
+  if (!/^video\//.test(f.type)) { clearPreview(); say("Please choose a video file."); return; }
+  if (f.size > 50 * 1024 * 1024) { clearPreview(); say("That video is larger than 50 MB. Please choose a shorter one."); return; }
+  vfile = f;
+  if (prevUrl) URL.revokeObjectURL(prevUrl);
+  prevUrl = URL.createObjectURL(f);
+  $("rvPrev").innerHTML = '<video controls playsinline preload="metadata" src="' + prevUrl + '"></video><button type="button" id="rvRemove">Remove video</button>';
+  say("", true);
+});
+$("rvPrev").addEventListener("click", e => { if (e.target.id === "rvRemove") clearPreview(); });
+$("rvForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = $("rvName").value.trim(), text = $("rvText").value.trim(), link = $("rvLink").value.trim();
+  if (!rating) return say("Please choose a star rating.");
+  if (!name) return say("Please enter your name.");
+  if (!text && !vfile && !link) return say("Please write a few words or add a video.");
+  if (link && !/^https?:\/\/\S+$/i.test(link)) return say("The video link should start with http:// or https://");
+  const id = "r" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const r = { id: id, name: name, rating: rating, text: text, ts: Date.now() };
+  if (link) r.link = link;
+  let videoSaved = true;
+  if (vfile) { r.vid = true; videoSaved = await putVideo(id, vfile); }
+  reviews.push(r);
+  const saved = saveReviews();
+  $("rvForm").reset(); rating = 0; paintStars(); clearPreview();
+  renderReviews();
+  say(saved && videoSaved ? "Thank you! Your review has been added." : "Thank you! Your review is shown here, but this browser could not keep a saved copy.", true);
+});
+$("rvList").addEventListener("click", e => {
+  const b = e.target.closest("[data-del]"); if (!b) return;
+  const id = b.dataset.del;
+  reviews = reviews.filter(r => r.id !== id);
+  delVideo(id); saveReviews(); renderReviews();
+});
+
+renderHome();
+renderReviews();
+paintStars();
+
+function toast(msg) {
+  const t = $("toast"); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; }, 2600);
+}
+document.querySelectorAll("[data-ig]").forEach(a => {
+  if (INSTAGRAM) { a.href = "https://www.instagram.com/" + encodeURIComponent(INSTAGRAM) + "/"; a.target = "_blank"; a.rel = "noopener"; }
+  else a.addEventListener("click", e => { e.preventDefault(); toast("Our Instagram page link is coming soon."); });
+});
+
+readHash();
+render();
+
+(function () {
+  const w = document.getElementById("callwrap"), ic = document.getElementById("icCall");
+  const close = () => { w.hidden = true; };
+  ic.addEventListener("click", e => { e.preventDefault(); w.hidden = false; document.getElementById("callYes").focus(); });
+  document.getElementById("callNo").addEventListener("click", close);
+  document.getElementById("callYes").addEventListener("click", () => setTimeout(close, 300));
+  w.addEventListener("click", e => { if (e.target === w) close(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+  const lg = document.getElementById("logoHome");
+  const go = () => { try { window.scrollTo(0, 0); history.replaceState(null, "", location.pathname + location.search); } catch (e) {} location.reload(); };
+  let taps = 0, tt = null;
+  const tap = () => { taps++; clearTimeout(tt); if (taps >= 7) { taps = 0; location.href = "owner-26b5af12.html#go"; return; } tt = setTimeout(() => { taps = 0; go(); }, 700); };
+  lg.addEventListener("click", tap);
+  lg.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tap(); } });
+})();
+
+(function () {
+  const sel = document.getElementById("catSel"); if (!sel) return;
+  sel.addEventListener("change", () => {
+    if (sel.value === "") return;
+    const t = document.querySelector('#tabs [data-ci="' + sel.value + '"]');
+    if (t) t.click();
+    const sh = document.getElementById("shop"); if (sh) sh.scrollIntoView({ behavior: "smooth" });
+    sel.value = "";
+  });
+})();
+
+(function () {
+  const w = document.getElementById("dwrap"); if (!w) return;
+  const close = () => { w.hidden = true; document.body.style.overflow = ""; };
+  document.addEventListener("click", e => {
+    if (e.target.closest("a")) return;
+    if (e.target.closest(".heart")) return;
+    const li = e.target.closest("li[data-detail]"); if (!li || li.hasAttribute("data-nodetail")) return;
+    const [ci, si, name, spec] = li.dataset.detail.split("|");
+    const it = { ci: Number(ci), si: Number(si), name, spec };
+    window.__detailItem = it; try { window.__track && window.__track("item_view", it); } catch (e) {}
+    const img = photoOf(it);
+    document.getElementById("dimg").innerHTML = img ? '<img src="' + img + '" alt="' + esc(name) + '">' : "<span>" + esc(mono(name)) + "</span>";
+    document.getElementById("dName").textContent = name;
+    document.getElementById("dspec").textContent = spec;
+    document.getElementById("dwhere").textContent = CATALOG[it.ci].name + " \u203A " + CATALOG[it.ci].subs[it.si].name;
+    const o = document.getElementById("dorder"); o.href = orderUrl(it); o.innerHTML = WA_SVG + "Order now";
+    w.hidden = false; document.body.style.overflow = "hidden"; w.scrollTop = 0;
+  });
+  document.getElementById("dclose").addEventListener("click", close);
+  w.addEventListener("click", e => { if (e.target === w) close(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+  document.getElementById("dstore").addEventListener("click", () => { close(); const a = document.getElementById("address"); if (a) a.scrollIntoView({ behavior: "smooth" }); });
+})();
+
+(function () {
+  const w = document.getElementById("sgwrap"), f = document.getElementById("sgform"), $$ = id => document.getElementById(id);
+  let pending = null;
+  const lab = () => { const c = getCust(); $$("acctB").textContent = c ? c.name.split(" ")[0] : "Profile"; };
+  const open = () => { const c = getCust() || {}; $$("sgName").value = c.name || ""; $$("sgPhone").value = c.phone || ""; $$("sgAddr").value = c.address || ""; $$("sgErr").textContent = ""; $$("sgOut").hidden = !getCust(); $$("sgT").textContent = getCust() ? "Your account" : "Sign up to place your order"; w.hidden = false; $$("sgName").focus(); };
+  const close = () => { w.hidden = true; pending = null; };
+  const itemOf = el => { const li = el.closest("li[data-detail]"); if (li) { const [ci, si, name, spec] = li.dataset.detail.split("|"); return { ci: +ci, si: +si, name, spec }; } return window.__detailItem || null; };
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a.order, a.dorder"); if (!a) return;
+    e.preventDefault(); e.stopPropagation();
+    const it = a.classList.contains("dorder") ? window.__detailItem : itemOf(a); if (!it) return;
+    if (!getCust()) { pending = it; open(); return; }
+    window.__logOrder(it); window.open(orderUrl(it), "_blank", "noopener");
+  }, true);
+  const menu = $$("acctmenu");
+  const getOrders = () => { try { return JSON.parse(localStorage.getItem("atoz_orders") || "[]"); } catch (e) { return []; } };
+  window.__logOrder = it => { try { window.__track && window.__track("order_click", it); } catch (e) {} const o = getOrders(); o.unshift({ k: it.ci + "|" + it.si + "|" + it.name + "|" + (it.spec || ""), t: Date.now() }); try { localStorage.setItem("atoz_orders", JSON.stringify(o.slice(0, 50))); } catch (e) {} };
+  function menuDraw() {
+    const c = getCust(), n = getFavs().length;
+    menu.innerHTML = c
+      ? '<h4>Your Account</h4><button type="button" data-m="account">Your Account</button><button type="button" data-m="orders">Your Orders <span class="cnt">' + getOrders().length + '</span></button><button type="button" data-m="wish">Your Wish List <span class="cnt">' + n + '</span></button><button type="button" data-m="out">Log out</button>'
+      : '<h4>Your Account</h4><p>Sign up to order, and to see your orders and wish list here.</p><button type="button" class="go" data-m="account">Sign up</button><button type="button" data-m="wish">Saved items <span class="cnt">' + n + '</span></button>';
+  }
+  window.__menuDraw = menuDraw;
+  const toggleMenu = e => { e.stopPropagation(); menuDraw(); menu.hidden = !menu.hidden; };
+  $$("acct").addEventListener("click", toggleMenu);
+  $$("acct2").addEventListener("click", toggleMenu);
+  $$("dark2").addEventListener("click", () => $$("mode").click());
+  menu.addEventListener("click", e => {
+    const b = e.target.closest("[data-m]"); if (!b) return; menu.hidden = true; const m = b.dataset.m; pending = null;
+    if (m === "account") open(); else if (m === "orders") window.__openOrders(); else if (m === "wish") window.__openWish(); else if (m === "out") $$("sgOut").click();
+  });
+  document.addEventListener("click", e => { if (!menu.hidden && !e.target.closest("#acctmenu, #acct, #acct2")) menu.hidden = true; });
+  $$("sgclose").addEventListener("click", close);
+  w.addEventListener("click", e => { if (e.target === w) close(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !w.hidden) close(); });
+  $$("sgOut").addEventListener("click", () => { try { window.__trackLogout && window.__trackLogout(); } catch (e) {} try { localStorage.removeItem("atoz_customer"); } catch (e) {} lab(); close(); toast("You are logged out."); });
+  f.addEventListener("submit", e => {
+    e.preventDefault();
+    const name = $$("sgName").value.trim(), phone = $$("sgPhone").value.trim(), address = $$("sgAddr").value.trim();
+    let digits = phone.replace(/\D/g, "");
+    if (digits.length === 12 && digits.indexOf("91") === 0) digits = digits.slice(2); else if (digits.length === 11 && digits[0] === "0") digits = digits.slice(1);
+    let err = "";
+    if (name.length < 2) err = "Please enter your full name.";
+    else if (!/^[6-9]\d{9}$/.test(digits)) err = "Please enter a valid 10-digit mobile number.";
+    else if (address.length < 10) err = "Please enter your full postal address.";
+    $$("sgErr").textContent = err; if (err) return;
+    try { localStorage.setItem("atoz_customer", JSON.stringify({ name, phone: digits, address })); } catch (x) {}
+    try { window.__trackLogin && window.__trackLogin({ name, phone: digits, address }); } catch (x) {}
+    lab(); const it = pending; w.hidden = true; pending = null;
+    if (it) { toast("Thanks, " + name.split(" ")[0] + ". Opening WhatsApp to send your order."); window.__logOrder(it); window.open(orderUrl(it), "_blank", "noopener"); }
+    else toast("Your details are saved.");
+  });
+  lab();
+})();
+
+(function () {
+  try { history.scrollRestoration = "manual"; } catch (e) {}
+  const $$ = id => document.getElementById(id);
+  const w = $$("wlwrap");
+  const count = () => { if (window.__menuDraw) window.__menuDraw(); };
+  const parse = k => { const [ci, si, name, spec] = k.split("|"); return { ci: +ci, si: +si, name, spec }; };
+  function draw() {
+    const f = getFavs(); $$("wlSub").textContent = f.length ? f.length + (f.length === 1 ? " saved item" : " saved items") : "";
+    $$("wlist").innerHTML = f.length ? f.map(k => { const it = parse(k), img = photoOf(it);
+      return '<li data-nodetail data-detail="' + esc(k) + '"><div class="th">' + (img ? '<img src="' + img + '" alt="">' : "<span>" + esc(mono(it.name)) + "</span>") + '</div><div><b>' + esc(it.name) + "</b><small>" + esc(it.spec) + "</small><small>" + esc(CATALOG[it.ci].name) + '</small></div><div class="acts"><a class="order" href="' + esc(orderUrl(it)) + '" target="_blank" rel="noopener">Order now</a><button type="button" data-unfav="' + esc(k) + '">Remove</button></div></li>'; }).join("")
+      : '<li class="wlempty" style="display:block;border:0">Your wishlist is empty. Tap the heart on any item to save it here.</li>';
+  }
+  function setFav(k, on) {
+    try { window.__track && window.__track(on ? "wishlist_add" : "wishlist_remove", parse(k)); } catch (e) {}
+    let f = getFavs().filter(x => x !== k); if (on) f.push(k);
+    try { localStorage.setItem("atoz_wishlist", JSON.stringify(f)); } catch (e) {}
+    document.querySelectorAll("li[data-detail]").forEach(li => { if (li.dataset.detail === k) { const h = li.querySelector(".heart"); if (h) { h.classList.toggle("on", on); h.setAttribute("aria-pressed", String(on)); } } });
+    count();
+  }
+  document.addEventListener("click", e => {
+    const h = e.target.closest(".heart");
+    if (h) { e.preventDefault(); e.stopPropagation(); const li = h.closest("li[data-detail]"); if (!li) return;
+      if (!getCust()) { document.getElementById("lgwrap").hidden = false; document.getElementById("lgYes").focus(); return; }
+      const k = li.dataset.detail, on = !getFavs().includes(k); setFav(k, on);
+      h.classList.remove("blink"); void h.offsetWidth; h.classList.add("blink");
+      toast(on ? "Added to your wishlist" : "Removed from your wishlist"); return; }
+    const u = e.target.closest("[data-unfav]"); if (u) { setFav(u.dataset.unfav, false); draw(); return; }
+  });
+  window.__openWish = () => { draw(); w.hidden = false; };
+  $$("wlclose").addEventListener("click", () => { w.hidden = true; });
+  w.addEventListener("click", e => { if (e.target === w) w.hidden = true; });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !w.hidden) w.hidden = true; });
+  count();
+})();
+
+(function () {
+  const $$ = id => document.getElementById(id), w = $$("ordwrap");
+  window.__openOrders = () => {
+    let o = []; try { o = JSON.parse(localStorage.getItem("atoz_orders") || "[]"); } catch (e) {}
+    $$("ordSub").textContent = o.length ? "Orders you sent to the shop on WhatsApp from this device. The shop confirms each order with you on WhatsApp." : "";
+    $$("ordlist").innerHTML = o.length ? o.map(r => { const [ci, si, name, spec] = r.k.split("|"), it = { ci: +ci, si: +si, name, spec }, img = photoOf(it), d = new Date(r.t);
+      return '<li data-nodetail data-detail="' + esc(r.k) + '"><div class="th">' + (img ? '<img src="' + img + '" alt="">' : "<span>" + esc(mono(name)) + "</span>") + '</div><div><b>' + esc(name) + "</b><small>" + esc(spec) + "</small><small>Ordered " + d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) + '</small></div><div class="acts"><a class="order" href="#" rel="noopener">Order again</a></div></li>'; }).join("")
+      : '<li class="wlempty" style="display:block;border:0">You have not placed any orders yet. Tap Order now on any item to get started.</li>';
+    w.hidden = false;
+  };
+  $$("ordclose").addEventListener("click", () => { w.hidden = true; });
+  w.addEventListener("click", e => { if (e.target === w) w.hidden = true; });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !w.hidden) w.hidden = true; });
+})();
+
+(function () {
+  const w = document.getElementById("lgwrap"), $$ = id => document.getElementById(id);
+  const close = () => { w.hidden = true; };
+  $$("lgNo").addEventListener("click", close);
+  $$("lgYes").addEventListener("click", () => { close(); $$("acct").click(); setTimeout(() => { const m = document.querySelector('#acctmenu [data-m=account]'); if (m) m.click(); }, 0); });
+  w.addEventListener("click", e => { if (e.target === w) close(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+})();
+
+/* ---- polish v41: sparkles + gentle 3D tilt (desktop only) ---- */
+try {
+  const hero = document.getElementById("home");
+  if (hero && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    for (let i = 0; i < 14; i++) {
+      const sp = document.createElement("i"); sp.className = "spark";
+      sp.style.left = (6 + Math.random() * 88) + "%"; sp.style.top = (20 + Math.random() * 65) + "%";
+      sp.style.animationDelay = (Math.random() * 6).toFixed(2) + "s"; hero.appendChild(sp);
+    }
+  }
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.addEventListener("pointermove", e => {
+      const c = e.target.closest && e.target.closest(".card");
+      document.querySelectorAll(".card.tilt").forEach(x => { if (x !== c) { x.classList.remove("tilt"); x.style.transform = ""; } });
+      if (!c) return;
+      const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      c.classList.add("tilt");
+      c.style.transform = "perspective(800px) rotateX(" + (-y * 5).toFixed(2) + "deg) rotateY(" + (x * 6).toFixed(2) + "deg) translateY(-4px)";
+    }, { passive: true });
+    document.addEventListener("pointerleave", () => document.querySelectorAll(".card.tilt").forEach(x => { x.style.transform = ""; }));
+  }
+  document.addEventListener("click", e => {
+    const h = e.target.closest && e.target.closest(".heart, .fav");
+    if (h) { h.classList.remove("pop"); void h.offsetWidth; h.classList.add("pop"); }
+  });
+} catch (_) {}
+
+/* ---- database tracking (Firebase). Active only when config.js has the keys ---- */
+(function () {
+  var cfg = window.ATOZ_FIREBASE, queue = [], db = null, uid = null, ok = false;
+  var sid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  function cust() { try { return getCust(); } catch (e) { return null; } }
+  function FV() { return firebase.firestore.FieldValue; }
+  function run(fn) { queue.push(fn); pump(); }
+  function pump() { if (!ok) return; while (queue.length) { var f = queue.shift(); try { f(); } catch (e) {} } }
+  function ev(type, it, extra, c) {
+    run(function () {
+      var d = { uid: uid, sid: sid, type: type, ts: FV().serverTimestamp(), clientTs: Date.now(), name: c ? c.name : null, phone: c ? c.phone : null };
+      if (it) { d.item = it.ci + "|" + it.si + "|" + it.name + "|" + (it.spec || ""); d.itemName = it.name; try { d.category = CATALOG[it.ci].name; } catch (e) {} }
+      if (extra) for (var k in extra) d[k] = extra[k];
+      db.collection("events").add(d);
+    });
+  }
+  window.__track = function (type, it, extra) { if (cfg && cfg.apiKey) ev(type, it, extra, cust()); };
+  window.__trackLogin = function (c) {
+    if (!(cfg && cfg.apiKey)) return;
+    ev("login", null, { address: c.address }, c);
+    run(function () {
+      db.collection("customers").doc(uid).set({ uid: uid, name: c.name, phone: c.phone, address: c.address, lastLoginAt: FV().serverTimestamp(), loginCount: FV().increment(1) }, { merge: true });
+      db.collection("sessions").doc(sid).set({ name: c.name, phone: c.phone, loggedInAt: FV().serverTimestamp() }, { merge: true });
+    });
+  };
+  window.__trackLogout = function () {
+    if (!(cfg && cfg.apiKey)) return;
+    ev("logout", null, null, cust());
+    run(function () { db.collection("sessions").doc(sid).set({ loggedOutAt: FV().serverTimestamp(), lastSeen: FV().serverTimestamp() }, { merge: true }); });
+  };
+  if (!(cfg && cfg.apiKey)) return;
+  function loadJs(u) { return new Promise(function (res, rej) { var s = document.createElement("script"); s.src = u; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
+  function start() {
+    firebase.initializeApp(cfg);
+    db = firebase.firestore();
+    firebase.auth().signInAnonymously().then(function (cr) {
+      uid = cr.user.uid; ok = true;
+      var c = cust();
+      db.collection("sessions").doc(sid).set({ uid: uid, sid: sid, startedAt: FV().serverTimestamp(), lastSeen: FV().serverTimestamp(), name: c ? c.name : null, phone: c ? c.phone : null, returning: !!c, screen: innerWidth + "x" + innerHeight, ua: navigator.userAgent.slice(0, 140) });
+      ev("session_start", null, null, c);
+      pump();
+      var beat = function () { if (document.visibilityState === "visible" || arguments[0]) db.collection("sessions").doc(sid).set({ lastSeen: FV().serverTimestamp() }, { merge: true }); };
+      setInterval(beat, 30000);
+      document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") beat(true); });
+      window.addEventListener("pagehide", function () { beat(true); });
+    }).catch(function () {});
+  }
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      if (window.firebase && firebase.firestore) return start();
+      var v = "https://www.gstatic.com/firebasejs/10.12.2/";
+      loadJs(v + "firebase-app-compat.js").then(function () { return loadJs(v + "firebase-auth-compat.js"); }).then(function () { return loadJs(v + "firebase-firestore-compat.js"); }).then(start).catch(function () {});
+    }, 1200);
+  });
+})();
+</script>
+
+</body>
+</html>
