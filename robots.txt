@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shashi4185.github.io/Sri-Atoz-Mega-Shopping-Mall/sitemap.xml
