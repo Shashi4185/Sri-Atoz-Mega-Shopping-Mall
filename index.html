@@ -376,6 +376,9 @@ main.wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28p
 .ph.empty span { display: grid; place-items: center; width: 46%; aspect-ratio: 1; border: 1px solid var(--line2); border-radius: 50%; font: 500 clamp(1.3rem, 3vw, 2rem)/1 var(--font-display); letter-spacing: 0.04em; color: var(--gold-text); }
 .tagb { position: absolute; left: 10px; top: 10px; padding: 4px 9px; border-radius: 2px; background: var(--navy); color: #FFFFFF; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
 .tagb.few { background: var(--gold); color: var(--gold-ink); }
+.tagb.offer { background: #1F7A4D; color: #fff; }
+.tagb.hot { background: #C0392B; color: #fff; }
+.tagb.prem { background: #5B3A8C; color: #fff; }
 .meta { display: grid; gap: 3px; padding: 14px 14px 0; margin-bottom: 12px; }
 .meta h3 { font: 600 1rem/1.35 var(--font-body); overflow-wrap: anywhere; }
 .spec { margin: 0; color: var(--muted); font-size: 0.86rem; overflow-wrap: anywhere; }
@@ -1433,9 +1436,10 @@ function getFavs() { try { return JSON.parse(localStorage.getItem("atoz_wishlist
 function HEART(it) { const on = getFavs().includes(favKey(it)); return '<button class="heart' + (on ? " on" : "") + '" type="button" aria-pressed="' + on + '" aria-label="Save ' + esc(it.name) + ' to wishlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.7 3.7 4.5 7 4.5c2 0 3.4 1 5 2.9 1.6-1.9 3-2.9 5-2.9 3.3 0 5.4 3.2 4.2 6.6C19.5 15.9 12 20.5 12 20.5z"/></svg></button>'; }
 const BAG_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
 const BTNS = (clone) => '<div class="btns"><a class="order" href="#"' + (clone ? ' tabindex="-1"' : "") + '>Order now</a><button type="button" class="addbag"' + (clone ? ' tabindex="-1"' : "") + '>' + BAG_SVG + 'Add to bag</button></div>';
+const TAGS = { new: ["New", "new"], few: ["Few left", "few"], offer: ["Offer", "offer"], hot: ["Hot sale", "hot"], fast: ["Fast selling", "hot"], ltime: ["Limited time", "hot"], loffer: ["Limited offer", "hot"], best: ["Best seller", "prem"], trend: ["Trending", "prem"], valued: ["Most valued", "prem"] };
 function card(it, showWhere) {
   if (it.head) return `<li class="grouphead"><h3>${esc(it.head)}</h3></li>`;
-  const tag = it.tag === "few" ? '<span class="tagb few">Few left</span>' : it.tag === "new" ? '<span class="tagb new">New</span>' : "";
+  const tg = TAGS[it.tag], tag = tg ? '<span class="tagb ' + tg[1] + '">' + tg[0] + '</span>' : "";
   const img = photoOf(it);
   const ph = img
     ? `<div class="ph"><img src="${img}" alt="${esc(it.name)}" loading="lazy" decoding="async" width="480" height="480">${tag}${HEART(it)}</div>`
@@ -1871,10 +1875,13 @@ window.__applyDyn = function (d) {
       for (var n = sl.length - 1; n >= 0; n--) {
         var it0 = sl[n]; if (it0.head) continue;
         var key = [CATALOG[ci].name, CATALOG[ci].subs[si].name, it0.name, it0.spec].join("|");
-        var o = ov[key] || {}, ph = (d.photos || {})[key]; if (!o.hidden && !o.name && !o.info && !o.price && !ph) continue;
+        var o = ov[key] || {}, ph = (d.photos || {})[key]; if (!o.hidden && !o.name && !o.info && !o.price && !o.mrp && !o.tag && !ph) continue;
         if (o.hidden) { sl.splice(n, 1); continue; }
         var img0 = ph ? ph[0] : photoOf(it0), nm = o.name ? clean(o.name) : it0.name, info = o.info ? clean(o.info) : it0.spec, spec = info;
         if (Number(o.price) > 0 && Number(o.mrp) > 0) spec = (info ? info + ". " : "") + "Sale price " + rs(o.price) + ", MRP " + rs(o.mrp);
+        else if (Number(o.price) > 0) spec = (info ? info + ". " : "") + "Price " + rs(o.price);
+        else if (Number(o.mrp) > 0) spec = (info ? info + ". " : "") + "MRP " + rs(o.mrp);
+        if (o.tag) it0.tag = o.tag === "none" ? "" : (TAGS[o.tag] ? o.tag : it0.tag);
         if (spec !== it0.spec || nm !== it0.name || ph) { if (img0) { var pk = "bi_" + ci + "_" + si + "_" + n; PHOTOS[pk] = img0; PHOTO_OF[nm + "|" + spec] = pk; } if (ph && ph.length > 1) window.PX[nm + "|" + spec] = ph; it0.spec = spec; it0.name = nm; }
       }
     }); });
@@ -1882,7 +1889,7 @@ window.__applyDyn = function (d) {
       if (!x || x.hidden || !x.name) return;
       var ci = CATALOG.findIndex(function (c) { return c.name === x.cat; }); if (ci < 0) return;
       var si = CATALOG[ci].subs.findIndex(function (s) { return s.name === x.sub; }); if (si < 0) return;
-      var it = { name: clean(x.name), spec: clean(x.spec), tag: x.tag === "new" || x.tag === "few" ? x.tag : "", ci: ci, si: si, order: -1 };
+      var it = { name: clean(x.name), spec: clean(x.spec), tag: TAGS[x.tag] ? x.tag : "", ci: ci, si: si, order: -1 };
       var gal = (Array.isArray(x.imgs) && x.imgs.length ? x.imgs : [x.img]).filter(okImg).slice(0, 5);
       if (gal.length) { var k = "dyn_" + x.id; PHOTOS[k] = gal[0]; PHOTO_OF[it.name + "|" + it.spec] = k; if (gal.length > 1) window.PX[it.name + "|" + it.spec] = gal; }
       var list = items[ci][si];
