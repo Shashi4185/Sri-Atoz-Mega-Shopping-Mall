@@ -232,8 +232,7 @@ button { cursor: pointer; }
 /* Festival offers carousel */
 .offers { position: relative; padding-block: 76px 72px; background: var(--navy); color: var(--on-navy); overflow: hidden; border-block: 1px solid var(--line2); }
 .offers::after { content: ""; position: absolute; width: 520px; height: 520px; right: -180px; top: -220px; border-radius: 50%; background: radial-gradient(closest-side, rgba(217, 172, 74, 0.22), transparent); pointer-events: none; }
-.offers .wrap { position: relative; z-index: 1; max-width: 1760px; padding-inline: clamp(20px, 3.2vw, 56px); }
-@media (min-width: 1500px) { .ocard { flex-basis: calc((100% - 60px) / 4); } }
+.offers .wrap { position: relative; z-index: 1; }
 .ohead { max-width: 70ch; margin-bottom: 34px; }
 .ohead .eyebrow { color: var(--gold); }
 .ohead h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; color: var(--on-navy); text-wrap: balance; }
@@ -246,13 +245,14 @@ button { cursor: pointer; }
 .ocard { flex: 0 0 calc((100% - 40px) / 3); min-width: 0; display: flex; flex-direction: column; background: var(--surface); color: var(--ink); border-radius: 6px; overflow: hidden; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32); border: 1px solid var(--line); }
 .oimg { position: relative; aspect-ratio: 4 / 3; background: #FFFFFF; overflow: hidden; }
 .oimg img { width: 100%; height: 100%; object-fit: contain; display: block; padding: 10px; }
+.orib.inl { position: static; align-self: flex-start; clip-path: none; border-radius: 3px; padding: 5px 12px; }
 .orib { position: absolute; left: 0; top: 14px; padding: 6px 14px 6px 12px; background: var(--gold); color: var(--gold-ink); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; clip-path: polygon(0 0, 100% 0, calc(100% - 9px) 50%, 100% 100%, 0 100%); }
 .obody { padding: 18px 18px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.obrand { min-height: 1.1em; margin: 0; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-text); }
+.obrand { margin: 0; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-text); }
 .oname { margin: 0; font: 500 1.12rem/1.3 var(--font-display); min-height: 2.6em; }
 .oprice { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
 .onow { font: 700 1.9rem/1 var(--font-display); color: var(--ink); }
-.oinfo { margin: 0; color: var(--muted); font-size: 0.86rem; line-height: 1.45; min-height: 2.9em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.oinfo { margin: 0; color: var(--muted); font-size: 0.86rem; line-height: 1.45; }
 .omrp { color: var(--muted); font-size: 0.92rem; text-decoration: line-through; }
 .otags { display: flex; flex-wrap: wrap; gap: 8px; min-height: 26px; }
 .otag { padding: 4px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; background: rgba(217, 172, 74, 0.18); color: var(--gold-text); }
@@ -1389,16 +1389,9 @@ const INSTAGRAM = "atoz_megashoppingmall_suryapet";
 const WA_GROUP = "https://chat.whatsapp.com/K52S88i1wM0ArRYHyzYzt5";
 function getCust() { try { return JSON.parse(localStorage.getItem("atoz_customer") || "null"); } catch (e) { return null; } }
 function catOf(it) { return /^Weekend offer price/.test(it.spec || "") ? "Weekend offer" : CATALOG[it.ci].name; }
-const SITE_URL = "https://atozmegashoppingmall.com/";
-function itemLink(it) {
-  try {
-    if (/^Weekend offer price/.test(it.spec || "")) return SITE_URL + "#offers--" + slug(it.name);
-    const c = CATALOG[it.ci]; return SITE_URL + "#" + slug(c.name) + "--" + slug(c.subs[it.si].name) + "--" + slug(it.name);
-  } catch (e) { return SITE_URL; }
-}
 function orderUrl(it) {
   const c0 = getCust();
-  const msg = "Hello, " + (c0 ? "I am " + c0.name + ". " : "") + "I would like to order: " + it.name + (it.spec ? " (" + it.spec + ")" : "") + " from " + catOf(it) + ".\nItem details link: " + itemLink(it);
+  const msg = "Hello, " + (c0 ? "I am " + c0.name + ". " : "") + "I would like to order: " + it.name + (it.spec ? " (" + it.spec + ")" : "") + " from " + catOf(it) + ".";
   const c = getCust();
   const full = c ? msg + "\n\nCustomer details\nName: " + c.name + "\nPhone: " + c.phone + "\nAddress: " + c.address : msg;
   return "https://wa.me/" + ORDER_PHONE + "?text=" + encodeURIComponent(full);
@@ -1537,19 +1530,7 @@ function goToResults() {
 $("sform").addEventListener("submit", e => { e.preventDefault(); runSearch($("q").value.trim()); $("q").blur(); });
 $("clear").addEventListener("click", () => { clearTimeout(state.t); state.loading = false; state.q = ""; $("q").value = ""; render(); $("q").focus(); });
 $("sort").addEventListener("change", e => { state.sort = e.target.value; renderItems(); });
-function focusHashItem() {
-  const hs = location.hash || ""; if (window.__focusedHash === hs) return;
-  const p = hs.slice(1).split("--"); if (p.length < 2) return;
-  const isOffer = p[0] === "offers", want = p.slice(isOffer ? 1 : 2).join("--"); if (!want) return;
-  const pool = isOffer ? $("otrack").querySelectorAll(".ocard:not([aria-hidden])") : $("grid").querySelectorAll(".item");
-  const li = Array.from(pool).find(el => slug((el.dataset.detail || "").split("|")[2] || "") === want);
-  if (!li) return;
-  window.__focusedHash = hs;
-  li.scrollIntoView({ behavior: "auto", block: "center" });
-  li.click();
-}
-window.__focusHashItem = focusHashItem;
-window.addEventListener("hashchange", () => { readHash(); state.q = ""; $("q").value = ""; render(); setTimeout(focusHashItem, 150); });
+window.addEventListener("hashchange", () => { readHash(); state.q = ""; $("q").value = ""; render(); });
 
 function renderBrands() {
   const list = BRANDS.length ? BRANDS : Array.from({ length: 6 }, () => ({ name: "Brand logo", ph: true }));
@@ -1697,16 +1678,16 @@ const OFFERS = [
   let N = OFFERS.length; const GAP = () => (innerWidth <= 640 ? 14 : 20);
   const inr = n => "\u20B9" + Number(n).toLocaleString("en-IN");
   let P = 3, idx = 0, busy = false, timer = null, paused = false;
-  const perView = () => (innerWidth <= 640 ? 1 : innerWidth <= 1000 ? 2 : innerWidth >= 1500 ? 4 : 3);
+  const perView = () => (innerWidth <= 640 ? 1 : innerWidth <= 1000 ? 2 : 3);
   function cardHtml(o, clone) {
     const save = o.mrp > o.price ? o.mrp - o.price : 0;
     const spec = "Weekend offer price " + inr(o.price) + (o.mrp ? ", MRP " + inr(o.mrp) : "") + (o.note ? ", " + o.note.toLowerCase() : "") + (o.info ? ". " + o.info : "");
     const endTag = o.ends ? '<span class="otag">Ends ' + new Date(o.ends).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) + "</span>" : "";
     const tags = endTag + (save ? '<span class="otag save">You save ' + inr(save) + "</span>" : "") + (o.note ? '<span class="otag">' + esc(o.note) + "</span>" : "");
     return '<li class="ocard" data-detail="0|0|' + esc(o.name) + "|" + esc(spec) + '"' + (clone ? ' aria-hidden="true"' : "") + ">"
-      + '<div class="oimg"><img src="' + o.img + '" alt="' + (clone ? "" : esc(o.name)) + '" loading="lazy" decoding="async"><span class="orib">' + "Weekend offer" + '</span></div>'
-      + '<div class="obody"><p class="obrand">' + esc(o.brand) + '</p><h3 class="oname">' + esc(o.name) + "</h3>"
-      + '<p class="oinfo">' + esc(o.info || "") + "</p>"
+      + (o.img ? '<div class="oimg"><img src="' + o.img + '" alt="' + (clone ? "" : esc(o.name)) + '" loading="lazy" decoding="async"><span class="orib">' + esc(window.OFFER_LABEL || "Weekend offer") + '</span></div>' : "")
+      + '<div class="obody">' + (o.img ? "" : '<span class="orib inl">' + esc(window.OFFER_LABEL || "Weekend offer") + "</span>") + '<p class="obrand">' + esc(o.brand) + '</p><h3 class="oname">' + esc(o.name) + "</h3>"
+      + (o.info ? '<p class="oinfo">' + esc(o.info) + "</p>" : "")
       + '<div class="oprice"><span class="onow">' + inr(o.price) + '</span>' + (o.mrp ? '<span class="omrp">MRP ' + inr(o.mrp) + "</span>" : "") + "</div>"
       + '<div class="otags">' + tags + "</div>"
       + BTNS(clone) + "</div></li>";
@@ -1718,6 +1699,7 @@ const OFFERS = [
     dots.innerHTML = OFFERS.map((o, i) => '<button type="button" role="tab" aria-label="Offer ' + (i + 1) + '" data-i="' + i + '"></button>').join("");
     idx = P; place(false);
   }
+  window.__rebuildOffers = () => { build(); play(); };
   window.__flashOffers = list => { OFFERS.unshift.apply(OFFERS, list); N = OFFERS.length; build(); play(); };
   function step() { const c = track.children[0]; return c ? c.getBoundingClientRect().width + GAP() : 0; }
   function place(anim) {
@@ -1867,48 +1849,46 @@ const OFFERS = [
 window.__applyDyn = function (d) {
   try {
     var clean = function (t) { return String(t == null ? "" : t).replace(/\|/g, "/").trim(); };
+    var hd = d.head;
+    if (hd && (hd.title || hd.label)) {
+      var h2 = document.querySelector("#offers .ohead h2"), eb = document.querySelector("#offers .ohead .eyebrow");
+      if (hd.title && h2) h2.textContent = String(hd.title).slice(0, 80);
+      var lab = hd.label ? String(hd.label).slice(0, 40) : (hd.title ? "Special offers" : "");
+      if (lab) { if (eb) eb.textContent = lab; window.OFFER_LABEL = lab; }
+      var oc = document.getElementById("offers"); if (oc) oc.setAttribute("aria-label", String(hd.title || lab));
+      if (window.__rebuildOffers) window.__rebuildOffers();
+    }
     /* Owner edits to built-in items (site/catalog): hide, info, sale price and MRP */
     var ov = (d.catalog && d.catalog.o) || {}, rs = function (n) { return "\u20B9" + Number(n).toLocaleString("en-IN"); };
     items.forEach(function (cl, ci) { cl.forEach(function (sl, si) {
-      var mv = [];
       for (var n = sl.length - 1; n >= 0; n--) {
         var it0 = sl[n]; if (it0.head) continue;
-        var o = ov[[CATALOG[ci].name, CATALOG[ci].subs[si].name, it0.name, it0.spec].join("|")]; if (!o) continue;
+        var key = [CATALOG[ci].name, CATALOG[ci].subs[si].name, it0.name, it0.spec].join("|");
+        var o = ov[key] || {}, ph = (d.photos || {})[key]; if (!o.hidden && !o.name && !o.info && !o.price && !ph) continue;
         if (o.hidden) { sl.splice(n, 1); continue; }
-        var img0 = photoOf(it0), info = o.info ? clean(o.info) : it0.spec, spec = info;
+        var img0 = ph || photoOf(it0), nm = o.name ? clean(o.name) : it0.name, info = o.info ? clean(o.info) : it0.spec, spec = info;
         if (Number(o.price) > 0 && Number(o.mrp) > 0) spec = (info ? info + ". " : "") + "Sale price " + rs(o.price) + ", MRP " + rs(o.mrp);
-        if (spec !== it0.spec) { if (img0) { var pk = "bi_" + ci + "_" + si + "_" + n; PHOTOS[pk] = img0; PHOTO_OF[it0.name + "|" + spec] = pk; } it0.spec = spec; }
-        if (o.tag === "new" || o.tag === "few") it0.tag = o.tag; else if (o.tag === "none") it0.tag = "";
-        if (o.tag === "new") { it0.mk = true; sl.splice(n, 1); mv.unshift(it0); }
+        if (spec !== it0.spec || nm !== it0.name || ph) { if (img0) { var pk = "bi_" + ci + "_" + si + "_" + n; PHOTOS[pk] = img0; PHOTO_OF[nm + "|" + spec] = pk; } it0.spec = spec; it0.name = nm; }
       }
-      if (mv.length) { if (!(sl[0] && sl[0].dyn)) sl.unshift({ head: "New arrivals", dyn: true }); sl.splice.apply(sl, [1, 0].concat(mv)); }
     }); });
     (d.items || []).forEach(function (x) {
       if (!x || x.hidden || !x.name) return;
       var ci = CATALOG.findIndex(function (c) { return c.name === x.cat; }); if (ci < 0) return;
       var si = CATALOG[ci].subs.findIndex(function (s) { return s.name === x.sub; }); if (si < 0) return;
-      var it = { name: clean(x.name), spec: clean(x.spec), tag: x.tag === "new" || x.tag === "few" ? x.tag : "", ci: ci, si: si, order: -1, mk: true };
+      var it = { name: clean(x.name), spec: clean(x.spec), tag: x.tag === "new" || x.tag === "few" ? x.tag : "", ci: ci, si: si, order: -1 };
       if (typeof x.img === "string" && x.img.indexOf("data:image/") === 0) { var k = "dyn_" + x.id; PHOTOS[k] = x.img; PHOTO_OF[it.name + "|" + it.spec] = k; }
       var list = items[ci][si];
       if (!(list[0] && list[0].dyn)) list.unshift({ head: "New arrivals", dyn: true });
       list.splice(1, 0, it);
     });
-    render(); renderHome(); setTimeout(function () { window.__focusHashItem && window.__focusHashItem(); }, 150);
-    var oh = document.querySelector("#offers .ohead");
-    if (oh && d.flash) {
-      var h2 = oh.querySelector("h2"), pp = oh.querySelector("p:not(.eyebrow)");
-      if (h2 && d.flash.offerTitle) h2.textContent = clean(d.flash.offerTitle);
-      if (pp && d.flash.offerSub) pp.textContent = clean(d.flash.offerSub);
-    }
+    render(); renderHome();
     var now = Date.now(), inr2 = function (n) { return "₹" + Number(n).toLocaleString("en-IN"); };
-    var offs = (d.offers || []).filter(function (o) { return o && o.name && (!o.endsAt || o.endsAt > now) && ((typeof o.img === "string" && o.img.indexOf("data:image/") === 0) || (typeof o.imgFile === "string" && /^[\w.-]+\.(jpg|jpeg|png|webp)$/i.test(o.imgFile))); })
+    var offs = (d.offers || []).filter(function (o) { return o && o.name && (!o.endsAt || o.endsAt > now) && Number(o.price) > 0; })
       .sort(function (a, b) { return b.createdAt - a.createdAt; })
       .map(function (o) {
-        var nm = clean(o.name), br = clean(o.brand);
-        if (!br) { var bb = BRANDS.find(function (b) { return b.name && nm.toLowerCase().indexOf(b.name.toLowerCase()) === 0; }); if (bb) br = bb.name; }
-        var m = { img: o.img || o.imgFile, brand: br, name: nm, price: Number(o.price) || 0, mrp: Number(o.mrp) || 0, note: clean(o.note), info: clean(o.info).replace(/\.?\s*Sale price.*$/i, "").trim(), dyn: true, ends: o.endsAt || 0 };
+        var m = { img: (typeof o.img === "string" && o.img.indexOf("data:image/") === 0) ? o.img : "", brand: clean(o.brand), name: clean(o.name), price: Number(o.price) || 0, mrp: Number(o.mrp) || 0, note: clean(o.note), info: clean(o.info), dyn: true, ends: o.endsAt || 0 };
         var spec = "Weekend offer price " + inr2(m.price) + (m.mrp ? ", MRP " + inr2(m.mrp) : "") + (m.note ? ", " + m.note.toLowerCase() : "") + (m.info ? ". " + m.info : "");
-        PHOTOS["dyno_" + o.id] = m.img; PHOTO_OF[m.name + "|" + spec] = "dyno_" + o.id; return m;
+        if (m.img) { PHOTOS["dyno_" + o.id] = m.img; PHOTO_OF[m.name + "|" + spec] = "dyno_" + o.id; } return m;
       });
     if (offs.length && window.__flashOffers) window.__flashOffers(offs);
     var f = d.flash, bar = document.getElementById("flashbar");
@@ -1921,9 +1901,7 @@ window.__applyDyn = function (d) {
 };
 function renderHome() {
   if (!$("hcats")) return;
-  const na = items.flat(2).filter(it => !it.head && it.mk).slice(0, 8);
-  const naHtml = na.length ? '<div class="hcat" id="newarr"><div class="hhead rv"><div><h3>New arrivals</h3><p>Fresh stock just in at the store</p></div></div><ul class="grid">' + na.map(it => card(it, true)).join("") + "</ul></div>" : "";
-  $("hcats").innerHTML = naHtml + CATALOG.map((c, ci) => {
+  $("hcats").innerHTML = CATALOG.map((c, ci) => {
     const cards = pickFor(ci).map(it => card(it, false).replace('<li class="item rv" data-detail', '<li class="item rv hpick" data-nodetail data-open="' + ci + ':' + it.si + '" data-detail')).join("");
     return '<div class="hcat"><div class="hhead rv"><div><h3>' + esc(c.name) + '</h3><p>' + esc(c.floor) + ' &middot; ' + c.subs.length + ' sub-sections</p></div>'
       + '<button class="link" type="button" data-open="' + ci + ':0">View all</button></div><ul class="grid">' + cards + '</ul></div>';
@@ -2068,7 +2046,6 @@ document.querySelectorAll("[data-ig]").forEach(a => {
 
 readHash();
 render();
-if ((location.hash || "").split("--").length >= 2) { setTimeout(focusHashItem, 500); }
 
 (function () {
   const w = document.getElementById("callwrap"), ic = document.getElementById("icCall");
@@ -2219,7 +2196,7 @@ if ((location.hash || "").split("--").length >= 2) { setTimeout(focusHashItem, 5
     if (!bag.length) return;
     if (!getCust()) { window.__needCust(); return; }
     const c = getCust();
-    const lines = bag.map((x, i) => { const it = itOf(x.k); return (i + 1) + ". " + it.name + (it.spec ? " (" + it.spec + ")" : "") + " x " + x.q + " [" + catOf(it) + "]\n   Item details link: " + itemLink(it); });
+    const lines = bag.map((x, i) => { const it = itOf(x.k); return (i + 1) + ". " + it.name + (it.spec ? " (" + it.spec + ")" : "") + " x " + x.q + " [" + catOf(it) + "]"; });
     const d = new Date(), pad = n => String(n).padStart(2, "0");
     const oid = "AZ-" + String(d.getFullYear()).slice(2) + pad(d.getMonth() + 1) + pad(d.getDate()) + "-" + Math.random().toString(36).slice(2, 6).toUpperCase();
     const msg = "Hello, I am " + c.name + ". I would like to order the following items:\n\n" + lines.join("\n") + "\n\nOrder ID: " + oid + "\n\nCustomer details\nName: " + c.name + "\nPhone: " + c.phone + "\nAddress: " + c.address;
@@ -2378,9 +2355,9 @@ try {
   function start() {
     firebase.initializeApp(cfg);
     db = firebase.firestore();
-    Promise.all([db.collection("catalog_items").orderBy("createdAt").get(), db.collection("flash_offers").get(), db.collection("site").doc("flash").get(), db.collection("site").doc("catalog").get()]).then(function (r) {
+    Promise.all([db.collection("catalog_items").orderBy("createdAt").get(), db.collection("flash_offers").get(), db.collection("site").doc("flash").get(), db.collection("site").doc("catalog").get(), db.collection("site").doc("offerhead").get(), db.collection("item_photos").get().catch(function () { return null; })]).then(function (r) {
       var m = function (d) { return Object.assign({ id: d.id }, d.data()); };
-      window.__applyDyn && window.__applyDyn({ items: r[0].docs.map(m), offers: r[1].docs.map(m), flash: r[2].exists ? r[2].data() : null, catalog: r[3].exists ? r[3].data() : null });
+      window.__applyDyn && window.__applyDyn({ items: r[0].docs.map(m), offers: r[1].docs.map(m), flash: r[2].exists ? r[2].data() : null, catalog: r[3].exists ? r[3].data() : null, head: r[4].exists ? r[4].data() : null, photos: (function () { var m = {}; if (r[5]) r[5].forEach(function (x) { var v = x.data(); if (v && v.key && typeof v.img === "string" && v.img.indexOf("data:image/") === 0) m[v.key] = v.img; }); return m; })() });
     }).catch(function () {});
     firebase.auth().signInAnonymously().then(function (cr) {
       uid = cr.user.uid; ok = true;
