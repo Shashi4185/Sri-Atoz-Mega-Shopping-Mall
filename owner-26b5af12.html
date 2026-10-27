@@ -62,6 +62,9 @@ if(imgs.length)return add(imgs);var t=(cd.getData("text")||"").trim();if(/^https
 host.ondragover=function(e){e.preventDefault()};
 host.ondrop=function(e){e.preventDefault();var dt=e.dataTransfer;if(!dt)return;var fl=Array.prototype.filter.call(dt.files||[],function(x){return/^image\//.test(x.type)});if(fl.length)return add(fl);var u=(dt.getData("text/uri-list")||dt.getData("text/plain")||"").trim();if(/^https?:\/\/\S+$/i.test(u))fromUrl(u)};
 r()}
+var TAGS=[["new","New"],["few","Few left"],["offer","Offer"],["hot","Hot sale"],["fast","Fast selling"],["ltime","Limited time"],["loffer","Limited offer"],["best","Best seller"],["trend","Trending"],["valued","Most valued"]];
+function tagOpts(v,first){return'<option value="">'+first+'</option>'+TAGS.map(function(t){return'<option value="'+t[0]+'"'+(t[0]==v?" selected":"")+'>'+t[1]+'</option>'}).join("")}
+function mkspec(info,mrp,sale){var rs=function(v){return"\u20B9"+v.toLocaleString("en-IN")};return mrp>0&&sale>0?info+". Sale price "+rs(sale)+", MRP "+rs(mrp):sale>0?info+". Price "+rs(sale):mrp>0?info+". MRP "+rs(mrp):info}
 function wkey(x){return [x[0],x[1],x[2],x[3]].join("|")}
 function shrink(file){return new Promise(function(res,rej){
 if(!file||!/^image\//.test(file.type))return rej(new Error("Please choose an image file."));
@@ -83,9 +86,9 @@ var h='<h3>Add a new item</h3><div class="box" style="padding:14px"><div class="
 +'<label>Sub-category *<select id="mSub"><option value="">Select category first</option></select></label>'
 +'<label>Item name *<input id="mName" maxlength="80" placeholder="e.g. Prestige Induction Cooktop"></label>'
 +'<label>Item info * (size, details)<input id="mInfo" maxlength="120" placeholder="e.g. 2000 W, 3 year warranty"></label>'
-+'<label>Original price (MRP, Rs) *<input id="mMrp" type="number" min="1" inputmode="numeric"></label>'
-+'<label>Sale price (Rs) *<input id="mSale" type="number" min="1" inputmode="numeric"></label>'
-+'<label>Tag<select id="mTag"><option value="">None</option><option value="new">New</option><option value="few">Few left</option></select></label>'
++'<label>Original price (MRP, Rs) - optional<input id="mMrp" type="number" min="1" inputmode="numeric"></label>'
++'<label>Sale / offer price (Rs) - optional<input id="mSale" type="number" min="1" inputmode="numeric"></label>'
++'<label>Tag (badge on the item)<select id="mTag">'+tagOpts("","None")+'</select></label>'
 +'</div><p class="note" style="margin-bottom:4px">Photos: optional, 1 to 5 per item, each auto-compressed under 20 KB. Select several at once (Ctrl/Shift on laptop, tap and hold on phone). The first photo is the main one.</p><div id="mPh"></div><button id="mAdd">Add item</button> <span id="mMsg" class="note"></span></div>'
 +'<h3>Offers section title</h3><div class="box" style="padding:14px"><div class="fg"><label>Section title (big heading)<input id="hTitle" maxlength="80" value="'+esc(D.head.title||"")+'" placeholder="Weekend Mega Offers"></label><label>Small label above the title (optional)<input id="hLabel" maxlength="40" value="'+esc(D.head.label||"")+'" placeholder="Weekend offers"></label></div><button id="hSave">Save title</button> <button id="hReset" class="g2">Reset to default</button> <span id="hMsg" class="note"></span></div>'
 +'<h3>Add an offer</h3><div class="box" style="padding:14px"><p class="note" style="margin-top:0">Pick an item already on the website to fill the form, or type a new product below. No photo needed.</p><div class="fg">'
@@ -101,7 +104,7 @@ var h='<h3>Add a new item</h3><div class="box" style="padding:14px"><div class="
 +'<h3>Top banner message</h3><div class="box" style="padding:14px"><div class="fg"><label>Message<input id="bTxt" maxlength="120" value="'+esc(D.flash&&D.flash.text||"")+'"></label>'
 +'<label>Show until (optional)<input id="bEnd" type="datetime-local"></label></div>'
 +'<button id="bOn">Show banner</button> <button id="bOff" class="g2">Hide banner</button> <span id="bMsg" class="note"></span></div>'
-+'<h3>Website items (all) - edit name, photo, info, prices, remove</h3><div class="box" style="padding:14px"><div class="fg"><label>Category<select id="wCat"><option value="">All categories</option>'+co+'</select></label><label>Sub-category<select id="wSub"><option value="">All</option></select></label><label>Search<input id="wQ" placeholder="item name"></label></div><p class="note" style="margin-top:0">Set Original price and Sale price to show a sale on the website. "Remove" takes an item off the website (you can Restore it later). Photos are optional and are compressed to 20 KB or less.</p><div id="wBody"></div></div>'
++'<h3>Website items (all) - edit name, photo, info, prices, remove</h3><div class="box" style="padding:14px"><div class="fg"><label>Category<select id="wCat"><option value="">All categories</option>'+co+'</select></label><label>Sub-category<select id="wSub"><option value="">All</option></select></label><label>Search<input id="wQ" placeholder="item name"></label></div><p class="note" style="margin-top:0">Prices and tag are optional (set both prices to show a sale). "Remove" takes an item off the website (you can Restore it later). Photos are optional and are compressed to 20 KB or less.</p><div id="wBody"></div></div>'
 +'<h3>Items you added</h3>'+tbl(["Photo","Item","Category","Info","Status",""],D.items.map(function(x){return'<tr><td><img src="'+esc(x.img||"")+'" style="width:44px;height:44px;object-fit:cover;border-radius:4px"></td><td>'+esc(x.name)+'</td><td>'+esc(x.cat+" > "+x.sub)+'</td><td>'+esc(x.spec||"")+'</td><td>'+(x.hidden?"Hidden":"Live")+'</td><td><button data-ed="'+x.id+'">Edit</button> <button data-hid="'+x.id+'" class="g2">'+(x.hidden?"Show":"Hide")+'</button> <button data-del="'+x.id+'" class="g2">Delete</button></td></tr>'}))
 +'<h3>Weekend offers added</h3>'+tbl(["Product","Info","Price",""],D.offers.map(function(o){return'<tr><td>'+esc((o.brand?o.brand+" ":"")+o.name)+'</td><td>'+esc(o.info||"")+'</td><td>Rs '+esc(o.price)+(o.mrp?" (MRP "+esc(o.mrp)+")":"")+'</td><td><button data-delo="'+o.id+'" class="g2">Delete</button></td></tr>'}))
 +'<p class="note">Items show on the website at the top of their sub-category under "New arrivals". Photos are shrunk automatically to 20 KB or less. Use Edit to change any item. Built-in website items can be edited in the list above.</p>';
@@ -114,10 +117,9 @@ var P={m:[]};pedit(F("mPh"),P.m);
 F("mAdd").onclick=function(){var n=F("mName").value.trim(),i=F("mInfo").value.trim();
 if(!cat.value)return msgSet("mMsg","Choose a category.");if(!sub.value)return msgSet("mMsg","Choose a sub-category.");
 if(n.length<2)return msgSet("mMsg","Enter the item name.");if(i.length<3)return msgSet("mMsg","Enter item info (size, details).");
-var mrp=Number(F("mMrp").value),sale=Number(F("mSale").value);
-if(!(mrp>0))return msgSet("mMsg","Enter the original price (MRP).");if(!(sale>0))return msgSet("mMsg","Enter the sale price.");
-if(sale>mrp)return msgSet("mMsg","Sale price cannot be more than the original price.");
-var rs=function(v){return"\u20B9"+v.toLocaleString("en-IN")};var spec=i+". Sale price "+rs(sale)+", MRP "+rs(mrp);
+var mrp=Number(F("mMrp").value)||0,sale=Number(F("mSale").value)||0;
+if(mrp>0&&sale>0&&sale>mrp)return msgSet("mMsg","Sale price cannot be more than the original price.");
+var spec=mkspec(i,mrp,sale);
 
 F("mAdd").disabled=true;msgSet("mMsg","Saving...",1);
 db.collection("catalog_items").add({cat:cat.value,sub:sub.value,name:n,spec:spec,price:sale,mrp:mrp,tag:F("mTag").value,img:P.m[0]||"",imgs:P.m.slice(),hidden:false,createdAt:Date.now()}).then(function(){msgSet("mMsg","Added. It is live on the website.",1);reload()}).catch(function(e){F("mAdd").disabled=false;msgSet("mMsg","Not saved: "+e.message)})};
@@ -145,29 +147,27 @@ var inf=x.info!=null?x.info:String(x.spec||"").replace(/\.?\s*Sale price.*$/,"")
 var co2=Object.keys(CATS).map(function(c){return'<option'+(c==x.cat?" selected":"")+'>'+esc(c)+'</option>'}).join("");
 var sb=function(c,v){return(CATS[c]||[]).map(function(z){return'<option'+(z==v?" selected":"")+'>'+esc(z)+'</option>'}).join("")};
 var e=document.createElement("tr");e.className="er";
-e.innerHTML='<td colspan="6" style="background:#f6f8fc"><div class="fg"><label>Category<select class="ec">'+co2+'</select></label><label>Sub-category<select class="es">'+sb(x.cat,x.sub)+'</select></label><label>Item name<input class="en" maxlength="80" value="'+esc(x.name)+'"></label><label>Info<input class="ei" maxlength="120" value="'+esc(inf)+'"></label><label>Original price (MRP)<input class="em" type="number" min="1" value="'+esc(x.mrp||"")+'"></label><label>Sale price<input class="ep" type="number" min="1" value="'+esc(x.price||"")+'"></label><label>Tag<select class="et"><option value="">None</option><option value="new"'+(x.tag=="new"?" selected":"")+'>New</option><option value="few"'+(x.tag=="few"?" selected":"")+'>Few left</option></select></label></div><p class="note" style="margin-bottom:4px">Photos (optional, up to 5). First = main photo.</p><div class="eph"></div><button class="esv">Save changes</button> <button class="g2 ecn">Cancel</button> <span class="note emsg"></span></td>';
+e.innerHTML='<td colspan="6" style="background:#f6f8fc"><div class="fg"><label>Category<select class="ec">'+co2+'</select></label><label>Sub-category<select class="es">'+sb(x.cat,x.sub)+'</select></label><label>Item name<input class="en" maxlength="80" value="'+esc(x.name)+'"></label><label>Info<input class="ei" maxlength="120" value="'+esc(inf)+'"></label><label>Original price (MRP) - optional<input class="em" type="number" min="1" value="'+esc(x.mrp||"")+'"></label><label>Sale / offer price - optional<input class="ep" type="number" min="1" value="'+esc(x.price||"")+'"></label><label>Tag<select class="et">'+tagOpts(x.tag,"None")+'</select></label></div><p class="note" style="margin-bottom:4px">Photos (optional, up to 5). First = main photo.</p><div class="eph"></div><button class="esv">Save changes</button> <button class="g2 ecn">Cancel</button> <span class="note emsg"></span></td>';
 tr.parentNode.insertBefore(e,tr.nextSibling);
 var cur=(x.imgs&&x.imgs.length?x.imgs:(x.img?[x.img]:[])).slice(),ec=e.querySelector(".ec"),es=e.querySelector(".es");pedit(e.querySelector(".eph"),cur);
 ec.onchange=function(){es.innerHTML=sb(ec.value,"")};
 e.querySelector(".ecn").onclick=function(){e.remove()};
-e.querySelector(".esv").onclick=function(){var m=e.querySelector(".emsg"),n=e.querySelector(".en").value.trim(),i=e.querySelector(".ei").value.trim(),mr=Number(e.querySelector(".em").value),pr=Number(e.querySelector(".ep").value);m.style.color="#b3261e";
+e.querySelector(".esv").onclick=function(){var m=e.querySelector(".emsg"),n=e.querySelector(".en").value.trim(),i=e.querySelector(".ei").value.trim(),mr=Number(e.querySelector(".em").value)||0,pr=Number(e.querySelector(".ep").value)||0;m.style.color="#b3261e";
 if(!es.value)return m.textContent="Choose a sub-category.";if(n.length<2)return m.textContent="Enter the item name.";if(i.length<3)return m.textContent="Enter item info.";
-if(!(mr>0&&pr>0))return m.textContent="Enter both prices.";if(pr>mr)return m.textContent="Sale price cannot be more than the original price.";
-var rs=function(v){return"\u20B9"+v.toLocaleString("en-IN")};
-var u={cat:ec.value,sub:es.value,name:n,info:i,spec:i+". Sale price "+rs(pr)+", MRP "+rs(mr),price:pr,mrp:mr,tag:e.querySelector(".et").value,img:cur[0]||"",imgs:cur};
+if(mr>0&&pr>0&&pr>mr)return m.textContent="Sale price cannot be more than the original price.";
+var u={cat:ec.value,sub:es.value,name:n,info:i,spec:mkspec(i,mr,pr),price:pr,mrp:mr,tag:e.querySelector(".et").value,img:cur[0]||"",imgs:cur};
 m.style.color="#667089";m.textContent="Saving...";
 db.collection("catalog_items").doc(x.id).update(u).then(reload).catch(function(er){m.style.color="#b3261e";m.textContent="Not saved: "+er.message})}}});}
 function wiRows(){var l=[];SITE.forEach(function(x,i){if(WS.cat&&x[0]!=WS.cat)return;if(WS.sub&&x[1]!=WS.sub)return;if(WS.q&&x[2].toLowerCase().indexOf(WS.q)<0)return;l.push(i)});
 var rows=l.map(function(i){var x=SITE[i],k=wkey(x),o=D.ov[k]||{};
-return'<tr data-w="'+i+'"'+(o.hidden?' style="opacity:.55"':"")+'><td>'+'<div class="wph" data-p="'+i+'"></div></td><td><input class="wn" value="'+esc(o.name||x[2])+'" style="min-width:160px"><br><small style="color:#667089">'+esc(x[1])+' - '+esc(x[3])+(o.hidden?' - <b>REMOVED</b>':"")+'</small></td><td><input class="wi" value="'+esc(o.info||"")+'" placeholder="'+esc(x[3]||"info")+'" style="min-width:150px"></td><td><input class="wm" type="number" min="0" value="'+(o.mrp||"")+'" style="min-width:80px;width:90px"></td><td><input class="wp" type="number" min="0" value="'+(o.price||"")+'" style="min-width:80px;width:90px"></td><td style="white-space:nowrap"><button data-ws="'+i+'">Save</button> <button data-wd="'+i+'" class="g2">'+(o.hidden?"Restore":"Remove")+'</button> <span class="note" data-wm="'+i+'"></span></td></tr>'});
-$("wBody").innerHTML=tbl(["Photo","Item name","Info (optional)","Original price","Sale price",""],rows)+'<p class="note">Showing all '+l.length+' items in this filter. Photos are optional, up to 5 per item; changes save with the Save button.</p>';
+return'<tr data-w="'+i+'"'+(o.hidden?' style="opacity:.55"':"")+'><td>'+'<div class="wph" data-p="'+i+'"></div></td><td><input class="wn" value="'+esc(o.name||x[2])+'" style="min-width:160px"><br><small style="color:#667089">'+esc(x[1])+' - '+esc(x[3])+(o.hidden?' - <b>REMOVED</b>':"")+'</small></td><td><input class="wi" value="'+esc(o.info||"")+'" placeholder="'+esc(x[3]||"info")+'" style="min-width:150px"></td><td><input class="wm" type="number" min="0" value="'+(o.mrp||"")+'" style="min-width:80px;width:90px"></td><td><input class="wp" type="number" min="0" value="'+(o.price||"")+'" style="min-width:80px;width:90px"></td><td><select class="wt" style="min-width:110px">'+tagOpts(o.tag&&o.tag!="none"?o.tag:"","Default tag").replace('</select>','')+'<option value="none"'+(o.tag=="none"?" selected":"")+'>No tag</option></select></td><td style="white-space:nowrap"><button data-ws="'+i+'">Save</button> <button data-wd="'+i+'" class="g2">'+(o.hidden?"Restore":"Remove")+'</button> <span class="note" data-wm="'+i+'"></span></td></tr>'});
+$("wBody").innerHTML=tbl(["Photo","Item name","Info (optional)","Original price","Sale / offer price","Tag",""],rows)+'<p class="note">Showing all '+l.length+' items in this filter. Photos are optional, up to 5 per item; changes save with the Save button.</p>';
 l.forEach(function(i){var x=SITE[i],ph=D.ph[hkey(wkey(x))];if(!PH[i])PH[i]=ph?(ph.imgs&&ph.imgs.length?ph.imgs:[ph.img]).filter(Boolean).slice():(x[4]?[x[4]]:[]);pedit(document.querySelector('[data-p="'+i+'"]'),PH[i],function(){PHd[i]=1})});
 function say(i,t,ok){var m=document.querySelector('[data-wm="'+i+'"]');if(m){m.style.color=ok?"#0e7a4b":"#b3261e";m.textContent=t}}
-function saveRow(i,hid){var x=SITE[i],k=wkey(x),r=document.querySelector('tr[data-w="'+i+'"]'),nm=r.querySelector(".wn").value.trim(),inf=r.querySelector(".wi").value.trim(),mr=Number(r.querySelector(".wm").value)||0,pr=Number(r.querySelector(".wp").value)||0,cur=D.ov[k]||{},hd=hid===undefined?!!cur.hidden:hid;
+function saveRow(i,hid){var x=SITE[i],k=wkey(x),r=document.querySelector('tr[data-w="'+i+'"]'),nm=r.querySelector(".wn").value.trim(),inf=r.querySelector(".wi").value.trim(),mr=Number(r.querySelector(".wm").value)||0,pr=Number(r.querySelector(".wp").value)||0,tg=r.querySelector(".wt").value,cur=D.ov[k]||{},hd=hid===undefined?!!cur.hidden:hid;
 if(nm.length<2)return say(i,"Enter the name.");
-if((mr>0||pr>0)&&!(mr>0&&pr>0))return say(i,"Enter both prices.");
-if(pr>mr)return say(i,"Sale price is more than original.");
-var nv=nm===x[2]?"":nm,n=Object.assign({},D.ov);if(!nv&&!inf&&!mr&&!pr&&!hd)delete n[k];else n[k]={name:nv,info:inf,mrp:mr,price:pr,hidden:hd};
+if(mr>0&&pr>0&&pr>mr)return say(i,"Sale price is more than original.");
+var nv=nm===x[2]?"":nm,n=Object.assign({},D.ov);if(!nv&&!inf&&!mr&&!pr&&!hd&&!tg)delete n[k];else n[k]={name:nv,info:inf,mrp:mr,price:pr,tag:tg,hidden:hd};
 var ps=[db.collection("site").doc("catalog").set({o:n,updatedAt:Date.now()})];
 if(PHd[i]){var orig=SITE[i][4]?[SITE[i][4]]:[];if(!PH[i].length||JSON.stringify(PH[i])==JSON.stringify(orig)){if(D.ph[hkey(k)])ps.push(db.collection("item_photos").doc(hkey(k)).delete())}else ps.push(db.collection("item_photos").doc(hkey(k)).set({key:k,img:PH[i][0],imgs:PH[i],updatedAt:Date.now()}))}
 say(i,"Saving...",1);r.querySelectorAll("button").forEach(function(b){b.disabled=true});
