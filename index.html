@@ -604,6 +604,11 @@ footer a:hover, .flink:hover { color: var(--gold); }
 .dclose { position: absolute; top: 10px; right: 12px; width: 38px; height: 38px; border: 0; border-radius: 50%; background: var(--soft); color: var(--ink); font-size: 1.4rem; cursor: pointer; }
 .dimg { display: grid; place-items: center; background: #fff; border-radius: 4px; border: 1px solid var(--line); aspect-ratio: 1; overflow: hidden; }
 .dimg img { width: 100%; height: 100%; object-fit: contain; }
+.dimg { position: relative; }
+.dthumbs { position: absolute; left: 0; right: 0; bottom: 0; display: flex; gap: 6px; justify-content: center; padding: 6px; background: rgba(255,255,255,.88); }
+.dth { width: 46px; height: 46px; padding: 0; border: 2px solid var(--line); border-radius: 4px; background: #fff; cursor: pointer; overflow: hidden; }
+.dth.on { border-color: var(--gold-text); }
+.dth img { width: 100%; height: 100%; object-fit: cover; }
 .dimg span { font: 600 5rem var(--font-display); color: var(--gold-text); }
 .dinfo h2 { margin: 0 0 6px; font: 600 1.7rem/1.25 var(--font-display); padding-right: 36px; }
 .dinfo .store { display: inline-block; color: #0b5cab; font-size: 0.92rem; cursor: pointer; background: none; border: 0; padding: 0; text-decoration: none; }
@@ -1859,6 +1864,8 @@ window.__applyDyn = function (d) {
       if (window.__rebuildOffers) window.__rebuildOffers();
     }
     /* Owner edits to built-in items (site/catalog): hide, info, sale price and MRP */
+    window.PX = window.PX || {};
+    var okImg = function (u) { return typeof u === "string" && (u.indexOf("data:image/") === 0 || /^[\w.-]+\.(jpg|jpeg|png|webp)$/i.test(u)); };
     var ov = (d.catalog && d.catalog.o) || {}, rs = function (n) { return "\u20B9" + Number(n).toLocaleString("en-IN"); };
     items.forEach(function (cl, ci) { cl.forEach(function (sl, si) {
       for (var n = sl.length - 1; n >= 0; n--) {
@@ -1866,9 +1873,9 @@ window.__applyDyn = function (d) {
         var key = [CATALOG[ci].name, CATALOG[ci].subs[si].name, it0.name, it0.spec].join("|");
         var o = ov[key] || {}, ph = (d.photos || {})[key]; if (!o.hidden && !o.name && !o.info && !o.price && !ph) continue;
         if (o.hidden) { sl.splice(n, 1); continue; }
-        var img0 = ph || photoOf(it0), nm = o.name ? clean(o.name) : it0.name, info = o.info ? clean(o.info) : it0.spec, spec = info;
+        var img0 = ph ? ph[0] : photoOf(it0), nm = o.name ? clean(o.name) : it0.name, info = o.info ? clean(o.info) : it0.spec, spec = info;
         if (Number(o.price) > 0 && Number(o.mrp) > 0) spec = (info ? info + ". " : "") + "Sale price " + rs(o.price) + ", MRP " + rs(o.mrp);
-        if (spec !== it0.spec || nm !== it0.name || ph) { if (img0) { var pk = "bi_" + ci + "_" + si + "_" + n; PHOTOS[pk] = img0; PHOTO_OF[nm + "|" + spec] = pk; } it0.spec = spec; it0.name = nm; }
+        if (spec !== it0.spec || nm !== it0.name || ph) { if (img0) { var pk = "bi_" + ci + "_" + si + "_" + n; PHOTOS[pk] = img0; PHOTO_OF[nm + "|" + spec] = pk; } if (ph && ph.length > 1) window.PX[nm + "|" + spec] = ph; it0.spec = spec; it0.name = nm; }
       }
     }); });
     (d.items || []).forEach(function (x) {
@@ -1876,7 +1883,8 @@ window.__applyDyn = function (d) {
       var ci = CATALOG.findIndex(function (c) { return c.name === x.cat; }); if (ci < 0) return;
       var si = CATALOG[ci].subs.findIndex(function (s) { return s.name === x.sub; }); if (si < 0) return;
       var it = { name: clean(x.name), spec: clean(x.spec), tag: x.tag === "new" || x.tag === "few" ? x.tag : "", ci: ci, si: si, order: -1 };
-      if (typeof x.img === "string" && x.img.indexOf("data:image/") === 0) { var k = "dyn_" + x.id; PHOTOS[k] = x.img; PHOTO_OF[it.name + "|" + it.spec] = k; }
+      var gal = (Array.isArray(x.imgs) && x.imgs.length ? x.imgs : [x.img]).filter(okImg).slice(0, 5);
+      if (gal.length) { var k = "dyn_" + x.id; PHOTOS[k] = gal[0]; PHOTO_OF[it.name + "|" + it.spec] = k; if (gal.length > 1) window.PX[it.name + "|" + it.spec] = gal; }
       var list = items[ci][si];
       if (!(list[0] && list[0].dyn)) list.unshift({ head: "New arrivals", dyn: true });
       list.splice(1, 0, it);
@@ -2085,7 +2093,14 @@ render();
     const it = { ci: Number(ci), si: Number(si), name, spec };
     window.__detailItem = it; try { window.__track && window.__track("item_view", it); } catch (e) {}
     const img = photoOf(it);
-    document.getElementById("dimg").innerHTML = img ? '<img src="' + img + '" alt="' + esc(name) + '">' : "<span>" + esc(mono(name)) + "</span>";
+    const gl = (window.PX && window.PX[name + "|" + spec]) || null, di = document.getElementById("dimg");
+    di.innerHTML = img ? '<img src="' + img + '" alt="' + esc(name) + '">' : "<span>" + esc(mono(name)) + "</span>";
+    if (gl && gl.length > 1) {
+      const th = document.createElement("div"); th.className = "dthumbs";
+      th.innerHTML = gl.map((u, i) => '<button type="button" class="dth' + (i === 0 ? " on" : "") + '" data-i="' + i + '" aria-label="Photo ' + (i + 1) + '"><img src="' + esc(u) + '" alt=""></button>').join("");
+      th.onclick = ev => { const b = ev.target.closest(".dth"); if (!b) return; di.querySelector(":scope > img").src = gl[+b.dataset.i]; th.querySelectorAll(".dth").forEach(x => x.classList.toggle("on", x === b)); };
+      di.appendChild(th);
+    }
     document.getElementById("dName").textContent = name;
     document.getElementById("dspec").textContent = spec;
     document.getElementById("dwhere").textContent = CATALOG[it.ci].name + " \u203A " + CATALOG[it.ci].subs[it.si].name;
@@ -2357,7 +2372,7 @@ try {
     db = firebase.firestore();
     Promise.all([db.collection("catalog_items").orderBy("createdAt").get(), db.collection("flash_offers").get(), db.collection("site").doc("flash").get(), db.collection("site").doc("catalog").get(), db.collection("site").doc("offerhead").get(), db.collection("item_photos").get().catch(function () { return null; })]).then(function (r) {
       var m = function (d) { return Object.assign({ id: d.id }, d.data()); };
-      window.__applyDyn && window.__applyDyn({ items: r[0].docs.map(m), offers: r[1].docs.map(m), flash: r[2].exists ? r[2].data() : null, catalog: r[3].exists ? r[3].data() : null, head: r[4].exists ? r[4].data() : null, photos: (function () { var m = {}; if (r[5]) r[5].forEach(function (x) { var v = x.data(); if (v && v.key && typeof v.img === "string" && v.img.indexOf("data:image/") === 0) m[v.key] = v.img; }); return m; })() });
+      window.__applyDyn && window.__applyDyn({ items: r[0].docs.map(m), offers: r[1].docs.map(m), flash: r[2].exists ? r[2].data() : null, catalog: r[3].exists ? r[3].data() : null, head: r[4].exists ? r[4].data() : null, photos: (function () { var m = {}; if (r[5]) r[5].forEach(function (x) { var v = x.data(); if (!v || !v.key) return; var a = (Array.isArray(v.imgs) && v.imgs.length ? v.imgs : [v.img]).filter(function (u) { return typeof u === "string" && (u.indexOf("data:image/") === 0 || /^[\w.-]+\.(jpg|jpeg|png|webp)$/i.test(u)); }); if (a.length) m[v.key] = a.slice(0, 5); }); return m; })() });
     }).catch(function () {});
     firebase.auth().signInAnonymously().then(function (cr) {
       uid = cr.user.uid; ok = true;
