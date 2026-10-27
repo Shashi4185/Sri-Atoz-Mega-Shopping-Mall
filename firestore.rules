@@ -12,10 +12,11 @@ service cloud.firestore {
     match /catalog_items/{id} { allow read: if true; allow write: if isAdmin(); }
     match /flash_offers/{id}  { allow read: if true; allow write: if isAdmin(); }
     match /site/{id}          { allow read: if true; allow write: if isAdmin(); }
+    match /item_photos/{id}   { allow read: if true; allow write: if isAdmin(); }
 
     // Visitor tracking: anyone signed in (anonymous too) can write, only owner reads
-    match /events/{id}   { allow create: if request.auth != null; allow read: if isAdmin(); }
-    match /sessions/{id} { allow create, update: if request.auth != null; allow read: if isAdmin(); }
-    match /customers/{id} { allow create, update: if request.auth != null && request.auth.uid == id; allow read: if isAdmin(); }
+    match /events/{id}   { allow create: if request.auth != null; allow read, delete: if isAdmin(); }
+    match /sessions/{id} { allow create, update: if request.auth != null; allow read, delete: if isAdmin(); }
+    match /customers/{id} { allow create, update: if request.auth != null && request.auth.uid == id; allow read, delete: if isAdmin(); }
   }
 }
